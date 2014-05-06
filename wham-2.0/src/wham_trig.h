@@ -4,6 +4,7 @@
 #include <cmath>
 #include <vector>
 #include <iostream>
+#include <cstdlib>
 
 #ifndef M_PI
 #define M_PI = atan(1.)*4.
@@ -18,18 +19,19 @@
 #endif
 
 
-std::vector<double> angle2vector( double angle );
+std::vector<float> angle2vector( float angle );
 
-double periodic( double angle );
+float periodic( float angle );
 
-double delta_angle( double a,
-                   double b);
+float delta_angle( float a,
+                   float b);
 
 
 template<class T> T vec_sum(std::vector<T> a)
 {
     T result = 0;
-    for (int i=0; i<a.size(); i++)
+    int asize = a.size();
+    for (int i=0; i<asize; i++)
     {
         result += a[i];
     }
@@ -42,9 +44,10 @@ template<class U, class R> U vec_dot(std::vector<U> a, std::vector<R> b)
     if (a.size() != b.size())
     {
         std::cerr << "\nERROR! Vector sizes do to match; cannot do dot product\n";
-        exit(1);
+        std::exit(1);
     }
-    for (int i=0; i<a.size() ; i++)
+    int asize = a.size();
+    for (int i=0; i<asize ; i++)
     {
         product += a[i]*b[i];
     }
@@ -54,7 +57,8 @@ template<class U, class R> U vec_dot(std::vector<U> a, std::vector<R> b)
 template<class V> void vec_normalize(std::vector<V> &a)
 {
     V norm = vec_sum(a);
-    for (int i=0; i<a.size(); i++)
+    int asize = a.size();
+    for (int i=0; i<asize; i++)
     {
         a[i] /= norm;
     }

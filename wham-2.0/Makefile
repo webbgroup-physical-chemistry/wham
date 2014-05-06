@@ -75,12 +75,17 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
+build_triplet = x86_64-apple-darwin13.1.0
+host_triplet = x86_64-apple-darwin13.1.0
 subdir = .
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
-	$(top_srcdir)/configure $(am__configure_deps) compile depcomp \
-	install-sh missing
+	$(top_srcdir)/configure $(am__configure_deps) compile \
+	config.guess config.sub depcomp install-sh missing ltmain.sh
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/boost.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
@@ -189,39 +194,62 @@ distcleancheck_listfiles = find . -type f -print
 ACLOCAL = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing aclocal-1.14
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
+AR = ar
 AUTOCONF = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing autoconf
 AUTOHEADER = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing autoheader
 AUTOMAKE = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing automake-1.14
 AWK = awk
+BOOST_CPPFLAGS = -I/usr/local/Cellar/boost/1.55.0_1/include
+BOOST_LDPATH = /usr/local/lib
+BOOST_PROGRAM_OPTIONS_LDFLAGS = -L/usr/local/lib -Wl,-rpath,/usr/local/lib
+BOOST_PROGRAM_OPTIONS_LDPATH = /usr/local/lib
+BOOST_PROGRAM_OPTIONS_LIBS = -lboost_program_options-mt
+BOOST_ROOT = 
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
 CPP = gcc -E
 CPPFLAGS = 
 CXX = g++
+CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -g -O2
+CXXFLAGS = -Wall -O3
 CYGPATH_W = echo
-DEFS = -DPACKAGE_NAME=\"wham\" -DPACKAGE_TARNAME=\"wham\" -DPACKAGE_VERSION=\"2.0\" -DPACKAGE_STRING=\"wham\ 2.0\" -DPACKAGE_BUGREPORT=\"drew.w.ritchie@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wham\" -DVERSION=\"2.0\" -DHAVE_LIBBOOST_PROGRAM_OPTIONS=1 -DHAVE_LIBHDF5=1 -DHAVE_LIBHDF5_CPP=1 -DHAVE_LIBHDF5_HL_CPP=1 -DHAVE_LIBM=1 -DHAVE_LIBZ=1 -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE__BOOL=1
+DEFS = -DPACKAGE_NAME=\"wham\" -DPACKAGE_TARNAME=\"wham\" -DPACKAGE_VERSION=\"2.0\" -DPACKAGE_STRING=\"wham\ 2.0\" -DPACKAGE_BUGREPORT=\"drew.w.ritchie@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wham\" -DVERSION=\"2.0\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DHAVE_BOOST=1 -DHAVE_BOOST_PROGRAM_OPTIONS_HPP=1 -DHAVE_LIBBOOST_PROGRAM_OPTIONS=1 -DHAVE_LIBHDF5=1 -DHAVE_LIBHDF5_CPP=1 -DHAVE_LIBHDF5_HL_CPP=1 -DHAVE_LIBM=1 -DHAVE_LIBZ=1 -DHAVE_LIBBLAS=1 -DHAVE__BOOL=1
 DEPDIR = .deps
+DISTCHECK_CONFIGURE_FLAGS =  '--with-boost=/usr/local/Cellar/boost/1.55.0_1/include'
+DLLTOOL = false
+DSYMUTIL = dsymutil
+DUMPBIN = 
 ECHO_C = \c
 ECHO_N = 
 ECHO_T = 
 EGREP = /usr/bin/grep -E
 EXEEXT = 
+FGREP = /usr/bin/grep -F
 GREP = /usr/bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
+LD = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld
 LDFLAGS = 
 LIBOBJS = 
-LIBS = -lz -lm -lhdf5_hl_cpp -lhdf5_cpp -lhdf5 -lboost_program_options 
+LIBS = -lblas -lz -lm -lhdf5_hl_cpp -lhdf5_cpp -lhdf5 -lboost_program_options 
+LIBTOOL = $(SHELL) $(top_builddir)/libtool
+LIPO = lipo
+LN_S = ln -s
 LTLIBOBJS = 
 MAKEINFO = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing makeinfo
+MANIFEST_TOOL = :
 MKDIR_P = ./install-sh -c -d
+NM = /usr/bin/nm
+NMEDIT = nmedit
+OBJDUMP = false
 OBJEXT = o
+OTOOL = otool
+OTOOL64 = :
 PACKAGE = wham
 PACKAGE_BUGREPORT = drew.w.ritchie@gmail.com
 PACKAGE_NAME = wham
@@ -230,30 +258,42 @@ PACKAGE_TARNAME = wham
 PACKAGE_URL = 
 PACKAGE_VERSION = 2.0
 PATH_SEPARATOR = :
+RANLIB = ranlib
+SED = /usr/bin/sed
 SET_MAKE = 
 SHELL = /bin/sh
-STRIP = 
+STRIP = strip
 VERSION = 2.0
 abs_builddir = /Users/ritchie/software/wham/wham-2.0
 abs_srcdir = /Users/ritchie/software/wham/wham-2.0
 abs_top_builddir = /Users/ritchie/software/wham/wham-2.0
 abs_top_srcdir = /Users/ritchie/software/wham/wham-2.0
+ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_CXX = g++
+ac_ct_DUMPBIN = 
 am__include = include
 am__leading_dot = .
 am__quote = 
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
 bindir = ${exec_prefix}/bin
+build = x86_64-apple-darwin13.1.0
 build_alias = 
+build_cpu = x86_64
+build_os = darwin13.1.0
+build_vendor = apple
 builddir = .
 datadir = ${datarootdir}
 datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
+host = x86_64-apple-darwin13.1.0
 host_alias = 
+host_cpu = x86_64
+host_os = darwin13.1.0
+host_vendor = apple
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
@@ -278,7 +318,8 @@ top_build_prefix =
 top_builddir = .
 top_srcdir = .
 AUTOMAKE_OPTIONS = foreign
-SUBDIRS = src 
+ACLOCAL_AMFLAGS = -I m4
+SUBDIRS = src tools 
 all: all-recursive
 
 .SUFFIXES:
@@ -316,6 +357,15 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+	-rm -f libtool config.lt
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run 'make' without going through this Makefile.
@@ -645,9 +695,10 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-clean-am: clean-generic mostlyclean-am
+clean-am: clean-generic clean-libtool mostlyclean-am
 
-distclean-am: clean-am distclean-generic distclean-tags
+distclean-am: clean-am distclean-generic distclean-libtool \
+	distclean-tags
 
 dvi: dvi-recursive
 
@@ -697,7 +748,7 @@ maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-recursive
 
-mostlyclean-am: mostlyclean-generic
+mostlyclean-am: mostlyclean-generic mostlyclean-libtool
 
 pdf: pdf-recursive
 
@@ -713,31 +764,38 @@ uninstall-am:
 
 .PHONY: $(am__recursive_targets) CTAGS GTAGS TAGS all all-am \
 	am--refresh check check-am clean clean-cscope clean-generic \
-	cscope cscopelist-am ctags ctags-am dist dist-all dist-bzip2 \
-	dist-gzip dist-lzip dist-shar dist-tarZ dist-xz dist-zip \
-	distcheck distclean distclean-generic distclean-tags \
-	distcleancheck distdir distuninstallcheck dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs installdirs-am maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am tags tags-am uninstall uninstall-am
+	clean-libtool cscope cscopelist-am ctags ctags-am dist \
+	dist-all dist-bzip2 dist-gzip dist-lzip dist-shar dist-tarZ \
+	dist-xz dist-zip distcheck distclean distclean-generic \
+	distclean-libtool distclean-tags distcleancheck distdir \
+	distuninstallcheck dvi dvi-am html html-am info info-am \
+	install install-am install-data install-data-am install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-strip installcheck installcheck-am installdirs \
+	installdirs-am maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-generic mostlyclean-libtool pdf pdf-am \
+	ps ps-am tags tags-am uninstall uninstall-am
 
 
 clean: 
 	-rm -rf src/*.o src/wham
 	-rm -rf bin/wham
-	-rm -rf tests/schemes/*/*.h5 tests/schemes/*/*.pdf
+	-rm -rf bin/bw_wham
+	-rm -rf tools/*.o tools/bw_wham
 
 distclean: clean
-	rm -rf autom4te.cache
+	-rm -rf autom4te.cache
+	-rm -rf tests/schemes/*/dat_*
+	-rm -rf tests/schemes/*/*.h5 tests/schemes/*/*.pdf
+	-rm -rf tests/schemes/*/*_list.file tests/schemes/*/*.pyc
+	-rm -rf tests/include/*.pyc
 
 install:
 	mkdir -p bin
 	-mv src/wham bin/wham
+	-mv tools/bw_wham bin/bw_wham
 
 all: install
 

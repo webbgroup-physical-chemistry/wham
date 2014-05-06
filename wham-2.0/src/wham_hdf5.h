@@ -1,3 +1,6 @@
+#ifndef WHAM_HDF5_H_
+#define WHAM_HDF5_H_
+
 #include "wham_types.h"
 #include "wham_befeus.h"
 #include "H5Cpp.h"
@@ -10,7 +13,7 @@ private:
     t_options options;
     t_wham wham_args;
     int nexp, nstates;
-    std::vector<double> opt_prob, opt_pmf;
+    std::vector<float> opt_prob, opt_pmf;
     std::string filename;
     H5::H5File *file;
 public:
@@ -18,13 +21,15 @@ public:
               t_wham args,
               int n_exp,
               int n_states,
-              std::vector<double> prob,
-              std::vector<double> pmf );
+              std::vector<float> prob,
+              std::vector<float> pmf );
     void write_trj(std::vector<t_experiment> group_traj);
-    void write_wham(std::vector<double> prob,
-                    std::vector<double> pmf,
+    void write_wham(std::vector<float> prob,
+                    std::vector<float> pmf,
                     std::vector<int> counts,
                     std::vector<t_map> map,
                     std::string group,
                     int f0, int fN);
 };
+
+#endif

@@ -28,7 +28,7 @@ void wham_options(int argc, char *argv[], t_options &options)
                 "First frame to read")
             ("last_frame,e",po::value<int>(&options.fN)->default_value(-1,"last frame"),
                 "Last frame to read, where <-e> is an integer")
-            ("temperature,t",po::value<double>(&options.t)->default_value(300),
+            ("temperature,t",po::value<float>(&options.t)->default_value(300),
                 "Temperature (K)")
             ("min_coordinate,n",po::value<std::vector<std::string> >(&xmin),
                 "Minimum value of reaction coordinate. Default: -180 (X)")
@@ -38,9 +38,9 @@ void wham_options(int argc, char *argv[], t_options &options)
                 "Bin width. Default: 5 (X)")
             ("dof,d",po::value<int>(&options.ndof)->default_value(1),
                 "Number of degrees of freedom being biased")
-            ("tolerance,l",po::value<double>(&options.tol)->default_value(1e-12,"1e-12"),
+            ("tolerance,l",po::value<float>(&options.tol)->default_value(1e-12,"1e-12"),
                 "Convergence tolerance for monte carlo")
-            ("iterations,i",po::value<double>(&options.iter)->default_value(5e5,"5e5"),
+            ("iterations,i",po::value<float>(&options.iter)->default_value(5e5,"5e5"),
                 "Maximum number of iterations")
             ("convergence,c",po::value<int>(&options.convStep)->default_value(0,"Off"),
                 "Perform WHAM every <-c> steps, where <-c> is an integer")
@@ -59,7 +59,7 @@ void wham_options(int argc, char *argv[], t_options &options)
             
             if (vm.count("help"))
             {
-                exit(1);
+                std::exit(1);
             }
             if (vm.count("bVerbose"))
             {
@@ -77,7 +77,8 @@ void wham_options(int argc, char *argv[], t_options &options)
             /* Make sure the outfile suffix is correct */
             if ( options.outname.find(".h5") == std::string::npos)
             {
-                if (options.outname.back() == '.' )
+                //if (options.outname.back() == '.' ) // -std=c++11, which isn't working with boost and/or hdf5
+                if (*options.outname.rbegin() == '.' )
                     {
                         options.outname.append("h5");
                     }
@@ -95,14 +96,14 @@ void wham_options(int argc, char *argv[], t_options &options)
         catch(boost::program_options::required_option& e)
         {
             std::cerr << "\nERROR: " << e.what() << std::endl;
-            exit(1);
+            std::exit(1);
         }
 
     }
     catch(...)
     {
         std::cerr << "\nException of unknown type(s)\n";
-        exit(1);
+        std::exit(1);
     }
 
     print_options(options);
@@ -111,9 +112,9 @@ void wham_options(int argc, char *argv[], t_options &options)
 
 void multidimensional_option(std::vector<std::string> option,
                              t_options &options,
-                             double defaultX,
+                             float defaultX,
                              std::string valuename,
-                             std::vector<double> &X)
+                             std::vector<float> &X)
 {
     if (option.size() > 0)
     {
@@ -121,13 +122,13 @@ void multidimensional_option(std::vector<std::string> option,
         {
             try
             {
-                double bw = boost::lexical_cast<double>(option[i]);
+                float bw = boost::lexical_cast<float>(option[i]);
                 X.push_back(bw);
             }
             catch (boost::bad_lexical_cast const&)
             {
                 std::cerr << "You entered '" << option[i] << "' as a bin width.  This should be a number" << std::endl;
-                exit(1);
+                std::exit(1);
             }
         }
     }
@@ -135,7 +136,7 @@ void multidimensional_option(std::vector<std::string> option,
     {
         X.push_back(defaultX);
     }
-    if (X.size() < options.ndof)
+    if ((int)X.size() < options.ndof)
     {
         std::cout << "\nThe number of degrees of freedom (" << options.ndof <<") and the number of " << valuename << "s (" << X.size() << ") do not match.  Using the first " << valuename << ", " << X[0] << ", for each dimension.\n";
         for (int i=1; i<options.ndof; i++)
@@ -143,10 +144,10 @@ void multidimensional_option(std::vector<std::string> option,
             X.push_back(X[0]);
         }
     }
-    else if (X.size() > options.ndof)
+    else if ((int)X.size() > options.ndof)
     {
-        std::cerr << "\nToo many " << valuename << "s given.  Exiting to avoid assumptions." << std::endl;
-        exit(1);
+        std::cerr << "\nToo many " << valuename << "s given.  std::exiting to avoid assumptions." << std::endl;
+        std::exit(1);
     }
     
 }

@@ -4,7 +4,7 @@ int get_n_lines(std::string filename)
 {
     std::string line;
     int lines = 0;
-    std::ifstream file(filename);
+    std::ifstream file(filename.c_str());
     if (file.is_open())
     {
         while (file.good())
@@ -19,7 +19,7 @@ int get_n_lines(std::string filename)
     else if (!file)
     {
         std::cerr << "\nError opening " << filename << "." << std::endl;
-        exit(1);
+        std::exit(1);
     }
     return lines;
 }
@@ -39,7 +39,7 @@ bool fexists( std::string filename )
 
 std::string backup( std::string filename )
 {
-    int n=0, nchars;
+    int n = 0, nchars = 0;
     std::string newname = filename;
     if (fexists(filename))
     {

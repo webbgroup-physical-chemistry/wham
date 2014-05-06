@@ -7,7 +7,6 @@
 #include "wham_functions.h"
 #include <algorithm>
 #include "wham_hdf5.h"
-#include <ctime>
 
 int cpp_wham(int argc, char *argv[]);
 
@@ -17,11 +16,11 @@ private:
     std::vector<TorsionExperiment> experiment;
     t_options options;
     int nstates, first_experiment, nexp, nzeros, nframes, last_frame;
-    double invnstates;
+    float invnstates;
     //std::vector<std::vector<TorsionExperiment> > group_traj;
     std::vector<t_experiment> group_traj;
     std::vector<t_map> map;
-    std::vector<double> opt_prob, opt_pmf;
+    std::vector<float> opt_prob, opt_pmf;
     t_wham wham_args;
     DOWHAM opttrajectory;
     Write_HDF5 outhdf5;

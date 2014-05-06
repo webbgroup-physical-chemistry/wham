@@ -15,13 +15,13 @@ fc = 0
 whamstep = 5
 dphi = 0
 window_size = 360 # degrees, 1 window
-frames = 120000
+frames = 1440000
 potential = "rb"
 whamscript = "../../../bin/wham"
 ws = 0
 we = 360+ws
 datdir = os.path.abspath(os.curdir)
-nconv = 50 # check convergence every [nconv] frames
+nconv = 14400 # check convergence every [nconv] frames
 traj = make_traj(kb,T,fc,whamstep,dphi,window_size,frames,potential,ws,we,datdir,stype='mc')
 
 if not os.path.isfile(whamscript) :
@@ -59,7 +59,7 @@ plt.savefig('%s/1D.pdf'%datdir,format='pdf')
 plt.rc('xtick',labelsize=8)
 plt.rc('ytick',labelsize=8)
 outname = "2d.h5"
-cmd = "%s -f %s -o %s -w %s -d 2 -c %i "%(whamscript, fl2D, outname, whamstep, nconv)
+cmd = "rm %s ; %s -f %s -o %s -w %s -d 2 -c %i "%(outname, whamscript, fl2D, outname, whamstep, nconv)
 os.system(cmd)
 h = read_hdf5(outname,nwindows=360/window_size,ndof=2)
 f = plt.figure()
@@ -76,7 +76,7 @@ anaax.set_xlabel('DoF 1')
 f.subplots_adjust(hspace=0.4,wspace=0.3)
 deltaax = plt.subplot(236)
 h.delta_prob_2d(deltaax,ana2D[2])
-deltaax.set_title('Percent\nDifference')
+deltaax.set_title('|Difference|')
 plt.savefig('%s/2D.pdf'%datdir,format='pdf')
 
 cmd = "rm -rvf dat_* 1D_list.file 2D_list.file"

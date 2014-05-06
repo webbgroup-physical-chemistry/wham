@@ -76,12 +76,17 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
+build_triplet = x86_64-apple-darwin13.1.0
+host_triplet = x86_64-apple-darwin13.1.0
 bin_PROGRAMS = wham$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/boost.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -89,12 +94,19 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_wham_OBJECTS = main.$(OBJEXT) parse_options.$(OBJEXT) \
-	wham.$(OBJEXT) wham_befeus.$(OBJEXT) wham_fileutils.$(OBJEXT) \
-	wham_functions.$(OBJEXT) wham_hdf5.$(OBJEXT) \
-	wham_trig.$(OBJEXT)
+am_wham_OBJECTS = wham-main.$(OBJEXT) wham-parse_options.$(OBJEXT) \
+	wham-wham.$(OBJEXT) wham-wham_befeus.$(OBJEXT) \
+	wham-wham_fileutils.$(OBJEXT) wham-wham_functions.$(OBJEXT) \
+	wham-wham_hdf5.$(OBJEXT) wham-wham_trig.$(OBJEXT)
 wham_OBJECTS = $(am_wham_OBJECTS)
 wham_LDADD = $(LDADD)
+AM_V_lt = $(am__v_lt_$(V))
+am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+am__v_lt_0 = --silent
+am__v_lt_1 = 
+wham_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+	$(CXXFLAGS) $(wham_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_$(V))
 am__v_P_ = $(am__v_P_$(AM_DEFAULT_VERBOSITY))
 am__v_P_0 = false
@@ -113,25 +125,36 @@ am__depfiles_maybe = depfiles
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+LTCXXCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CXXFLAGS) $(CXXFLAGS)
 AM_V_CXX = $(am__v_CXX_$(V))
 am__v_CXX_ = $(am__v_CXX_$(AM_DEFAULT_VERBOSITY))
 am__v_CXX_0 = @echo "  CXX     " $@;
 am__v_CXX_1 = 
 CXXLD = $(CXX)
-CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
-	-o $@
+CXXLINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_CXXLD = $(am__v_CXXLD_$(V))
 am__v_CXXLD_ = $(am__v_CXXLD_$(AM_DEFAULT_VERBOSITY))
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CFLAGS) $(CFLAGS)
 AM_V_CC = $(am__v_CC_$(V))
 am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))
 am__v_CC_0 = @echo "  CC      " $@;
 am__v_CC_1 = 
 CCLD = $(CC)
-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_CCLD = $(am__v_CCLD_$(V))
 am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
 am__v_CCLD_0 = @echo "  CCLD    " $@;
@@ -166,39 +189,62 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing aclocal-1.14
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
+AR = ar
 AUTOCONF = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing autoconf
 AUTOHEADER = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing autoheader
 AUTOMAKE = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing automake-1.14
 AWK = awk
+BOOST_CPPFLAGS = -I/usr/local/Cellar/boost/1.55.0_1/include
+BOOST_LDPATH = /usr/local/lib
+BOOST_PROGRAM_OPTIONS_LDFLAGS = -L/usr/local/lib -Wl,-rpath,/usr/local/lib
+BOOST_PROGRAM_OPTIONS_LDPATH = /usr/local/lib
+BOOST_PROGRAM_OPTIONS_LIBS = -lboost_program_options-mt
+BOOST_ROOT = 
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
 CPP = gcc -E
 CPPFLAGS = 
 CXX = g++
+CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -g -O2
+CXXFLAGS = -Wall -O3
 CYGPATH_W = echo
-DEFS = -DPACKAGE_NAME=\"wham\" -DPACKAGE_TARNAME=\"wham\" -DPACKAGE_VERSION=\"2.0\" -DPACKAGE_STRING=\"wham\ 2.0\" -DPACKAGE_BUGREPORT=\"drew.w.ritchie@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wham\" -DVERSION=\"2.0\" -DHAVE_LIBBOOST_PROGRAM_OPTIONS=1 -DHAVE_LIBHDF5=1 -DHAVE_LIBHDF5_CPP=1 -DHAVE_LIBHDF5_HL_CPP=1 -DHAVE_LIBM=1 -DHAVE_LIBZ=1 -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE__BOOL=1
+DEFS = -DPACKAGE_NAME=\"wham\" -DPACKAGE_TARNAME=\"wham\" -DPACKAGE_VERSION=\"2.0\" -DPACKAGE_STRING=\"wham\ 2.0\" -DPACKAGE_BUGREPORT=\"drew.w.ritchie@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wham\" -DVERSION=\"2.0\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DHAVE_BOOST=1 -DHAVE_BOOST_PROGRAM_OPTIONS_HPP=1 -DHAVE_LIBBOOST_PROGRAM_OPTIONS=1 -DHAVE_LIBHDF5=1 -DHAVE_LIBHDF5_CPP=1 -DHAVE_LIBHDF5_HL_CPP=1 -DHAVE_LIBM=1 -DHAVE_LIBZ=1 -DHAVE_LIBBLAS=1 -DHAVE__BOOL=1
 DEPDIR = .deps
+DISTCHECK_CONFIGURE_FLAGS =  '--with-boost=/usr/local/Cellar/boost/1.55.0_1/include'
+DLLTOOL = false
+DSYMUTIL = dsymutil
+DUMPBIN = 
 ECHO_C = \c
 ECHO_N = 
 ECHO_T = 
 EGREP = /usr/bin/grep -E
 EXEEXT = 
+FGREP = /usr/bin/grep -F
 GREP = /usr/bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
+LD = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld
 LDFLAGS = 
 LIBOBJS = 
-LIBS = -lz -lm -lhdf5_hl_cpp -lhdf5_cpp -lhdf5 -lboost_program_options 
+LIBS = -lblas -lz -lm -lhdf5_hl_cpp -lhdf5_cpp -lhdf5 -lboost_program_options 
+LIBTOOL = $(SHELL) $(top_builddir)/libtool
+LIPO = lipo
+LN_S = ln -s
 LTLIBOBJS = 
 MAKEINFO = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing makeinfo
+MANIFEST_TOOL = :
 MKDIR_P = .././install-sh -c -d
+NM = /usr/bin/nm
+NMEDIT = nmedit
+OBJDUMP = false
 OBJEXT = o
+OTOOL = otool
+OTOOL64 = :
 PACKAGE = wham
 PACKAGE_BUGREPORT = drew.w.ritchie@gmail.com
 PACKAGE_NAME = wham
@@ -207,30 +253,42 @@ PACKAGE_TARNAME = wham
 PACKAGE_URL = 
 PACKAGE_VERSION = 2.0
 PATH_SEPARATOR = :
+RANLIB = ranlib
+SED = /usr/bin/sed
 SET_MAKE = 
 SHELL = /bin/sh
-STRIP = 
+STRIP = strip
 VERSION = 2.0
 abs_builddir = /Users/ritchie/software/wham/wham-2.0/src
 abs_srcdir = /Users/ritchie/software/wham/wham-2.0/src
 abs_top_builddir = /Users/ritchie/software/wham/wham-2.0
 abs_top_srcdir = /Users/ritchie/software/wham/wham-2.0
+ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_CXX = g++
+ac_ct_DUMPBIN = 
 am__include = include
 am__leading_dot = .
 am__quote = 
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
 bindir = ${exec_prefix}/bin
+build = x86_64-apple-darwin13.1.0
 build_alias = 
+build_cpu = x86_64
+build_os = darwin13.1.0
+build_vendor = apple
 builddir = .
 datadir = ${datarootdir}
 datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
+host = x86_64-apple-darwin13.1.0
 host_alias = 
+host_cpu = x86_64
+host_os = darwin13.1.0
+host_vendor = apple
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
@@ -256,10 +314,13 @@ top_builddir = ..
 top_srcdir = ..
 AM_LDFLAGS = 
 wham_SOURCES = main.cpp parse_options.cpp parse_options.h wham.cpp wham.h wham_befeus.cpp wham_befeus.h wham_fileutils.cpp wham_fileutils.h wham_functions.cpp wham_function.h wham_hdf5.cpp wham_hdf5.h wham_trig.cpp wham_trig.h wham_types.h
+wham_CPPFLAGS = $(BOOST_CPPFLAGS)
+wham_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
+wham_LIBS = $(BOOST_PROGRAM_OPTIONS_LIBS)
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .cpp .o .obj
+.SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -300,6 +361,7 @@ install-binPROGRAMS: $(bin_PROGRAMS)
 	for p in $$list; do echo "$$p $$p"; done | \
 	sed 's/$(EXEEXT)$$//' | \
 	while read p p1; do if test -f $$p \
+	 || test -f $$p1 \
 	  ; then echo "$$p"; echo "$$p"; else :; fi; \
 	done | \
 	sed -e 'p;s,.*/,,;n;h' \
@@ -314,8 +376,8 @@ install-binPROGRAMS: $(bin_PROGRAMS)
 	while read type dir files; do \
 	    if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
 	    test -z "$$files" || { \
-	      echo " $(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) $$files '$(DESTDIR)$(bindir)$$dir'"; \
-	      $(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
+	    echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL_PROGRAM) $$files '$(DESTDIR)$(bindir)$$dir'"; \
+	    $(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL_PROGRAM) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
 	    } \
 	; done
 
@@ -331,11 +393,17 @@ uninstall-binPROGRAMS:
 	cd "$(DESTDIR)$(bindir)" && rm -f $$files
 
 clean-binPROGRAMS:
-	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
+	@list='$(bin_PROGRAMS)'; test -n "$$list" || exit 0; \
+	echo " rm -f" $$list; \
+	rm -f $$list || exit $$?; \
+	test -n "$(EXEEXT)" || exit 0; \
+	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
+	echo " rm -f" $$list; \
+	rm -f $$list
 
 wham$(EXEEXT): $(wham_OBJECTS) $(wham_DEPENDENCIES) $(EXTRA_wham_DEPENDENCIES) 
 	@rm -f wham$(EXEEXT)
-	$(AM_V_CXXLD)$(CXXLINK) $(wham_OBJECTS) $(wham_LDADD) $(LIBS)
+	$(AM_V_CXXLD)$(wham_LINK) $(wham_OBJECTS) $(wham_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -343,14 +411,14 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-include ./$(DEPDIR)/main.Po
-include ./$(DEPDIR)/parse_options.Po
-include ./$(DEPDIR)/wham.Po
-include ./$(DEPDIR)/wham_befeus.Po
-include ./$(DEPDIR)/wham_fileutils.Po
-include ./$(DEPDIR)/wham_functions.Po
-include ./$(DEPDIR)/wham_hdf5.Po
-include ./$(DEPDIR)/wham_trig.Po
+include ./$(DEPDIR)/wham-main.Po
+include ./$(DEPDIR)/wham-parse_options.Po
+include ./$(DEPDIR)/wham-wham.Po
+include ./$(DEPDIR)/wham-wham_befeus.Po
+include ./$(DEPDIR)/wham-wham_fileutils.Po
+include ./$(DEPDIR)/wham-wham_functions.Po
+include ./$(DEPDIR)/wham-wham_hdf5.Po
+include ./$(DEPDIR)/wham-wham_trig.Po
 
 .cpp.o:
 	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -365,6 +433,131 @@ include ./$(DEPDIR)/wham_trig.Po
 #	$(AM_V_CXX)source='$<' object='$@' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+.cpp.lo:
+	$(AM_V_CXX)$(LTCXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Plo
+#	$(AM_V_CXX)source='$<' object='$@' libtool=yes \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(LTCXXCOMPILE) -c -o $@ $<
+
+wham-main.o: main.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wham-main.o -MD -MP -MF $(DEPDIR)/wham-main.Tpo -c -o wham-main.o `test -f 'main.cpp' || echo '$(srcdir)/'`main.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/wham-main.Tpo $(DEPDIR)/wham-main.Po
+#	$(AM_V_CXX)source='main.cpp' object='wham-main.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wham-main.o `test -f 'main.cpp' || echo '$(srcdir)/'`main.cpp
+
+wham-main.obj: main.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wham-main.obj -MD -MP -MF $(DEPDIR)/wham-main.Tpo -c -o wham-main.obj `if test -f 'main.cpp'; then $(CYGPATH_W) 'main.cpp'; else $(CYGPATH_W) '$(srcdir)/main.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/wham-main.Tpo $(DEPDIR)/wham-main.Po
+#	$(AM_V_CXX)source='main.cpp' object='wham-main.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wham-main.obj `if test -f 'main.cpp'; then $(CYGPATH_W) 'main.cpp'; else $(CYGPATH_W) '$(srcdir)/main.cpp'; fi`
+
+wham-parse_options.o: parse_options.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wham-parse_options.o -MD -MP -MF $(DEPDIR)/wham-parse_options.Tpo -c -o wham-parse_options.o `test -f 'parse_options.cpp' || echo '$(srcdir)/'`parse_options.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/wham-parse_options.Tpo $(DEPDIR)/wham-parse_options.Po
+#	$(AM_V_CXX)source='parse_options.cpp' object='wham-parse_options.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wham-parse_options.o `test -f 'parse_options.cpp' || echo '$(srcdir)/'`parse_options.cpp
+
+wham-parse_options.obj: parse_options.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wham-parse_options.obj -MD -MP -MF $(DEPDIR)/wham-parse_options.Tpo -c -o wham-parse_options.obj `if test -f 'parse_options.cpp'; then $(CYGPATH_W) 'parse_options.cpp'; else $(CYGPATH_W) '$(srcdir)/parse_options.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/wham-parse_options.Tpo $(DEPDIR)/wham-parse_options.Po
+#	$(AM_V_CXX)source='parse_options.cpp' object='wham-parse_options.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wham-parse_options.obj `if test -f 'parse_options.cpp'; then $(CYGPATH_W) 'parse_options.cpp'; else $(CYGPATH_W) '$(srcdir)/parse_options.cpp'; fi`
+
+wham-wham.o: wham.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wham-wham.o -MD -MP -MF $(DEPDIR)/wham-wham.Tpo -c -o wham-wham.o `test -f 'wham.cpp' || echo '$(srcdir)/'`wham.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/wham-wham.Tpo $(DEPDIR)/wham-wham.Po
+#	$(AM_V_CXX)source='wham.cpp' object='wham-wham.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wham-wham.o `test -f 'wham.cpp' || echo '$(srcdir)/'`wham.cpp
+
+wham-wham.obj: wham.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wham-wham.obj -MD -MP -MF $(DEPDIR)/wham-wham.Tpo -c -o wham-wham.obj `if test -f 'wham.cpp'; then $(CYGPATH_W) 'wham.cpp'; else $(CYGPATH_W) '$(srcdir)/wham.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/wham-wham.Tpo $(DEPDIR)/wham-wham.Po
+#	$(AM_V_CXX)source='wham.cpp' object='wham-wham.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wham-wham.obj `if test -f 'wham.cpp'; then $(CYGPATH_W) 'wham.cpp'; else $(CYGPATH_W) '$(srcdir)/wham.cpp'; fi`
+
+wham-wham_befeus.o: wham_befeus.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wham-wham_befeus.o -MD -MP -MF $(DEPDIR)/wham-wham_befeus.Tpo -c -o wham-wham_befeus.o `test -f 'wham_befeus.cpp' || echo '$(srcdir)/'`wham_befeus.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/wham-wham_befeus.Tpo $(DEPDIR)/wham-wham_befeus.Po
+#	$(AM_V_CXX)source='wham_befeus.cpp' object='wham-wham_befeus.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wham-wham_befeus.o `test -f 'wham_befeus.cpp' || echo '$(srcdir)/'`wham_befeus.cpp
+
+wham-wham_befeus.obj: wham_befeus.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wham-wham_befeus.obj -MD -MP -MF $(DEPDIR)/wham-wham_befeus.Tpo -c -o wham-wham_befeus.obj `if test -f 'wham_befeus.cpp'; then $(CYGPATH_W) 'wham_befeus.cpp'; else $(CYGPATH_W) '$(srcdir)/wham_befeus.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/wham-wham_befeus.Tpo $(DEPDIR)/wham-wham_befeus.Po
+#	$(AM_V_CXX)source='wham_befeus.cpp' object='wham-wham_befeus.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wham-wham_befeus.obj `if test -f 'wham_befeus.cpp'; then $(CYGPATH_W) 'wham_befeus.cpp'; else $(CYGPATH_W) '$(srcdir)/wham_befeus.cpp'; fi`
+
+wham-wham_fileutils.o: wham_fileutils.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wham-wham_fileutils.o -MD -MP -MF $(DEPDIR)/wham-wham_fileutils.Tpo -c -o wham-wham_fileutils.o `test -f 'wham_fileutils.cpp' || echo '$(srcdir)/'`wham_fileutils.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/wham-wham_fileutils.Tpo $(DEPDIR)/wham-wham_fileutils.Po
+#	$(AM_V_CXX)source='wham_fileutils.cpp' object='wham-wham_fileutils.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wham-wham_fileutils.o `test -f 'wham_fileutils.cpp' || echo '$(srcdir)/'`wham_fileutils.cpp
+
+wham-wham_fileutils.obj: wham_fileutils.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wham-wham_fileutils.obj -MD -MP -MF $(DEPDIR)/wham-wham_fileutils.Tpo -c -o wham-wham_fileutils.obj `if test -f 'wham_fileutils.cpp'; then $(CYGPATH_W) 'wham_fileutils.cpp'; else $(CYGPATH_W) '$(srcdir)/wham_fileutils.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/wham-wham_fileutils.Tpo $(DEPDIR)/wham-wham_fileutils.Po
+#	$(AM_V_CXX)source='wham_fileutils.cpp' object='wham-wham_fileutils.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wham-wham_fileutils.obj `if test -f 'wham_fileutils.cpp'; then $(CYGPATH_W) 'wham_fileutils.cpp'; else $(CYGPATH_W) '$(srcdir)/wham_fileutils.cpp'; fi`
+
+wham-wham_functions.o: wham_functions.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wham-wham_functions.o -MD -MP -MF $(DEPDIR)/wham-wham_functions.Tpo -c -o wham-wham_functions.o `test -f 'wham_functions.cpp' || echo '$(srcdir)/'`wham_functions.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/wham-wham_functions.Tpo $(DEPDIR)/wham-wham_functions.Po
+#	$(AM_V_CXX)source='wham_functions.cpp' object='wham-wham_functions.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wham-wham_functions.o `test -f 'wham_functions.cpp' || echo '$(srcdir)/'`wham_functions.cpp
+
+wham-wham_functions.obj: wham_functions.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wham-wham_functions.obj -MD -MP -MF $(DEPDIR)/wham-wham_functions.Tpo -c -o wham-wham_functions.obj `if test -f 'wham_functions.cpp'; then $(CYGPATH_W) 'wham_functions.cpp'; else $(CYGPATH_W) '$(srcdir)/wham_functions.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/wham-wham_functions.Tpo $(DEPDIR)/wham-wham_functions.Po
+#	$(AM_V_CXX)source='wham_functions.cpp' object='wham-wham_functions.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wham-wham_functions.obj `if test -f 'wham_functions.cpp'; then $(CYGPATH_W) 'wham_functions.cpp'; else $(CYGPATH_W) '$(srcdir)/wham_functions.cpp'; fi`
+
+wham-wham_hdf5.o: wham_hdf5.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wham-wham_hdf5.o -MD -MP -MF $(DEPDIR)/wham-wham_hdf5.Tpo -c -o wham-wham_hdf5.o `test -f 'wham_hdf5.cpp' || echo '$(srcdir)/'`wham_hdf5.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/wham-wham_hdf5.Tpo $(DEPDIR)/wham-wham_hdf5.Po
+#	$(AM_V_CXX)source='wham_hdf5.cpp' object='wham-wham_hdf5.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wham-wham_hdf5.o `test -f 'wham_hdf5.cpp' || echo '$(srcdir)/'`wham_hdf5.cpp
+
+wham-wham_hdf5.obj: wham_hdf5.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wham-wham_hdf5.obj -MD -MP -MF $(DEPDIR)/wham-wham_hdf5.Tpo -c -o wham-wham_hdf5.obj `if test -f 'wham_hdf5.cpp'; then $(CYGPATH_W) 'wham_hdf5.cpp'; else $(CYGPATH_W) '$(srcdir)/wham_hdf5.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/wham-wham_hdf5.Tpo $(DEPDIR)/wham-wham_hdf5.Po
+#	$(AM_V_CXX)source='wham_hdf5.cpp' object='wham-wham_hdf5.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wham-wham_hdf5.obj `if test -f 'wham_hdf5.cpp'; then $(CYGPATH_W) 'wham_hdf5.cpp'; else $(CYGPATH_W) '$(srcdir)/wham_hdf5.cpp'; fi`
+
+wham-wham_trig.o: wham_trig.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wham-wham_trig.o -MD -MP -MF $(DEPDIR)/wham-wham_trig.Tpo -c -o wham-wham_trig.o `test -f 'wham_trig.cpp' || echo '$(srcdir)/'`wham_trig.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/wham-wham_trig.Tpo $(DEPDIR)/wham-wham_trig.Po
+#	$(AM_V_CXX)source='wham_trig.cpp' object='wham-wham_trig.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wham-wham_trig.o `test -f 'wham_trig.cpp' || echo '$(srcdir)/'`wham_trig.cpp
+
+wham-wham_trig.obj: wham_trig.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT wham-wham_trig.obj -MD -MP -MF $(DEPDIR)/wham-wham_trig.Tpo -c -o wham-wham_trig.obj `if test -f 'wham_trig.cpp'; then $(CYGPATH_W) 'wham_trig.cpp'; else $(CYGPATH_W) '$(srcdir)/wham_trig.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/wham-wham_trig.Tpo $(DEPDIR)/wham-wham_trig.Po
+#	$(AM_V_CXX)source='wham_trig.cpp' object='wham-wham_trig.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o wham-wham_trig.obj `if test -f 'wham_trig.cpp'; then $(CYGPATH_W) 'wham_trig.cpp'; else $(CYGPATH_W) '$(srcdir)/wham_trig.cpp'; fi`
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -487,7 +680,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
+clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -542,7 +735,8 @@ maintainer-clean-am: distclean-am maintainer-clean-generic
 
 mostlyclean: mostlyclean-am
 
-mostlyclean-am: mostlyclean-compile mostlyclean-generic
+mostlyclean-am: mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool
 
 pdf: pdf-am
 
@@ -557,18 +751,18 @@ uninstall-am: uninstall-binPROGRAMS
 .MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am clean \
-	clean-binPROGRAMS clean-generic cscopelist-am ctags ctags-am \
-	distclean distclean-compile distclean-generic distclean-tags \
-	distdir dvi dvi-am html html-am info info-am install \
-	install-am install-binPROGRAMS install-data install-data-am \
-	install-dvi install-dvi-am install-exec install-exec-am \
-	install-html install-html-am install-info install-info-am \
-	install-man install-pdf install-pdf-am install-ps \
-	install-ps-am install-strip installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-compile mostlyclean-generic pdf pdf-am \
-	ps ps-am tags tags-am uninstall uninstall-am \
-	uninstall-binPROGRAMS
+	clean-binPROGRAMS clean-generic clean-libtool cscopelist-am \
+	ctags ctags-am distclean distclean-compile distclean-generic \
+	distclean-libtool distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am install-binPROGRAMS \
+	install-data install-data-am install-dvi install-dvi-am \
+	install-exec install-exec-am install-html install-html-am \
+	install-info install-info-am install-man install-pdf \
+	install-pdf-am install-ps install-ps-am install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
+	tags tags-am uninstall uninstall-am uninstall-binPROGRAMS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

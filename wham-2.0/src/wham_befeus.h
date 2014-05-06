@@ -11,10 +11,11 @@ class TorsionExperiment
 {
 private:
     int experiment, dof, nbins;
-    double phi0, deltaphi, fc, t, beta, begin, end, bin_size;
+    float phi0, deltaphi, fc, t, beta, begin, end, bin_size;
     std::string xvgfile;
-    std::vector<double> potential, omega;
-    std::vector<double> coordinate;
+    std::vector<float> potential;
+    std::vector<double> omega;
+    std::vector<float> coordinate;
     std::vector<int> bincounts;
     std::vector<t_bin> frame_bins;
     t_options options;
@@ -27,9 +28,9 @@ public:
     void read_trajectory();
     void build_histogram();
     void set_nbins();
-    double trapezoidal_integration( double a, double b, int steps = 1000);
-    double simpson_integration( double a, double b, int steps = 1000);
-    double weight_dihedral_restraint_potential(double phi);
+    double trapezoidal_integration( float a, float b, int steps = 1000);
+    double simpson_integration( float a, float b, int steps = 1000);
+    float weight_dihedral_restraint_potential(float phi);
     void weight_dihedral_restraint_potentials();
     void assign_omega();
     void assign_NDbin(int frame, int bin);
@@ -37,13 +38,13 @@ public:
     int Experiment();
     int DoF();
     int nBins();
-    double T();
-    double Phi0();
-    double DPhi();
-    double FC();
-    std::vector<double> Potential();
+    float T();
+    float Phi0();
+    float DPhi();
+    float FC();
+    std::vector<float> Potential();
     std::vector<double> Omega();
-    std::vector<double> Coordinate();
+    std::vector<float> Coordinate();
     std::vector<int> BinCounts();
     std::vector<t_bin> FrameBins();
 };

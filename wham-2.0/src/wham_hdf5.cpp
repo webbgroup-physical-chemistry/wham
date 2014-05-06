@@ -8,8 +8,8 @@ void Write_HDF5::init(t_options option,
                       t_wham args,
                       int n_exp,
                       int n_states,
-                      std::vector<double> prob,
-                      std::vector<double> pmf )
+                      std::vector<float> prob,
+                      std::vector<float> pmf )
 {
     options = option;
     wham_args = args;
@@ -30,12 +30,12 @@ void Write_HDF5::init(t_options option,
     catch (FileIException error)
     {
         error.printError();
-        exit(1);
+        std::exit(1);
     }
     catch( DataSetIException error )
     {
         error.printError();
-        exit(1);
+        std::exit(1);
     }
     return;
 }
@@ -50,41 +50,42 @@ void Write_HDF5::write_trj(std::vector<t_experiment> group_traj)
         Group *tgrp;
         DataSpace *dataspace;
         DataSet *dataset;
-
+        
         char name[1024];
         /* For each experiment */
         for (int i=0; i<nexp; i++)
         {
-            sprintf(name,"/Trajectories/Traj-%i",i);
+            sprintf(name,"/Trajectories/Traj-%i",group_traj[i].experiment);
             std::cout << name << std::endl;
             tgrp = new Group(file->createGroup(name));
 
             // Trajectory frame biasing coordinate
-            sprintf(name,"/Trajectories/Traj-%i/BiasingCoordinate",i);
+            sprintf(name,"/Trajectories/Traj-%i/BiasingCoordinate",group_traj[i].experiment);
             std::cout << name << std::endl;
             tgrp = new Group(file->createGroup(name));
+            int ncoords = group_traj[i].coordinate.size();
             for (int j=0; j<options.ndof; j++)
             {
                 hsize_t dimst[1];
-                dimst[0] = group_traj[i].coordinate.size();
-                double dat[group_traj[i].coordinate.size()];
-                for (int k=0; k<group_traj[i].coordinate.size(); k++)
+                dimst[0] = ncoords;
+                float dat[ncoords];
+                for (int k=0; k<ncoords; k++)
                 {
                     dat[k] = group_traj[i].coordinate[k][j];
                 }
                 dataspace = new DataSpace(1,dimst);
-                sprintf(name,"/Trajectories/Traj-%i/BiasingCoordinate/DoF-%i",i,j);
+                sprintf(name,"/Trajectories/Traj-%i/BiasingCoordinate/DoF-%i",group_traj[i].experiment,j);
                 std::cout << name << std::endl;
-                dataset = new DataSet(file->createDataSet(name,PredType::NATIVE_DOUBLE, *dataspace));
-                dataset->write(dat,PredType::NATIVE_DOUBLE);
+                dataset = new DataSet(file->createDataSet(name,PredType::NATIVE_FLOAT, *dataspace));
+                dataset->write(dat,PredType::NATIVE_FLOAT);
 
                 /* Attributes */
-                double attr_data[4] = {group_traj[i].phi0[j],group_traj[i].deltaphi[j],group_traj[i].fc[j],group_traj[i].t};
+                float attr_data[4] = {group_traj[i].phi0[j],group_traj[i].deltaphi[j],group_traj[i].fc[j],group_traj[i].t};
                 hsize_t att_dim[1] = { 4 };
                 DataSpace attr_dataspace = DataSpace(1,att_dim);
-                Attribute attribute = dataset->createAttribute("phi0 (degrees), dphi (degrees), force constant (kJ/mol/degree^2), temperature (K)",PredType::NATIVE_DOUBLE,attr_dataspace);
-                attribute.write(PredType::NATIVE_DOUBLE, attr_data);
-
+                Attribute attribute = dataset->createAttribute("phi0 (degrees), dphi (degrees), force constant (kJ/mol/degree^2), temperature (K)",PredType::NATIVE_FLOAT,attr_dataspace);
+                attribute.write(PredType::NATIVE_FLOAT, attr_data);
+                
                 /* close */
                 dataset->close();
                 delete dataset;
@@ -92,12 +93,12 @@ void Write_HDF5::write_trj(std::vector<t_experiment> group_traj)
             }
             // Trajectory frame bin 1D
             hsize_t dimst[1];
-            dimst[0] = group_traj[i].coordinate.size();
-            sprintf(name,"/Trajectories/Traj-%i/Bin",i);
+            dimst[0] = ncoords;
+            sprintf(name,"/Trajectories/Traj-%i/Bin",group_traj[i].experiment);
             std::cout << name << std::endl;
             std::vector<int> bin_set(options.ndof);
-            int b[group_traj[i].coordinate.size()];
-            for (int j=0; j<group_traj[i].coordinate.size(); j++)
+            int b[ncoords];
+            for (int j=0; j<ncoords; j++)
             {
                 int tb = group_traj[i].frame_bin[j][0].binND;
                 for (int k=0; k<options.ndof; k++)
@@ -117,37 +118,39 @@ void Write_HDF5::write_trj(std::vector<t_experiment> group_traj)
             delete dataset;
             delete dataspace;
             // Trajectory frame probability
-            sprintf(name,"/Trajectories/Traj-%i/FrameProb",i);
+            /*  Might as well remove since the BW script won't use this information anyway
+            sprintf(name,"/Trajectories/Traj-%i/FrameProb",group_traj[i].experiment);
             std::cout << name << std::endl;
-            double p[group_traj[i].coordinate.size()];
+            float p[group_traj[i].coordinate.size()];
             for (int j=0; j<group_traj[i].coordinate.size(); j++)
             {
-                p[j] = opt_prob[b[j]]/(double)wham_args.counts[b[j]];
+                p[j] = opt_prob[b[j]]/(float)wham_args.counts[b[j]];
             }
             dataspace = new DataSpace(1,dimst);
-            dataset = new DataSet(file->createDataSet(name,PredType::NATIVE_DOUBLE, *dataspace));
-            dataset->write(p,PredType::NATIVE_DOUBLE);
+            dataset = new DataSet(file->createDataSet(name,PredType::NATIVE_FLOAT, *dataspace));
+            dataset->write(p,PredType::NATIVE_FLOAT);
             dataset->close();
             delete dataset;
             delete dataspace;
+            */
         }
 
     }
     catch (FileIException error)
     {
         error.printError();
-        exit(1);
+        std::exit(1);
     }
     catch( DataSetIException error )
     {
         error.printError();
-        exit(1);
+        std::exit(1);
     }
     return;
 }
 
-void Write_HDF5::write_wham(std::vector<double> prob,
-                std::vector<double> pmf,
+void Write_HDF5::write_wham(std::vector<float> prob,
+                std::vector<float> pmf,
                 std::vector<int> counts,
                 std::vector<t_map> map,
                 std::string group,
@@ -174,7 +177,7 @@ void Write_HDF5::write_wham(std::vector<double> prob,
         hsize_t dims2d[2];
         dims2d[0] = nstates;
         dims2d[1] = options.ndof+1;
-        double ldld[nstates][options.ndof+1];
+        float ldld[nstates][options.ndof+1];
         for (int i=0; i<nstates; i++)
         {
             for (int j=0; j<options.ndof; j++)
@@ -184,13 +187,14 @@ void Write_HDF5::write_wham(std::vector<double> prob,
             ldld[i][options.ndof] = prob[i];
         }
         dataspace = new DataSpace(2,dims2d);
-        dataset = new DataSet(file->createDataSet(grpname,PredType::NATIVE_DOUBLE, *dataspace));
-        dataset->write(ldld,PredType::NATIVE_DOUBLE);
+        dataset = new DataSet(file->createDataSet(grpname,PredType::NATIVE_FLOAT, *dataspace));
+        dataset->write(ldld,PredType::NATIVE_FLOAT);
         
         /* Attributes */
         StrType str_type(PredType::C_S1, 1024);
-        char prob_attr[options.ndof+1][1024];
-        hsize_t prob_attr_dim[1] = { options.ndof+1 };
+        hsize_t attrsize = options.ndof + 1;
+        char prob_attr[attrsize][1024];
+        hsize_t prob_attr_dim[1] = { attrsize };
         for (int j=0; j<options.ndof; j++)
         {
             sprintf(prob_attr[j],"DoF%i (degrees)",j);
@@ -209,14 +213,9 @@ void Write_HDF5::write_wham(std::vector<double> prob,
         std::cout << grpname << std::endl;
         hsize_t dims1d[1];
         dims1d[0] = nstates;
-        double ld[nstates];
-        for (int i=0; i<nstates; i++)
-        {
-            ld[i] = pmf[i];
-        }
         dataspace = new DataSpace(1,dims1d);
-        dataset = new DataSet(file->createDataSet(grpname,PredType::NATIVE_DOUBLE, *dataspace));
-        dataset->write(ld,PredType::NATIVE_DOUBLE);
+        dataset = new DataSet(file->createDataSet(grpname,PredType::NATIVE_FLOAT, *dataspace));
+        dataset->write(&pmf[0],PredType::NATIVE_FLOAT);
         
         /* Attributes */
         const H5std_string pmfwritebuf("kJ/mol");
@@ -231,14 +230,9 @@ void Write_HDF5::write_wham(std::vector<double> prob,
         /* bin counts */
         sprintf(grpname,"%s/BinCounts",group.c_str());
         std::cout << grpname << std::endl;
-        int n[nstates];
-        for (int i=0; i<nstates; i++)
-        {
-            n[i] = counts[i];
-        }
         dataspace = new DataSpace(1,dims1d);
         dataset = new DataSet(file->createDataSet(grpname,PredType::NATIVE_INT, *dataspace));
-        dataset->write(n,PredType::NATIVE_INT);
+        dataset->write(&counts[0],PredType::NATIVE_INT);
         dataset->close();
         delete dataset;
         delete dataspace;
@@ -246,12 +240,12 @@ void Write_HDF5::write_wham(std::vector<double> prob,
     catch (FileIException error)
     {
         error.printError();
-        exit(1);
+        std::exit(1);
     }
     catch( DataSetIException error )
     {
         error.printError();
-        exit(1);
+        std::exit(1);
     }
     return;
 }

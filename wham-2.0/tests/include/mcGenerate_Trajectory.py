@@ -5,6 +5,8 @@ from math import cos, sin, acos, atan2, pi
 from pylab import random, randint, multinomial, shuffle, seed
 import os
 import sys
+import matplotlib.pyplot as plt
+
 
 class make_traj :
     def __init__(self, kb, T, fc, whamstep, dphi, windows, frames, potential, ws, we, datdir, stype = 'mc'):
@@ -250,6 +252,7 @@ class make_traj :
             #plt.plot(arange(self.ws,self.we,self.step)-180,dist)
             traj = self.make_trajectory(dist)
             #plt.hist(traj,bins=72,normed=1,range=(-180,180),label="%i"%i)
+            #plt.show()
             #plt.plot(traj,label=i)
             self.write_traj(w, traj, file1d, i,dirnm="dat_1d")
             i += 1

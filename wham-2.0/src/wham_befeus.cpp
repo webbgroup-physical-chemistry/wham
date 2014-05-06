@@ -15,7 +15,7 @@ void TorsionExperiment::read_filelist_and_setup( std::string line, t_options par
     if (nitems != 6)
     {
         std::cerr << "\nError! Input file incorrectly formatted.  Correct format is:\n<experiment number> <xvg path> <biased position> <zero potential +/- range> <force constant> <temperature>" << std::endl;
-        exit(1);
+        std::exit(1);
     }
     /* Assign values form the file list to the experiment */
     std::stringstream relinestream(line);
@@ -34,7 +34,7 @@ void TorsionExperiment::read_filelist_and_setup( std::string line, t_options par
     if (dof >= options.ndof)
     {
         std::cerr << "\nERROR: Found " << dof+1 << " degrees of freedom when expecting " << options.ndof << " degrees of fredom.\n" << std::endl;
-        exit(1);
+        std::exit(1);
     }
     /* Now we can assign the ranges and bin sizes to match the specific DoF */
     begin = options.x0[dof];
@@ -56,7 +56,7 @@ void TorsionExperiment::read_filelist_and_setup( std::string line, t_options par
     weight_dihedral_restraint_potentials();
     if (precision_error)
     {
-        std::cerr << "\nWARNING!  Numeric precision has been exceeded.  " << std::endl;
+        std::cerr << "\nWARNING!  Numeric precision, " << std::numeric_limits<double>::min() << ", has been exceeded.  " << std::endl;
     }
     return;
 }
@@ -64,7 +64,7 @@ void TorsionExperiment::read_filelist_and_setup( std::string line, t_options par
 void TorsionExperiment::read_trajectory()
 {
     std::string line;
-    std::ifstream file(xvgfile);
+    std::ifstream file(xvgfile.c_str());
     if (file.is_open())
     {
         while (file.good())
@@ -76,7 +76,7 @@ void TorsionExperiment::read_trajectory()
                 std::stringstream check_line(line);
                 std::string item;
                 int nitems = 0;
-                double time = 0, value = 0;
+                float time = 0, value = 0;
                 while (check_line >> item)
                 {
                     nitems++;
@@ -94,7 +94,7 @@ void TorsionExperiment::read_trajectory()
                         break;
                     default :
                         std::cerr << "\nError!  There are " << nitems << " columns in " << xvgfile << ".  Was expecting 1 (data) or 2 (time data) columns" << std::endl;
-                        exit(1);
+                        std::exit(1);
                 }
             }
         }
@@ -102,7 +102,7 @@ void TorsionExperiment::read_trajectory()
     else if (!file)
     {
         std::cerr << "\nError reading " << xvgfile << std::endl;
-        exit(1);
+        std::exit(1);
     }
     file.close();
     return;
@@ -110,8 +110,8 @@ void TorsionExperiment::read_trajectory()
 
 void TorsionExperiment::set_nbins()
 {
-    double range = end - begin;
-    double resid = remainder(range,bin_size);
+    float range = end - begin;
+    float resid = remainder(range,bin_size);
     if (resid < 1e-9)
     {
         nbins = boost::numeric_cast<int>(range/bin_size);
@@ -126,13 +126,14 @@ void TorsionExperiment::set_nbins()
 }
 void TorsionExperiment::build_histogram()
 {
-    std::vector<t_bin> fb(coordinate.size());
+    int ncoords = coordinate.size();
+    std::vector<t_bin> fb(ncoords);
     frame_bins = fb;
     int bin = 0;
     for (int i=begin; i<end; i+=bin_size)
     {
         bincounts.push_back(0);
-        for (int j=0; j<coordinate.size(); j++)
+        for (int j=0; j<ncoords; j++)
         {
             if (coordinate[j] >= begin && coordinate[j] <= end)
             {
@@ -145,15 +146,16 @@ void TorsionExperiment::build_histogram()
             else
             {
                 std::cerr << "\nERROR: frame " << j << " has a value of " << coordinate[j] << " which is outside the range of " << begin << " - " << end << std::endl;
-                exit(1);
+                std::exit(1);
             }
         }
         bin++;
     }
+    int nbins = bincounts.size();
     if (options.bVerbose)
     {
         std::cout << "1-Dimensional bin counts: [ ";
-        for (int i=0; i<bincounts.size(); i++)
+        for (int i=0; i<nbins; i++)
         {
             std::cout << bincounts[i] << " ";
         }
@@ -164,17 +166,18 @@ void TorsionExperiment::build_histogram()
 
 void TorsionExperiment::weight_dihedral_restraint_potentials()
 {
-    for (int i=0; i<coordinate.size(); i++)
+    int ncoords = coordinate.size();
+    for (int i=0; i<ncoords; i++)
     {
         potential.push_back(weight_dihedral_restraint_potential(coordinate[i]));
     }
     return;
 }
 
-double TorsionExperiment::weight_dihedral_restraint_potential(double phi)
+float TorsionExperiment::weight_dihedral_restraint_potential(float phi)
 {
-    double diffphi = delta_angle(phi0,phi);
-    double ddp;
+    float diffphi = delta_angle(phi0,phi);
+    float ddp;
     if ( diffphi > deltaphi )
     {
         ddp = delta_angle( diffphi, deltaphi);
@@ -186,12 +189,12 @@ double TorsionExperiment::weight_dihedral_restraint_potential(double phi)
     return exp(-beta * 0.5 * fc * ddp * ddp);
 }
 
-double TorsionExperiment::simpson_integration(double a, double b, int steps)
+double TorsionExperiment::simpson_integration(float a, float b, int steps)
 {
     double integrand = 0;
-    double width = (b - a)/steps;
+    double width = ((double)b - (double)a)/(double)steps;
     double fa, fb, fab;
-    for (double i=a; i<=b; i+=width)
+    for (double i=(double)a; i<=(double)b; i+=width)
     {
         fa = weight_dihedral_restraint_potential(i);
         fb = weight_dihedral_restraint_potential(i + width);
@@ -201,12 +204,12 @@ double TorsionExperiment::simpson_integration(double a, double b, int steps)
     return integrand;
 }
 
-double TorsionExperiment::trapezoidal_integration( double a, double b, int steps)
+double TorsionExperiment::trapezoidal_integration( float a, float b, int steps)
 {
     double integrand = 0;
-    double width = (b - a)/steps;
+    double width = ((double)b - (double)a)/(double)steps;
     double fa, fb;
-    for (double i=a; i<=b; i+=width)
+    for (float i=(double)a; i<=(double)b; i+=width)
     {
         fa = weight_dihedral_restraint_potential(i);
         fb = weight_dihedral_restraint_potential(i+width);
@@ -219,8 +222,8 @@ void TorsionExperiment::assign_omega()
 {
     for (int i=0; i<nbins; i++)
     {
-        double a = i * bin_size + begin;
-        double b = (i+1) * bin_size + begin;
+        float a = i * bin_size + begin;
+        float b = (i+1) * bin_size + begin;
         omega.push_back(simpson_integration(a,b,1e2));
         if ( omega[i] <= std::numeric_limits<double>::min() )
         {
@@ -251,27 +254,27 @@ int TorsionExperiment::nBins()
     return nbins;
 }
 
-double TorsionExperiment::T()
+float TorsionExperiment::T()
 {
     return t;
 }
 
-double TorsionExperiment::Phi0()
+float TorsionExperiment::Phi0()
 {
     return phi0;
 }
 
-double TorsionExperiment::DPhi()
+float TorsionExperiment::DPhi()
 {
     return deltaphi;
 }
 
-double TorsionExperiment::FC()
+float TorsionExperiment::FC()
 {
     return fc;
 }
 
-std::vector<double> TorsionExperiment::Potential()
+std::vector<float> TorsionExperiment::Potential()
 {
     return potential;
 }
@@ -281,7 +284,7 @@ std::vector<double> TorsionExperiment::Omega()
     return omega;
 }
 
-std::vector<double> TorsionExperiment::Coordinate()
+std::vector<float> TorsionExperiment::Coordinate()
 {
     return coordinate;
 }

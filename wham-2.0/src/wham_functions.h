@@ -17,17 +17,18 @@ private:
     t_wham wham_args;
     t_options wham_options;
     int nexperiments;
-    std::vector<std::vector<double> > trajectory, omegaT;
-    std::vector<double> opt_trajectory, potential, probability;
+    std::vector<std::vector<float> > trajectory;
+    std::vector<float> c_major_omega, c_major_omega_transpose;
+    std::vector<float> opt_trajectory, potential, probability;
 public:
     void wham_init(t_wham args, t_options options);
     void TransposeOmega();
-    std::vector<double> WhamStep(int point);
-    double square_diff(std::vector<double> a, std::vector<double> b);
+    std::vector<float> WhamStep(int point);
+    float square_diff(std::vector<float> a, std::vector<float> b);
     void wham_pmf();
     void wham_prob();
-    std::vector<double> PMF();
-    std::vector<double> PROB();
+    std::vector<float> PMF();
+    std::vector<float> PROB();
 };
 
 

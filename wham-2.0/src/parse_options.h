@@ -9,9 +9,9 @@
 void wham_options(int argc, char *argv[], t_options &options);
 void multidimensional_option(std::vector<std::string> option,
                              t_options &options,
-                             double defaultX,
+                             float defaultX,
                              std::string valuename,
-                             std::vector<double> &X);
+                             std::vector<float> &X);
 void print_options(t_options &options);
 
 #endif
