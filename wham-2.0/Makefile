@@ -199,7 +199,7 @@ AUTOCONF = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing autoconf
 AUTOHEADER = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing autoheader
 AUTOMAKE = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing automake-1.14
 AWK = awk
-BOOST_CPPFLAGS = -I/usr/local/Cellar/boost/1.55.0_1/include
+BOOST_CPPFLAGS = -Iyes
 BOOST_LDPATH = /usr/local/lib
 BOOST_PROGRAM_OPTIONS_LDFLAGS = -L/usr/local/lib -Wl,-rpath,/usr/local/lib
 BOOST_PROGRAM_OPTIONS_LDPATH = /usr/local/lib
@@ -217,7 +217,7 @@ CXXFLAGS = -Wall -O3
 CYGPATH_W = echo
 DEFS = -DPACKAGE_NAME=\"wham\" -DPACKAGE_TARNAME=\"wham\" -DPACKAGE_VERSION=\"2.0\" -DPACKAGE_STRING=\"wham\ 2.0\" -DPACKAGE_BUGREPORT=\"drew.w.ritchie@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wham\" -DVERSION=\"2.0\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DHAVE_BOOST=1 -DHAVE_BOOST_PROGRAM_OPTIONS_HPP=1 -DHAVE_LIBBOOST_PROGRAM_OPTIONS=1 -DHAVE_LIBHDF5=1 -DHAVE_LIBHDF5_CPP=1 -DHAVE_LIBHDF5_HL_CPP=1 -DHAVE_LIBM=1 -DHAVE_LIBZ=1 -DHAVE_LIBBLAS=1 -DHAVE__BOOL=1
 DEPDIR = .deps
-DISTCHECK_CONFIGURE_FLAGS =  '--with-boost=/usr/local/Cellar/boost/1.55.0_1/include'
+DISTCHECK_CONFIGURE_FLAGS =  '--with-boost='
 DLLTOOL = false
 DSYMUTIL = dsymutil
 DUMPBIN = 
