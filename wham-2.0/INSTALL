@@ -1,0 +1,12 @@
+To install, be sure to define the Boost and HDF5 locations by
+./configure --with-boost=/path/to/boost --with-hdf5=/path/to/hdf5
+
+
+Tests written in python which generate data for running wham using
+a known potential function, then compare the wham results to the
+analytic function are located in tests/schemes/{quad,flat,nobias}/.
+Be sure to change the call to python to your local python binary.
+Requires:
+    matplotlib
+    numpy
+    scipy

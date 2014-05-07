@@ -83,7 +83,8 @@ subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/boost.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/m4/ax_blas.m4 \
+	$(top_srcdir)/m4/boost.m4 $(top_srcdir)/m4/hdf5_new.m4 \
 	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
 	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
 	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/configure.ac
@@ -194,10 +195,11 @@ AUTOCONF = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing autoconf
 AUTOHEADER = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing autoheader
 AUTOMAKE = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing automake-1.14
 AWK = awk
-BOOST_CPPFLAGS = -Iyes
-BOOST_LDPATH = /usr/local/lib
-BOOST_PROGRAM_OPTIONS_LDFLAGS = -L/usr/local/lib -Wl,-rpath,/usr/local/lib
-BOOST_PROGRAM_OPTIONS_LDPATH = /usr/local/lib
+BLAS_LIBS = -framework vecLib
+BOOST_CPPFLAGS = -I/usr/local/Cellar/boost/1.55.0_1//include
+BOOST_LDPATH = /usr/local/Cellar/boost/1.55.0_1//lib
+BOOST_PROGRAM_OPTIONS_LDFLAGS = -L/usr/local/Cellar/boost/1.55.0_1//lib -Wl,-rpath,/usr/local/Cellar/boost/1.55.0_1//lib
+BOOST_PROGRAM_OPTIONS_LDPATH = /usr/local/Cellar/boost/1.55.0_1//lib
 BOOST_PROGRAM_OPTIONS_LIBS = -lboost_program_options-mt
 BOOST_ROOT = 
 CC = gcc
@@ -210,9 +212,9 @@ CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
 CXXFLAGS = -Wall -O3
 CYGPATH_W = echo
-DEFS = -DPACKAGE_NAME=\"wham\" -DPACKAGE_TARNAME=\"wham\" -DPACKAGE_VERSION=\"2.0\" -DPACKAGE_STRING=\"wham\ 2.0\" -DPACKAGE_BUGREPORT=\"drew.w.ritchie@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wham\" -DVERSION=\"2.0\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DHAVE_BOOST=1 -DHAVE_BOOST_PROGRAM_OPTIONS_HPP=1 -DHAVE_LIBBOOST_PROGRAM_OPTIONS=1 -DHAVE_LIBHDF5=1 -DHAVE_LIBHDF5_CPP=1 -DHAVE_LIBHDF5_HL_CPP=1 -DHAVE_LIBM=1 -DHAVE_LIBZ=1 -DHAVE_LIBBLAS=1 -DHAVE__BOOL=1
+DEFS = -DPACKAGE_NAME=\"wham\" -DPACKAGE_TARNAME=\"wham\" -DPACKAGE_VERSION=\"2.0\" -DPACKAGE_STRING=\"wham\ 2.0\" -DPACKAGE_BUGREPORT=\"drew.w.ritchie@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wham\" -DVERSION=\"2.0\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DHAVE_BOOST=1 -DHAVE_BOOST_PROGRAM_OPTIONS_HPP=1 -DHAVE_HDF5=1 -DHAVE_BLAS=1 -DHAVE_LIBM=1 -DHAVE_LIBZ=1 -DHAVE__BOOL=1
 DEPDIR = .deps
-DISTCHECK_CONFIGURE_FLAGS =  '--with-boost='
+DISTCHECK_CONFIGURE_FLAGS =  '--with-boost=/usr/local/Cellar/boost/1.55.0_1/'
 DLLTOOL = false
 DSYMUTIL = dsymutil
 DUMPBIN = 
@@ -221,8 +223,18 @@ ECHO_N =
 ECHO_T = 
 EGREP = /usr/bin/grep -E
 EXEEXT = 
+F77 = gfortran
+FFLAGS = -g -O2
 FGREP = /usr/bin/grep -F
+FLIBS =  -L/usr/local/Cellar/gfortran/4.8.2/gfortran/lib/gcc/x86_64-apple-darwin13.0.0/4.8.2 -L/usr/local/Cellar/gfortran/4.8.2/gfortran/lib/gcc/x86_64-apple-darwin13.0.0/4.8.2/../../.. -lgfortran -lquadmath -lm
 GREP = /usr/bin/grep
+HAVE_HDF5 = 1
+HDF5_CFLAGS = -I/usr/local/Cellar/hdf5/1.8.8//include
+HDF5_CXXLIBS = -L/usr/local/Cellar/hdf5/1.8.8//lib -lhdf5_cpp -Wl,-rpath,/usr/local/Cellar/hdf5/1.8.8//lib
+HDF5_DIR = 
+HDF5_FLIBS = -L/usr/local/Cellar/hdf5/1.8.8//lib -lhdf5_fortran -Wl,-rpath,/usr/local/Cellar/hdf5/1.8.8//lib
+HDF5_LIBS = -L/usr/local/Cellar/hdf5/1.8.8//lib -lhdf5 -Wl,-rpath,/usr/local/Cellar/hdf5/1.8.8//lib
+HDF5_PREFIX = /usr/local/Cellar/hdf5/1.8.8/
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
@@ -231,7 +243,7 @@ INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LD = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld
 LDFLAGS = 
 LIBOBJS = 
-LIBS = -lblas -lz -lm -lhdf5_hl_cpp -lhdf5_cpp -lhdf5 -lboost_program_options 
+LIBS = -lz -lm 
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LIPO = lipo
 LN_S = ln -s
@@ -267,6 +279,7 @@ ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_CXX = g++
 ac_ct_DUMPBIN = 
+ac_ct_F77 = gfortran
 am__include = include
 am__leading_dot = .
 am__quote = 
@@ -314,9 +327,10 @@ top_builddir = ..
 top_srcdir = ..
 AM_LDFLAGS = 
 wham_SOURCES = main.cpp parse_options.cpp parse_options.h wham.cpp wham.h wham_befeus.cpp wham_befeus.h wham_fileutils.cpp wham_fileutils.h wham_functions.cpp wham_function.h wham_hdf5.cpp wham_hdf5.h wham_trig.cpp wham_trig.h wham_types.h
-wham_CPPFLAGS = $(BOOST_CPPFLAGS)
-wham_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
-wham_LIBS = $(BOOST_PROGRAM_OPTIONS_LIBS)
+wham_CPPFLAGS = $(BOOST_CPPFLAGS) $(HDF5_CFLAGS)
+wham_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS) \
+	$(BOOST_PROGRAM_OPTIONS_LIBS) $(HDF5_LIBS) $(HDF5_CXXLIBS) \
+	$(BLAS_LIBS)
 all: all-am
 
 .SUFFIXES:
@@ -330,9 +344,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu src/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu src/Makefile
+	  $(AUTOMAKE) --foreign src/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \

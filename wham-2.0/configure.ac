@@ -17,26 +17,18 @@ CXXFLAGS='-Wall -O3'
 BOOST_REQUIRE([], [
     AC_MSG_ERROR(Boost libararies not counts])
 BOOST_PROGRAM_OPTIONS([])
-# FIXME: Replace `main' with a function in `-lhdf5':
-AC_CHECK_LIB([boost_program_options], [main], [], [])
-# FIXME: Replace `main' with a function in `-lhdf5':
-AC_CHECK_LIB([hdf5], [main], [], [
-    AC_MSG_ERROR(You need the hdf5 libraries.)])
-# FIXME: Replace `main' with a function in `-lhdf5_cpp':
-AC_CHECK_LIB([hdf5_cpp], [main], [], [
-    AC_MSG_ERROR(You need the hdf5_cpp libraries.)])
-# FIXME: Replace `main' with a function in `-lhdf5_hl_cpp':
-AC_CHECK_LIB([hdf5_hl_cpp], [main], [], [
-    AC_MSG_ERROR(You need the hdf5_hl_cpp libraries.)])
-# FIXME: Replace `main' with a function in `-lm':
+
+AX_PATH_HDF5_NEW([1.8.0],[yes])
+
+AX_BLAS(,[
+    AC_MSG_ERROR(Unable to find blas libraries.)])
+
 AC_CHECK_LIB([m], [main], [], [
-    AC_MSG_ERROR(You need the -m math libaries.)])
-# FIXME: Replace `main' with a function in `-lz':
+    AC_MSG_ERROR(You need the -m math libraries.)])
 AC_CHECK_LIB([z], [main], [], [
-    AC_MSG_ERROR(You need the -z libgz libaries.)])
-AC_CHECK_LIB([blas], [sgemv], [], [
-    AC_MSG_ERROR(You need the blas libaries.)])
-# Checks for header files.
+    AC_MSG_ERROR(You need the -z libgz libraries.)])
+#AC_CHECK_LIB([blas], [sgemv], [], [
+#    AC_MSG_ERROR(You need the blas libraries.)])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL

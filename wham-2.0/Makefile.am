@@ -22,3 +22,5 @@ install:
 
 all: install
 	
+print-%:
+	@echo '$*$($*)'
