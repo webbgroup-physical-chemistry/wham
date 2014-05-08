@@ -8,7 +8,7 @@ void WHAM::cpp_wham_conv()
         int n = 0;
         int final_frame = last_frame;
         std::clock_t start;
-        for (int i=options.convStep; i<nframes; i += options.convStep)
+        for (int i=options.f0; i<nframes; i += options.convStep)
         {
             options.fN = i;
             if (options.f0 != options.fN && options.fN != final_frame)
@@ -472,7 +472,7 @@ int WHAM::map1d(std::vector<int> bins)
     {
         std::cerr << bins[i] << " ";
     }
-    std::cerr << "to 1-Dimensional array.";
+    std::cerr << "to 1-Dimensional array.\n";
     exit(1);
 
     return -1;

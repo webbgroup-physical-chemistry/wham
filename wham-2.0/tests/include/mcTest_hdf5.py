@@ -4,28 +4,30 @@ import numpy as np
 from matplotlib.mlab import griddata
 from matplotlib.colors import LogNorm
 from math import log10
+import sys
+import os
 
 """
 1) Read in hdf5 file
 2) Extract probabilities
 """
 
-def plot_2d(xs,ys,zs,ax,zmax = None) :
+def plot_2d(xs,ys,zs,ax,zmax = None, logscale = True) :
     if zmax == None : zmax = max(zs)
     minx,maxx=min(xs),max(xs)
     miny,maxy=min(ys),max(ys)
     xi = np.linspace(minx,maxx,360)
     yi = np.linspace(miny,maxy,360)
     zss = []
-    if zmax == 100 :
+    if zmax == 100 or not logscale:
         zi = griddata(xs,ys,zs,xi,yi)
     else :
         zmin = 1
         for z in zs:
             try :
                 zss.append(log10(z))
-                if z < zmin :
-                    zmin = z
+                if log10(z) < zmin :
+                    zmin = int(np.floor(log10(z)))
             except ValueError :
                 zss.append(-12)
         zi = griddata(xs,ys,zss,xi,yi)
@@ -42,15 +44,25 @@ def plot_2d(xs,ys,zs,ax,zmax = None) :
         myplot.set_clim([0,zmax])
         cbar = plt.colorbar(myplot,shrink=0.70,format='%i',ticks=range(0,101,20))
         cbar.ax.set_yticklabels(['0%','20%','40%','60%','80%','>100%'])
+    if logscale == True :
+        myplot.set_clim([zmin,-1])
+        cbar = plt.colorbar(myplot,shrink=0.70,format='%i',ticks=range(zmin,0,1))
+        cblabels = []
+        for i in range(zmin,0,1) :
+            if i == zmin :
+                cblabels.append('<1E%i'%i)
+            else :
+                    cblabels.append('1E%i'%i)
+        cbar.ax.set_yticklabels(cblabels)
     else :
-        #cbar = plt.colorbar(myplot,shrink=0.70,format='%1.i')
-        myplot.set_clim([-9,-1])
-        cbar = plt.colorbar(myplot,shrink=0.70,format='%i',ticks=(-1,-3,-5,-7,-9))
-        cbar.ax.set_yticklabels(['1E-1','1E-3','1E-5','1E-7','<1E-9'])
+        cbar = plt.colorbar(myplot,shrink=0.70,format='%1.E')
 
 
 class read_hdf5 :
     def __init__ (self, filename, nwindows, ndof=1, doconv = True) :
+        if not os.path.isfile(filename) :
+            print "%s does not exist"%filename
+            sys.exit()
         self.file = h5.File(filename,"r")
         self.ndof = ndof
         self.nwindows = nwindows
@@ -97,11 +109,18 @@ class read_hdf5 :
             print "\nERROR!  Cannot handle %s degrees of freedom at this time"%self.ndof
             sys.exit()
 
-    def converge(self, analytic, ax) :
+    def converge(self, analytic=None, ax=None) :
+        if ax == None :
+            print "Error in read_hdf5.converge.  ax not set"
+            sys.exit()
         if self.ndof == 1 : 
             dat = self.prob1d
+            if analytic == None :
+                analytic = dat[-1][self.ndof]
         elif self.ndof == 2 : 
             dat = self.prob2d
+            if analytic == None :
+                analytic = dat[-1][self.ndof]
         for i in range(self.nchunks+1) :
             try:
                 self.r.append(self.cod(dat[i][self.ndof],analytic))
@@ -131,13 +150,21 @@ class read_hdf5 :
         ax.set_ylabel('Probability')
         ax.set_xticks(range(-120,121,60))
         
-    def plot_prob_2d(self,ax,zmax = None) : 
-        xs = self.prob2d[-1][0]
-        ys = self.prob2d[-1][1]
+    def plot_prob_2d(self,ax,zmax = None, logscale = True, conv=None) :
+        if conv == None :
+            conv = -1
+        elif conv == 'half' :
+            conv = int(np.floor(len(self.prob2d)/2))
+            print conv,len(self.prob2d)
+        elif not isinstance( conv, int ) :
+            print "I don't know what %s is supposed to mean in read_hdf5.plot_prob_2d"%conv
+            sys.exit()
+        xs = self.prob2d[conv][0]
+        ys = self.prob2d[conv][1]
         prob = np.array(self.prob2d[-1][2])
-        plot_2d(xs,ys,prob,ax,zmax)
+        plot_2d(xs,ys,prob,ax,zmax,logscale)
 
-    def delta_prob_2d(self,ax,anaprob) : 
+    def delta_prob_2d(self,ax,anaprob) :
         xs = self.prob2d[-1][0]
         ys = self.prob2d[-1][1]
         

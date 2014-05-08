@@ -224,7 +224,8 @@ void TorsionExperiment::assign_omega()
     {
         float a = i * bin_size + begin;
         float b = (i+1) * bin_size + begin;
-        omega.push_back(simpson_integration(a,b,1e2));
+        //omega.push_back(simpson_integration(a,b,1e2));
+        omega.push_back(trapezoidal_integration(a,b,1e3));
         if ( omega[i] <= std::numeric_limits<double>::min() )
         {
             precision_error = true;

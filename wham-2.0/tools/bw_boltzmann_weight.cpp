@@ -34,6 +34,7 @@ void Boltzmann_Weight::calc_average(h5_dat &prob, bw_datfile *list, int nexp)
             for (int k=0; k<nitems; k++)
             {
                 sum[k] += prob.bin_prob[list[i].bin[j]];
+                std::cout << "dat: " << i << ", frame: " << j << ", bin: " << list[i].bin[j] << ", bin prob: " << prob.bin_prob[list[i].bin[j]] <<std::endl;;
             }
         }
     }

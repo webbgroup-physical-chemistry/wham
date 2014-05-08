@@ -200,7 +200,8 @@ int Interact_H5::h5_get_dataset(std::string path, h5_dat &data)
         {
             if (bin_out[i] > 0)
             {
-                data.bin_prob.push_back(prob_out[i][2]/(float)bin_out[i]);
+                // There are pdims[1] degrees of freedom, so we want the index of ndof - 1
+                data.bin_prob.push_back(prob_out[i][pdims[1]-1]/(float)bin_out[i]);
             }
             else
             {
