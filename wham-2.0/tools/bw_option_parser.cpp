@@ -9,10 +9,10 @@ void bw_option_parser(int argc, char *argv[], bw_options &options)
         "\tUse to calculate the boltzmann weight average value based on the probability distribution generated from bin/wham.\n"
     };
     /*options.seed = 47;
-    options.doseed = false;*/
+    options.doseed = false;
     options.bootstrap = false;
-    options.nbootstrap = 0;
-    options.bVerbose = true;
+    options.nbootstrap = 0;*/
+    options.bVerbose = false;
     options.isangle = false;
     try
     {
@@ -33,8 +33,8 @@ void bw_option_parser(int argc, char *argv[], bw_options &options)
                 "Use if the property is an angle and subject to periodic boundary conditions.  ALL PROPERTIES IN THE GIVEN FILE MUST BE ANGLES OR MUST NOT BE ANGLES.  DO NOT MIX ANGLES WITH NON-ANGLES")
             ("bVerbose,v",
                 "Print extra information")
-            ("bootstrap,b",po::value<double>(&options.nbootstrap)->default_value(0,"Off"),
-                "Do bootstrapping --bootstrap times.")
+            /*("bootstrap,b",po::value<double>(&options.nbootstrap)->default_value(0,"Off"),
+                "Do bootstrapping --bootstrap times.")*/
         ;
         try
         {

@@ -34,7 +34,7 @@ void Boltzmann_Weight::calc_average(h5_dat &prob, bw_datfile *list, int nexp)
             for (int k=0; k<nitems; k++)
             {
                 sum[k] += prob.bin_prob[list[i].bin[j]];
-                std::cout << "dat: " << i << ", frame: " << j << ", bin: " << list[i].bin[j] << ", bin prob: " << prob.bin_prob[list[i].bin[j]] <<std::endl;;
+                //std::cout << "dat: " << i << ", frame: " << j << ", bin: " << list[i].bin[j] << ", bin prob: " << prob.bin_prob[list[i].bin[j]] <<std::endl;;
             }
         }
     }
@@ -157,7 +157,7 @@ void Boltzmann_Weight::bw_read_dat(bw_datfile &file)
         while (readfile.good())
         {
             getline(readfile,line);
-            if (not line.empty())
+            if (not line.empty() && line.substr(0,1) != ";")
             {
                 std::stringstream linestream(line);
                 while (linestream >> each)
@@ -191,6 +191,11 @@ void Boltzmann_Weight::bw_read_dat(bw_datfile &file)
                 i++;
             }
         }
+    }
+    else
+    {
+        std::cerr << "\nError: Cannot open " << file.filename << ". Exiting..." << std::endl;
+        std::exit(1);
     }
 }
 
@@ -244,7 +249,7 @@ void Boltzmann_Weight::bw_read_filelist()
     }
     else
     {
-        std::cout << "Cannot open "<< options.xvglist << ". std::exiting..." << std::endl;
+        std::cerr << "Error: Cannot open "<< options.xvglist << ". Exiting..." << std::endl;
         std::exit(1);
     }
     return;

@@ -1,0 +1,1 @@
+./configure --with-boost=/usr/local/Cellar/boost/1.55.0_1/ --with-hdf5=/usr/local/Cellar/hdf5/1.8.8/

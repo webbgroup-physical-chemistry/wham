@@ -292,6 +292,7 @@ void Interact_H5::h5_bin_assignments(std::vector<bw_datfile> &list)
 
 void Interact_H5::h5_write_prob(std::vector<h5_dat> probs)
 {
+    int nnn=0;
     try
     {
         Exception::dontPrint();
@@ -309,8 +310,9 @@ void Interact_H5::h5_write_prob(std::vector<h5_dat> probs)
                 averages[j][0] = probs[j].avg[i];
                 averages[j][1] = probs[j].stdev[i];
                 //stdevs[j] = probs[j].stdev[i];
-                std::cout << options.datnames[i] << " " << averages[j][0] << "(" << averages[j][1] << ")" << "\n";
+                //std::cout << i << " " << j << " " <<  options.datnames[i] << " " << averages[j][0] << "(" << averages[j][1] << ")" << "\n";
             }
+
             /* Write data */
             sprintf(name,"/Ensemble/%s",options.datnames[i].c_str());
             /*
@@ -338,11 +340,11 @@ void Interact_H5::h5_write_prob(std::vector<h5_dat> probs)
                 }
                 n++;
             }
-            hsize_t dim[2] = { nconv, ncol };
+            hsize_t dim[2] = { nconv, 2 };
             dataspace = new DataSpace(2,dim);
             dataset = new DataSet(file->createDataSet(name,PredType::NATIVE_FLOAT,*dataspace));
             dataset->write(averages,PredType::NATIVE_FLOAT);
-            
+
             /* Attribute */
             StrType str_type(PredType::C_S1,1024);
             hsize_t attrsize = 2;
@@ -353,7 +355,7 @@ void Interact_H5::h5_write_prob(std::vector<h5_dat> probs)
             DataSpace attr_dataspace(1,attr_dim);
             Attribute unit_attribute = dataset->createAttribute("Units",str_type,attr_dataspace);
             unit_attribute.write(str_type,unit_attr);
-            
+
             dataset->close();
             delete dataset;
             delete dataspace;
