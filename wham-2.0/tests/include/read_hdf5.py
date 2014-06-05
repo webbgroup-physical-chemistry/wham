@@ -11,6 +11,7 @@ class Read_H5 :
     def __init__ (self,filename,ndof) :
         try :
             self.file = h5.File(filename,"r")
+            print "Loading %s"%filename
         except :
             print "Error opening %s"%filename
             sys.exit()
@@ -23,8 +24,12 @@ class Read_H5 :
             print "Reading %s"%dataset
             dat = self.file[dataset]
             results = []
-            for i in range(len(dat[0])) :
-                results.append(dat[:,i])
+            if len(dat.shape) > 1 :
+                for i in range(len(dat[0])) :
+                    results.append(dat[:,i])
+            else :
+                for i in range(len(dat)) :
+                    results.append(dat[i])
             return results
         except KeyError :
             return -1
