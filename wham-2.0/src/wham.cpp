@@ -86,7 +86,7 @@ void WHAM::cpp_wham_read_experiments()
     else if (!file)
     {
         std::cerr << "\nError opening " << options.filelist << "." << std::endl;
-        exit(1);
+        std::exit(1);
     }
     file.close();
     return;
@@ -253,7 +253,7 @@ void WHAM::cpp_wham_group_ndim()
             if (group_traj2[nn].coordinate.size() == 0)
             {
                 std::cerr << "\nERROR: Could not find as many trajectories as degrees of freedom.  Exiting." << std::endl;
-                exit(1);
+                std::exit(1);
             }
             else
             {
@@ -310,6 +310,11 @@ void WHAM::cpp_wham_count_bins()
         {
             last_frame = options.fN;
         }
+        if (last_frame < options.f0)
+        {
+            std::cerr << "\nError!  You chose to start analyzing on frame " << options.f0 << ", but there are only " << last_frame << " total frames in trajectory " << i << ".\n" << std::endl;
+            std::exit(1);
+        }
         int nf = 0;
         for (int j=options.f0; j<last_frame; j++)
         {
@@ -336,7 +341,7 @@ void WHAM::cpp_wham_count_bins()
             nzeros++;
         }
     }
-    if (options.bVerbose )
+    if (options.bVerbose)
     {
         std::cout << "]" << std::endl;
         std::cout << "\nSamples: [ ";
@@ -473,7 +478,7 @@ int WHAM::map1d(std::vector<int> bins)
         std::cerr << bins[i] << " ";
     }
     std::cerr << "to 1-Dimensional array.\n";
-    exit(1);
+    std::exit(1);
 
     return -1;
 }

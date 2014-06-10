@@ -56,7 +56,7 @@ void TorsionExperiment::read_filelist_and_setup( std::string line, t_options par
     weight_dihedral_restraint_potentials();
     if (precision_error)
     {
-        std::cerr << "\nWARNING!  Numeric precision, " << std::numeric_limits<double>::min() << ", has been exceeded.  " << std::endl;
+        std::cerr << "\nWARNING!  Numeric precision, " << std::numeric_limits<float>::min() << ", has been exceeded in trajectory " << experiment << ", degree of freedom #" << dof+1 << ". " << std::endl;
     }
     return;
 }
@@ -226,7 +226,7 @@ void TorsionExperiment::assign_omega()
         float b = (i+1) * bin_size + begin;
         //omega.push_back(simpson_integration(a,b,1e2));
         omega.push_back(trapezoidal_integration(a,b,1e3));
-        if ( omega[i] <= std::numeric_limits<double>::min() )
+        if ( precision_error == false && omega[i] <= std::numeric_limits<float>::min() )
         {
             precision_error = true;
         }
