@@ -28,12 +28,14 @@ struct bw_options
     std::vector<std::string> datnames;
     std::vector<std::string> datunits;
     int nitems;
+    int frameStep;
     int seed;
     bool doseed;
     bool isangle;
     bool bVerbose;
     double nbootstrap;
     bool bootstrap;
+    bool doWrite;
 };
 
 struct bw_datfile
@@ -41,6 +43,7 @@ struct bw_datfile
     int experiment;
     std::string filename;
     std::vector<std::vector<float> > dat;
+    std::vector<int> frameN;
     std::vector<int> bin;
 };
 

@@ -75,18 +75,19 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-build_triplet = x86_64-apple-darwin13.2.0
-host_triplet = x86_64-apple-darwin13.2.0
+build_triplet = x86_64-apple-darwin13.3.0
+host_triplet = x86_64-apple-darwin13.3.0
 subdir = .
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/configure $(am__configure_deps) INSTALL compile \
 	config.guess config.sub depcomp install-sh missing ltmain.sh
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_blas.m4 \
-	$(top_srcdir)/m4/boost.m4 $(top_srcdir)/m4/hdf5_new.m4 \
-	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
-	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/ax_openmp.m4 $(top_srcdir)/m4/boost.m4 \
+	$(top_srcdir)/m4/hdf5_new.m4 $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
@@ -201,10 +202,10 @@ AUTOHEADER = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing autoheader
 AUTOMAKE = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing automake-1.14
 AWK = awk
 BLAS_LIBS = -framework vecLib
-BOOST_CPPFLAGS = -I/usr/local/Cellar/boost/1.55.0_1//include
-BOOST_LDPATH = /usr/local/Cellar/boost/1.55.0_1//lib
-BOOST_PROGRAM_OPTIONS_LDFLAGS = -L/usr/local/Cellar/boost/1.55.0_1//lib -Wl,-rpath,/usr/local/Cellar/boost/1.55.0_1//lib
-BOOST_PROGRAM_OPTIONS_LDPATH = /usr/local/Cellar/boost/1.55.0_1//lib
+BOOST_CPPFLAGS = -I/opt/local//include
+BOOST_LDPATH = /opt/local//lib
+BOOST_PROGRAM_OPTIONS_LDFLAGS = -L/opt/local//lib -Wl,-rpath,/opt/local//lib
+BOOST_PROGRAM_OPTIONS_LDPATH = /opt/local//lib
 BOOST_PROGRAM_OPTIONS_LIBS = -lboost_program_options-mt
 BOOST_ROOT = 
 CC = gcc
@@ -212,14 +213,14 @@ CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
 CPP = gcc -E
 CPPFLAGS = 
-CXX = g++
-CXXCPP = g++ -E
+CXX = c++
+CXXCPP = c++ -E
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -Wall -O3
+CXXFLAGS = -Wall -O3 -std=c++11 -fopenmp
 CYGPATH_W = echo
-DEFS = -DPACKAGE_NAME=\"wham\" -DPACKAGE_TARNAME=\"wham\" -DPACKAGE_VERSION=\"2.0\" -DPACKAGE_STRING=\"wham\ 2.0\" -DPACKAGE_BUGREPORT=\"drew.w.ritchie@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wham\" -DVERSION=\"2.0\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DHAVE_BOOST=1 -DHAVE_BOOST_PROGRAM_OPTIONS_HPP=1 -DHAVE_HDF5=1 -DHAVE_BLAS=1 -DHAVE_LIBM=1 -DHAVE_LIBZ=1 -DHAVE__BOOL=1
+DEFS = -DPACKAGE_NAME=\"wham\" -DPACKAGE_TARNAME=\"wham\" -DPACKAGE_VERSION=\"2.0\" -DPACKAGE_STRING=\"wham\ 2.0\" -DPACKAGE_BUGREPORT=\"drew.w.ritchie@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"wham\" -DVERSION=\"2.0\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DHAVE_BOOST=1 -DHAVE_BOOST_PROGRAM_OPTIONS_HPP=1 -DHAVE_HDF5=1 -DHAVE_BLAS=1 -DHAVE_LIBM=1 -DHAVE_LIBZ=1
 DEPDIR = .deps
-DISTCHECK_CONFIGURE_FLAGS =  '--with-boost=/usr/local/Cellar/boost/1.55.0_1/'
+DISTCHECK_CONFIGURE_FLAGS =  '--with-boost=/opt/local/'
 DLLTOOL = false
 DSYMUTIL = dsymutil
 DUMPBIN = 
@@ -231,22 +232,22 @@ EXEEXT =
 F77 = gfortran
 FFLAGS = -g -O2
 FGREP = /usr/bin/grep -F
-FLIBS =  -L/usr/local/Cellar/gfortran/4.8.2/gfortran/lib/gcc/x86_64-apple-darwin13.0.0/4.8.2 -L/usr/local/Cellar/gfortran/4.8.2/gfortran/lib/gcc/x86_64-apple-darwin13.0.0/4.8.2/../../.. -lgfortran -lquadmath -lm
+FLIBS =  -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2 -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/../../.. -lgfortran -lgomp -lquadmath -lm
 GREP = /usr/bin/grep
 HAVE_HDF5 = 1
-HDF5_CFLAGS = -I/usr/local/Cellar/hdf5/1.8.8//include
-HDF5_CXXLIBS = -L/usr/local/Cellar/hdf5/1.8.8//lib -lhdf5_cpp -Wl,-rpath,/usr/local/Cellar/hdf5/1.8.8//lib
+HDF5_CFLAGS = -I/opt/local/include
+HDF5_CXXLIBS = -L/opt/local/lib -lhdf5_cpp -Wl,-rpath,/opt/local/lib
 HDF5_DIR = 
-HDF5_FLIBS = -L/usr/local/Cellar/hdf5/1.8.8//lib -lhdf5_fortran -Wl,-rpath,/usr/local/Cellar/hdf5/1.8.8//lib
-HDF5_LIBS = -L/usr/local/Cellar/hdf5/1.8.8//lib -lhdf5 -Wl,-rpath,/usr/local/Cellar/hdf5/1.8.8//lib
-HDF5_PREFIX = /usr/local/Cellar/hdf5/1.8.8/
+HDF5_FLIBS = -L/opt/local/lib -lhdf5_fortran -Wl,-rpath,/opt/local/lib
+HDF5_LIBS = -L/opt/local/lib -lhdf5 -Wl,-rpath,/opt/local/lib
+HDF5_PREFIX = /opt/local
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LD = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld
-LDFLAGS = 
+LD = /opt/local/bin/ld
+LDFLAGS =  -fopenmp
 LIBOBJS = 
 LIBS = -lz -lm 
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
@@ -256,7 +257,7 @@ LTLIBOBJS =
 MAKEINFO = ${SHELL} /Users/ritchie/software/wham/wham-2.0/missing makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = ./install-sh -c -d
-NM = /usr/bin/nm
+NM = /opt/local/bin/nm
 NMEDIT = nmedit
 OBJDUMP = false
 OBJEXT = o
@@ -282,7 +283,7 @@ abs_top_builddir = /Users/ritchie/software/wham/wham-2.0
 abs_top_srcdir = /Users/ritchie/software/wham/wham-2.0
 ac_ct_AR = ar
 ac_ct_CC = gcc
-ac_ct_CXX = g++
+ac_ct_CXX = c++
 ac_ct_DUMPBIN = 
 ac_ct_F77 = gfortran
 am__include = include
@@ -291,10 +292,10 @@ am__quote =
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
 bindir = ${exec_prefix}/bin
-build = x86_64-apple-darwin13.2.0
+build = x86_64-apple-darwin13.3.0
 build_alias = 
 build_cpu = x86_64
-build_os = darwin13.2.0
+build_os = darwin13.3.0
 build_vendor = apple
 builddir = .
 datadir = ${datarootdir}
@@ -302,10 +303,10 @@ datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-host = x86_64-apple-darwin13.2.0
+host = x86_64-apple-darwin13.3.0
 host_alias = 
 host_cpu = x86_64
-host_os = darwin13.2.0
+host_os = darwin13.3.0
 host_vendor = apple
 htmldir = ${docdir}
 includedir = ${prefix}/include
@@ -794,11 +795,11 @@ uninstall-am:
 
 clean: 
 	-rm -rf src/*.o src/wham
-	-rm -rf bin/wham
-	-rm -rf bin/bw_wham
 	-rm -rf tools/*.o tools/bw_wham
 
 distclean: clean
+	-rm -rf bin/wham
+	-rm -rf bin/bw_wham
 	-rm -rf autom4te.cache
 	-rm -rf tests/schemes/*/dat_*
 	-rm -rf tests/schemes/*/*.h5 tests/schemes/*/*.pdf

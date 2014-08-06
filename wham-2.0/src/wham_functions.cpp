@@ -35,30 +35,28 @@ void DOWHAM::wham_init(t_wham args, t_options options)
     wham_options = options;
     nexperiments = options.ntraj / options.ndof;
     TransposeOmega();
-    std::vector<float> w0(wham_args.nstates,1.0/wham_args.nstates);
-    
     /* First WHAM step */
-    std::vector<std::vector<float> > t;
-    std::vector<float> ptraj_init(wham_args.nstates);
-    trajectory = t;
-    trajectory.push_back(w0);
     /* WHAM iterations */
+    std::vector<float> previous_step(wham_args.nstates,1.0/wham_args.nstates);
+    std::vector<float> current_step(wham_args.nstates,1.0/wham_args.nstates);
     int points = 0;
     std::clock_t start = std::clock();
     while (points < wham_options.iter)
     {
-        trajectory.push_back(ptraj_init);
         // slow step
-        trajectory[points+1] = WhamStep(points);
-        if ( square_diff(trajectory[points+1],trajectory[points]) < wham_options.tol)
+        WhamStep(current_step);
+        if ( square_diff(current_step,previous_step) < wham_options.tol)
         {
             std::cout << "Converged to " << wham_options.tol << " at step " << points << " after " << (std::clock() - start)/(float)(CLOCKS_PER_SEC/1000) << " ms." << std::endl;
             break;
         }
-        /* Don't need to keep the previous one */
+        /* 
+         * Set the previous one as the result we just found and take a 
+         * new step
+         */
         else
         {
-            trajectory[points].clear();
+            previous_step = current_step;
         }
         points++;
     }
@@ -67,37 +65,38 @@ void DOWHAM::wham_init(t_wham args, t_options options)
         std::cout << "\n[ ";
         for (int i=0; i<wham_args.nstates; i++)
         {
-            std::cout << trajectory[points][i] << " ";
+            std::cout << current_step[i] << " ";
         }
         std::cout << "]\n";
     }
-    opt_trajectory = trajectory[points];
+    opt_trajectory = current_step;
     wham_pmf();
     wham_prob();
     return;
 }
 
-std::vector<float> DOWHAM::WhamStep(int point)
+void DOWHAM::WhamStep(std::vector<float> &step)
 {
-    std::vector<float> fms(nexperiments),wguess(wham_args.nstates);
-    
-    int vsize = trajectory[point].size();
-    std::vector<float> Momegas_times_trajectory(trajectory[point].size(),0);
-    sgemv('N',nexperiments,vsize,1,&c_major_omega[0],nexperiments,&trajectory[point][0],1,1,&Momegas_times_trajectory[0],1);
-
+#ifdef _OPENMP
+    omp_set_num_threads(omp_get_max_threads());
+#endif
+    std::vector<float> fms(nexperiments,0);
+    int vsize = wham_args.nstates; 
+    std::vector<float> Momegas_times_trajectory(wham_args.nstates,0);
+    sgemv('N',nexperiments,vsize,1,&c_major_omega[0],nexperiments,&step[0],1,1,&Momegas_times_trajectory[0],1);
     for (int i=0; i<nexperiments; i++)
     {
         fms[i] = wham_args.sample[i] / Momegas_times_trajectory[i];
     }
-    vsize = fms.size();
+    vsize = nexperiments;
     std::vector<float> MomegasT_times_fms(wham_args.nstates,0);
     sgemv('N',wham_args.nstates,vsize,1,&c_major_omega_transpose[0],wham_args.nstates,&fms[0],1,1,&MomegasT_times_fms[0],1);
     for (int i=0; i<wham_args.nstates; i++)
     {
-        wguess[i] = wham_args.counts[i] / MomegasT_times_fms[i];
+        step[i] = wham_args.counts[i] / MomegasT_times_fms[i];
     }
-    vec_normalize(wguess);
-    return wguess;
+    vec_normalize(step);
+    return;
 }
 
 void DOWHAM::TransposeOmega()
@@ -146,13 +145,18 @@ float DOWHAM::square_diff(std::vector<float> a, std::vector<float> b)
 void DOWHAM::wham_pmf()
 {
     /* Calculate the average temperature */
-    float avg_experiment_T = vec_dot(wham_args.sample, wham_args.t)/vec_sum(wham_args.sample);
+    float avg_experiment_T, sum;
+    for (int i=0; i<(float)wham_args.sample.size();i++)
+    {
+        avg_experiment_T += wham_args.sample[i] * wham_args.t[i];
+        sum += wham_args.sample[i];
+    }
+    avg_experiment_T /= sum;
     /* PMF_bin(i) = -kT*ln(w(i)).  Assume that any bin that had 0 visists had a pmf of 1000 */
     std::vector<float> p(wham_args.nstates);
     potential = p;
     for (int i=0; i<wham_args.nstates; i++)
     {
-        
         if (opt_trajectory[i] <= 1e-30)
         {
             potential[i] = 1000;

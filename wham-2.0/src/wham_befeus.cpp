@@ -1,6 +1,12 @@
 #include "wham_befeus.h"
 
-void TorsionExperiment::read_filelist_and_setup( std::string line, t_options parser_options, int previous_experiment, int previous_dof)
+/*
+ * Separate read_filelist_and_setup into read_filelist and setup.  
+ * read filelist will read the file and determine dof, while setup
+ * will run everything requiring knowledge of the dof.
+ */
+
+void TorsionExperiment::read_filelist( std::string line, t_options &parser_options, int previous_experiment, int previous_dof )
 {
     /* Assign the parser options */
     options = parser_options;
@@ -33,30 +39,48 @@ void TorsionExperiment::read_filelist_and_setup( std::string line, t_options par
     }
     if (dof >= options.ndof)
     {
-        std::cerr << "\nERROR: Found " << dof+1 << " degrees of freedom when expecting " << options.ndof << " degrees of fredom.\n" << std::endl;
+        fprintf(stderr,"\nERROR: Found %d degrees of freedom when exception %d.\n",dof+1,options.ndof);
         std::exit(1);
     }
-    /* Now we can assign the ranges and bin sizes to match the specific DoF */
+    // Now we can assign the ranges and bin sizes to match the specific DoF 
     begin = options.x0[dof];
     end = options.xN[dof];
     bin_size = options.b[dof];
     
     if (options.bVerbose)
     {
+        fprintf(stdout,"\n Reading data file %s from trajectory %d, degree of freedom #%d.\nBiasing coordinate centered on %.3f +/- %.3f.\nData ranges from %.3f to %.3f.  Will look at bins %.3f units wide.\nForce constant = %.6f kJ/mol/degree^s at temperature %.6f mol/kJ.\n",xvgfile.c_str(),experiment,dof+1,phi0,deltaphi,begin,end,bin_size,fc,beta);
+        /*
         std::cout << "\nReading data file: " << xvgfile << " from trajectory " << experiment << ", degree of freedom #" << dof+1 << std::endl;
         std::cout << "Biasing coordinate centered on " << phi0 << " +/- " << deltaphi << std::endl;
         std::cout << "Data ranges from " << begin << " to " << end << ".  Will look at bins " << bin_size << " units wide" << std::endl;
         std::cout << "Force constant = " << fc << " kJ/mol/degree^2 at temperature " << beta << " mol*kJ^-1" << std::endl;
+        */
     }
+
+    return;
+}
+
+void TorsionExperiment::setup(t_options &parser_options)
+{
     precision_error = false;
     set_nbins();
     read_trajectory();
     build_histogram();
     assign_omega();
     weight_dihedral_restraint_potentials();
-    if (precision_error)
+    if (precision_error && parser_options.nexceed < 5)
     {
+        /*
         std::cerr << "\nWARNING!  Numeric precision, " << std::numeric_limits<float>::min() << ", has been exceeded in trajectory " << experiment << ", degree of freedom #" << dof+1 << ". " << std::endl;
+        */
+        fprintf(stderr,"\nWARNING!  Numeric precision, %.6e, has been exceeded in trajectory %d, degree of freedom %d.",std::numeric_limits<float>::min(),experiment,dof+1);
+        parser_options.nexceed++;
+    }
+    else if (parser_options.nexceed == 5)
+    {
+        std::cerr << "\nNumeric precision warnings have been silenced\n";
+        parser_options.nexceed++;
     }
     return;
 }

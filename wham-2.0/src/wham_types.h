@@ -8,6 +8,7 @@
 #include <limits>
 #include <ctime>
 #include <cstdlib>
+#include <stdio.h>
 
 #ifndef KB
 #define KB 0.00813144621 // kJ/(mol*K)
@@ -30,6 +31,7 @@ struct t_options
     bool bVerbose;
     bool doConv;
     int convStep;
+    int nexceed;
 };
 
 struct t_bin

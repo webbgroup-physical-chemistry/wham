@@ -9,6 +9,12 @@ int main(int argc, char * argv[])
     WHAM workflow;
     workflow.cpp_wham_init(opt);
     workflow.cpp_wham_conv();
+    /* Does not work currently.  Also not convinced it will save save
+    if (opt.doConv)
+    {
+        cpp_wham_conv(workflow,opt);
+    }
+    */
     
     return 0;
 }

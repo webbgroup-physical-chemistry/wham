@@ -17,9 +17,28 @@ void Boltzmann_Weight::bw_init(bw_options option)
 
 void Boltzmann_Weight::calc_average(h5_dat &prob, bw_datfile *list, int nexp)
 {
+    /* 
+     * To easily play around with and determine if skipping frames uniformly returns
+     * the same answer.  It does not.
+     */
+    int frame_step = options.frameStep;
     if (options.bVerbose)
     {
         std::cout << "Frames " << prob.span[0]+1 << "-" << prob.span[1] << ".\n";
+    }
+    /* count how many times each bin is visited in the dataset */
+    int nbins = prob.bin_prob.size(),frame;
+    std::vector<int> bincounts(nbins,0);
+    for (int i=0; i<nexp; i++)
+    {
+        for (int j=0; j<(int)list[i].frameN.size(); j+=frame_step)
+        {
+            frame = list[i].frameN[j];
+            if (frame >= prob.span[0] && frame <= prob.span[1])
+            {
+                bincounts[list[i].bin[frame]]++;
+            }
+        }
     }
     int nitems = list[0].dat[0].size();
     std::vector<float> ph(nitems,0);
@@ -29,12 +48,16 @@ void Boltzmann_Weight::calc_average(h5_dat &prob, bw_datfile *list, int nexp)
     std::vector<float> sum(nitems,0),invsum(nitems,0);
     for (int i=0; i<nexp;i++)
     {
-        for (int j=prob.span[0]; j<prob.span[1]; j++)
+        for (int j=0; j<(int)list[i].frameN.size(); j+=frame_step)
         {
-            for (int k=0; k<nitems; k++)
+            frame = list[i].frameN[j];
+            if (frame >= prob.span[0] && frame <= prob.span[1])
             {
-                sum[k] += prob.bin_prob[list[i].bin[j]];
-                //std::cout << "dat: " << i << ", frame: " << j << ", bin: " << list[i].bin[j] << ", bin prob: " << prob.bin_prob[list[i].bin[j]] <<std::endl;;
+                for (int k=0; k<nitems; k++)
+                {
+                    sum[k] += prob.bin_prob[list[i].bin[frame]] / bincounts[list[i].bin[frame]];
+                    //std::cout << "dat: " << i << ", frame: " << frame << ", bin: " << list[i].bin[frame] << ", bin prob: " << prob.bin_prob[list[i].bin[frame]] << ", bincounts: " << bincounts[list[i].bin[frame]] << ", frame prob: " << prob.bin_prob[list[i].bin[frame]] / bincounts[list[i].bin[frame]] << ", current sum: " << sum[k] << std::endl;;
+                }
             }
         }
     }
@@ -47,12 +70,16 @@ void Boltzmann_Weight::calc_average(h5_dat &prob, bw_datfile *list, int nexp)
         std::vector<float> x(nitems,0), y(nitems,0);
         for (int i=0; i<nexp;i++)
         {
-            for (int j=prob.span[0]; j<prob.span[1]; j++)
+            for (int j=0; j<(int)list[i].frameN.size(); j+=frame_step)
             {
-                for (int k=0; k<nitems; k++)
+                frame = list[i].frameN[j];
+                if (frame >= prob.span[0] && frame <= prob.span[1])
                 {
-                    x[k] += prob.bin_prob[list[i].bin[j]] * invsum[k] * cos(list[i].dat[j][k] * DEG2RAD);
-                    y[k] += prob.bin_prob[list[i].bin[j]] * invsum[k] * sin(list[i].dat[j][k] * DEG2RAD);
+                    for (int k=0; k<nitems; k++)
+                    {
+                        x[k] += prob.bin_prob[list[i].bin[frame]] / bincounts[list[i].bin[frame]] * invsum[k] * cos(list[i].dat[j][k] * DEG2RAD);
+                        y[k] += prob.bin_prob[list[i].bin[frame]] / bincounts[list[i].bin[frame]] * invsum[k] * sin(list[i].dat[j][k] * DEG2RAD);
+                    }
                 }
             }
         }
@@ -67,22 +94,29 @@ void Boltzmann_Weight::calc_average(h5_dat &prob, bw_datfile *list, int nexp)
         std::vector<float> total(nitems,0),vartotal(nitems,0);
         for (int i=0; i<nexp;i++)
         {
-            for (int j=prob.span[0]; j<prob.span[1]; j++)
+            for (int j=0; j<(int)list[i].frameN.size(); j+=frame_step)
             {
-                for (int k=0; k<nitems; k++)
+                frame = list[i].frameN[j];
+                if (frame >= prob.span[0] && frame <= prob.span[1])
                 {
-                    total[k] += prob.bin_prob[list[i].bin[j]] * invsum[k] * list[i].dat[j][k];
+                    for (int k=0; k<nitems; k++)
+                    {
+                        total[k] += prob.bin_prob[list[i].bin[frame]] / bincounts[list[i].bin[frame]] * invsum[k] * list[i].dat[j][k];
+                    }
                 }
             }
         }
         for (int i=0; i<nexp;i++)
         {
-            for (int j=prob.span[0]; j<prob.span[1]; j++)
+            for (int j=0; j<(int)list[i].frameN.size(); j+=frame_step)
             {
-                for (int k=0; k<nitems; k++)
+                frame = list[i].frameN[j];
+                if (frame >= prob.span[0] && frame <= prob.span[1])
                 {
-                    vartotal[k] += prob.bin_prob[list[i].bin[j]] * invsum[k] * list[i].dat[j][k]
-                                   * ( list[i].dat[j][k] - total[k] ) ;
+                    for (int k=0; k<nitems; k++)
+                    {
+                        vartotal[k] += prob.bin_prob[list[i].bin[frame]] / bincounts[list[i].bin[frame]] * invsum[k] * list[i].dat[j][k] * ( list[i].dat[j][k] - total[k] ) ;
+                    }
                 }
             }
         }
@@ -92,6 +126,7 @@ void Boltzmann_Weight::calc_average(h5_dat &prob, bw_datfile *list, int nexp)
             prob.stdev[i] = sqrt(vartotal[i]);
         }
     }
+    xvg_numbered = false;
     return;
 }
 
@@ -112,7 +147,8 @@ void Boltzmann_Weight::bw_calc_prob()
         }
         probs.push_back(placeholder);
         calc_average(probs[n],&list[0],(int)list.size());
-        /* set up next one */
+        std::cout << "AVERAGE: " << probs[n].avg[0] << std::endl;
+        /* set up next set of convergence data */
         n++;
         sprintf(name,"/Ensemble/Conv-%i",n);
     }
@@ -123,20 +159,28 @@ void Boltzmann_Weight::bw_calc_prob()
         std::cout << "/Ensemble" << std::endl;
     }
     calc_average(probs[n],&list[0],(int)list.size());
-    n++;
-    h5file.h5_write_prob(probs);
+    if (options.doWrite)
+    {
+        h5file.h5_write_prob(probs);
+    }
+    std::cout << "Final Averages:\n";
+    for (int i=0; i<(int)probs[n].avg.size(); i++)
+        std::cout << "Average: " << probs[n].avg[i] << ", STDEV: " << probs[n].stdev[i] << ", DATASET: " << options.datnames[i] << ", UNITS: " << options.datunits[i] << std::endl;
 }
 
 void Boltzmann_Weight::bw_parse_dat()
 {
-    for (int i=0; i<list.size(); i++)
+    for (int i=0; i<(int)list.size(); i++)
     {
         bw_read_dat(list[i]);
         if (options.bVerbose)
         {
-            std::cout << "\t" << list[i].dat.size() << " frames  with " << list[i].dat[0].size() << " columns in each row." << std::endl;
+            std::cout << "\t" << list[i].dat.size() << " frames  with " << list[i].dat[0].size() << " columns in each row. " << std::endl;
         }
-        h5file.h5_write_dat(list[i]);
+        if (options.doWrite)
+        {
+            h5file.h5_write_dat(list[i]);
+        }
     }
     return;
 }
@@ -147,6 +191,7 @@ void Boltzmann_Weight::bw_read_dat(bw_datfile &file)
     {
         std::cout << "Reading experiment " << file.experiment << " from datafile " << file.filename << ".\n";
     }
+    xvg_numbered = true;
     std::string line;
     std::vector<float> values;
     float each;
@@ -157,17 +202,42 @@ void Boltzmann_Weight::bw_read_dat(bw_datfile &file)
         while (readfile.good())
         {
             getline(readfile,line);
-            if (not line.empty() && line.substr(0,1) != ";")
+            if (not line.empty() && line.substr(0,1) != ";" && line.substr(0,1) != "#")
             {
                 std::stringstream linestream(line);
                 while (linestream >> each)
                 {
                     values.push_back(each);
                 }
-                if (values.size() != options.datnames.size())
+                if (values.size() == options.datnames.size()+1 && xvg_numbered)
                 {
-                    std::cerr << "\nERROR: The number of columns in " << file.filename << " are not the same number of items give with --datatype.  ";
-                    if (values.size() > 1)
+                    // Frame number is included
+                    if ( values[0] >= 0 )
+                    {
+                        file.frameN.push_back(values[0]);
+                        values.erase(values.begin() + 0);
+                    }
+                    else
+                    {
+                        std::cerr << "\nERROR: The frame number in " << file.filename << ", line " << i << ", is negative.\n" << line << std::endl;
+                        std::exit(1);
+                    }
+                }
+                else if (values.size() == options.datnames.size())
+                {
+                    // Frame number is excluded
+                    if (xvg_numbered)
+                    {
+                        std::cout << "\nWARNING: Frame numbers not specified in " << file.filename << ".  Assuming all frames are included, starting from frame zero." << std::endl;
+                        xvg_numbered = false;
+                    }
+                    file.frameN.push_back(i);
+                }
+                else
+                {
+                    // Who knows...
+                    std::cerr << "\nERROR: The number of columns (" << values.size() << ") in " << file.filename << " are not the same number of items give with --datatype (" << options.datnames.size() << ")." << std::endl;
+                    if ((int)values.size() > 1)
                     {
                         std::cerr << "To include multiple entries to --datatype, invoke the option multiple times in the same order as the columns from left-to-right." << std::endl;
                     }
@@ -179,13 +249,15 @@ void Boltzmann_Weight::bw_read_dat(bw_datfile &file)
                 }
                 else
                 {
-                    if ( values.size() != ncol )
+                    if ( (int)values.size() != ncol )
                     {
-                        std::cerr << "\nERROR: The number of columns in " << file.filename << " are not the same in row " << i << " as the first row." << std::endl;;
+                        std::cerr << "\nERROR: The number of columns (" << values.size() << ") in " << file.filename << " are not the same in row " << i << " as the first row." << std::endl;;
                         std::exit(1);
                     }
                 }
                 file.dat.push_back(values);
+                // Everything is good here...
+                //std::cout << i << " " << file.frameN[i] << " " << file.dat[i][0] << " (" << file.frameN.size() << ")" << std::endl;
                 values.clear();
                 values.shrink_to_fit();
                 i++;
@@ -222,7 +294,7 @@ void Boltzmann_Weight::bw_read_filelist()
                 while (linestream >> name)
                 {
                     values.push_back(name);
-                    if (values.size() > 2)
+                    if ((int)values.size() > 2)
                     {
                         std::cerr << "\nERROR:  Too many items on line " << n << " in " << options.xvglist << ".  Should be only:\n\tExperiment# datafile\n" << std::endl;
                         std::exit(1);

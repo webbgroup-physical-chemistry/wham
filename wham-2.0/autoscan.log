@@ -1,0 +1,6 @@
+autoscan: warning: missing AC_CHECK_FUNCS([sqrt]) wanted by: 
+	tools/bw_boltzmann_weight.cpp:62
+	tools/bw_boltzmann_weight.cpp:62
+	tools/bw_boltzmann_weight.cpp:92
+autoscan: warning: missing AC_PROG_RANLIB wanted by: 
+	ltmain.sh:2455

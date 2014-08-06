@@ -10,6 +10,9 @@
 #include <cstdlib>
 #include "wham_types.h"
 #include "wham_trig.h"
+#ifdef _OPENMP
+#include <omp.h>
+#endif
 
 class DOWHAM
 {
@@ -17,13 +20,13 @@ private:
     t_wham wham_args;
     t_options wham_options;
     int nexperiments;
-    std::vector<std::vector<float> > trajectory;
+    //std::vector<std::vector<float> > trajectory;
     std::vector<float> c_major_omega, c_major_omega_transpose;
     std::vector<float> opt_trajectory, potential, probability;
 public:
     void wham_init(t_wham args, t_options options);
     void TransposeOmega();
-    std::vector<float> WhamStep(int point);
+    void WhamStep(std::vector<float> &step);
     float square_diff(std::vector<float> a, std::vector<float> b);
     void wham_pmf();
     void wham_prob();

@@ -8,14 +8,23 @@ AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE
 
 # Checks for programs.
-AC_PROG_CXX
+AC_LANG([C++])
+AC_PROG_CXX(c++ g++ clang++ false)
+AC_LANG_CPLUSPLUS
 AC_PROG_CC
 AC_PROG_LIBTOOL
-CXXFLAGS='-Wall -O3'
+#AX_CXX_COMPILE_STDCXX_11
+CXXFLAGS='-Wall -O3 -std=c++11'
 
 # Checks for libraries.
+AX_OPENMP(
+    CXXFLAGS+=" $OPENMP_CXXFLAGS"
+    LDFLAGS+=" $OPENMP_CXXFLAGS"
+    ],[
+    AC_MSG_WARN(Unable to find openMP)])
+
 BOOST_REQUIRE([], [
-    AC_MSG_ERROR(Boost libararies not counts])
+    AC_MSG_ERROR(Boost libararies not found)])
 BOOST_PROGRAM_OPTIONS([])
 
 AX_PATH_HDF5_NEW([1.8.0],[yes])
@@ -40,4 +49,6 @@ AC_CONFIG_FILES([
 	src/Makefile
 	tools/Makefile
     ])
+
+
 AC_OUTPUT(Makefile)

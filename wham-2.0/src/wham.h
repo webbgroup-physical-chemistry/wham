@@ -7,6 +7,9 @@
 #include "wham_functions.h"
 #include <algorithm>
 #include "wham_hdf5.h"
+#ifdef _OPENMP
+#include <omp.h>
+#endif
 
 int cpp_wham(int argc, char *argv[]);
 
@@ -37,6 +40,17 @@ public:
     void cpp_wham_doWHAM();
     void cpp_wham_conv();
     int map1d(std::vector<int> bins);
+    int get_final_frame() { return last_frame; } 
+    int get_num_frames() { return nframes; }
+    int get_options_f0() { return options.f0; }
+    int get_options_fN() { return options.fN; }
+    void set_options_f0( int n ) { options.f0 = n; }
+    void set_options_fN( int n ) { options.fN = n; }
+    std::vector<float> get_opt_prob() { return opt_prob; }
+    std::vector<float> get_opt_pmf() { return opt_pmf; }
+    t_wham get_wham_args() { return wham_args; }
+    std::vector<t_map> get_map() { return map; }
+    Write_HDF5 get_outhdf5() { return outhdf5; }
     
     //void cpp_wham_hdf5();
 
@@ -44,6 +58,6 @@ public:
     int NFrames();
 };
 
-
+void cpp_wham_conv(WHAM wham, t_options options);
 
 #endif

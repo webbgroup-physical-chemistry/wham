@@ -4,11 +4,11 @@ SUBDIRS = src tools
 
 clean: 
 	-rm -rf src/*.o src/wham
-	-rm -rf bin/wham
-	-rm -rf bin/bw_wham
 	-rm -rf tools/*.o tools/bw_wham
 
 distclean: clean
+	-rm -rf bin/wham
+	-rm -rf bin/bw_wham
 	-rm -rf autom4te.cache
 	-rm -rf tests/schemes/*/dat_*
 	-rm -rf tests/schemes/*/*.h5 tests/schemes/*/*.pdf

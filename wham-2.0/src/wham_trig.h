@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <cstdlib>
+#include "wham_types.h"
 
 #ifndef M_PI
 #define M_PI = atan(1.)*4.

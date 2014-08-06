@@ -1,4 +1,4 @@
-    #ifndef WHAM_BEFEUS_H_
+#ifndef WHAM_BEFEUS_H_
 #define WHAM_BEFEUS_H_
 
 #include <iostream>
@@ -21,10 +21,11 @@ private:
     t_options options;
     bool precision_error;
 public:
-    void read_filelist_and_setup( std::string line,
-                       t_options parser_options,
-                       int previous_experiment,
-                       int previous_dof );
+    void read_filelist( std::string line,
+                        t_options &parser_options,
+                        int previous_experiment,
+                        int previous_dof );
+    void setup(t_options &parser_options);
     void read_trajectory();
     void build_histogram();
     void set_nbins();

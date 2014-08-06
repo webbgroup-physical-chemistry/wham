@@ -1,5 +1,65 @@
 #include "wham.h"
 
+/*
+void cpp_wham_conv(WHAM wham, t_options options)
+{
+    std::cerr << "\nDoes not work correctly.  Exiting for your sanity...\n";
+    std::exit(1);
+    const int nConv = ( wham.get_num_frames() - options.f0 ) /options.convStep - 1;
+    std::vector<WHAM> converge(nConv);
+    
+#ifdef _OPENMP
+    #pragma omp parallel for
+#endif
+    for (int n=0 ; n<nConv; n++)
+    {
+        converge[n] = wham;
+        int f0 = converge[n].get_options_f0();
+        int fN = f0 + n * options.convStep;
+        converge[n].set_options_fN(fN);
+        std::clock_t start;
+        if (converge[n].get_options_f0() != converge[n].get_options_fN() && converge[n].get_options_fN() != converge[n].get_final_frame())
+        {
+            start = std::clock();
+            converge[n].cpp_wham_initialize_vectors();
+            converge[n].cpp_wham_count_bins();
+            converge[n].cpp_wham_mapOmega();
+            converge[n].cpp_wham_doWHAM();
+            //Write_HDF5 outhdf5 = wham.get_outhdf5();
+            //char groupname[1024];
+            //sprintf(groupname,"/Ensemble/Conv-%d",n);
+            //std::vector<float> prob = converge[n].get_opt_prob();
+            //std::vector<float> pmf  = converge[n].get_opt_pmf();
+            //t_wham wham_args = converge[n].get_wham_args();
+            //std::vector<t_map> map = converge[n].get_map();
+            //outhdf5.write_wham(prob,pmf,wham_args.counts,map,groupname,f0,fN);
+            if (options.bVerbose || true)
+            {
+#ifdef _OPENMP
+                fprintf(stdout,"THREAD-%d: Completed frames %d to %d in %.1f ms\n",omp_get_thread_num(),f0,fN,(std::clock()-start)/(float)(CLOCKS_PER_SEC/1000));
+#else
+                fprintf(stdout,"Completed frames %d to %d in %.1f ms\n",f0,fN,(std::clock()-start)/(float)(CLOCKS_PER_SEC/1000));
+#endif
+            }
+        }
+    }
+    Write_HDF5 outhdf5 = wham.get_outhdf5();
+    for (int n=0; n<nConv; n++)
+    {
+        char groupname[1024];
+        sprintf(groupname,"/Ensemble/Conv-%d",n);
+        std::vector<float> prob = converge[n].get_opt_prob();
+        std::vector<float> pmf  = converge[n].get_opt_pmf();
+        t_wham wham_args = converge[n].get_wham_args();
+        std::vector<t_map> map = converge[n].get_map();
+        int f0 = converge[n].get_options_f0();
+        int fN = converge[n].get_options_fN();
+        outhdf5.write_wham(prob,pmf,wham_args.counts,map,groupname,f0,fN);
+    }
+    return;
+}
+*/
+
 void WHAM::cpp_wham_conv()
 {
     if (options.doConv)
@@ -54,7 +114,7 @@ void WHAM::cpp_wham_read_experiments()
     std::vector<TorsionExperiment> experiments(options.ntraj);
     experiment = experiments;
     experiments.clear();
-    //experiments.shrink_to_fit();
+    experiments.shrink_to_fit();
     std::string line;
     std::ifstream file(options.filelist.c_str());
     int i = 0;
@@ -72,13 +132,12 @@ void WHAM::cpp_wham_read_experiments()
             getline( file, line );
             if (not line.empty())
             {
-                experiment[i].read_filelist_and_setup( line, options, previous_experiment, previous_dof );
+                experiment[i].read_filelist( line, options, previous_experiment, previous_dof );
                 previous_experiment = experiment[i].Experiment();
                 previous_dof = experiment[i].DoF();
-                if (i == 0)
-                {
-                    first_experiment = experiment[i].Experiment();
-                }
+#ifndef _OPENMP
+                experiment[i].setup(options);
+#endif
                 i++;
             }
         }
@@ -89,6 +148,17 @@ void WHAM::cpp_wham_read_experiments()
         std::exit(1);
     }
     file.close();
+
+    first_experiment = experiment[0].Experiment();
+
+#ifdef _OPENMP
+    #pragma omp parallel for num_threads(omp_get_max_threads()) 
+    for (int n=0;n<i;n++)
+    {
+        experiment[n].setup(options);
+    }
+#endif
+
     return;
 }
 
@@ -351,8 +421,8 @@ void WHAM::cpp_wham_count_bins()
         }
         std::cout << "]\n";
     }
-    /* Report how many bins were unvisisted */
-    std::cout << "\n" << nzeros << "/" << nstates << " (" << nzeros*invnstates*100 << "%) bins unvisisted.\n";
+    /* Report how many bins were unvisited */
+    std::cout << "\n" << nzeros << "/" << nstates << " (" << nzeros*invnstates*100 << "%) bins unvisited.\n";
     return;
 }
 

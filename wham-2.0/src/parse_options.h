@@ -5,6 +5,9 @@
 #include <iterator>
 #include <iostream>
 #include "wham_types.h"
+#ifdef _OPENMP
+#include <omp.h>
+#endif
 
 void wham_options(int argc, char *argv[], t_options &options);
 void multidimensional_option(std::vector<std::string> option,

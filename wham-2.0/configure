@@ -2200,11 +2200,11 @@ fi
 
 } # ac_fn_f77_try_link
 
-# ac_fn_c_check_type LINENO TYPE VAR INCLUDES
-# -------------------------------------------
+# ac_fn_cxx_check_type LINENO TYPE VAR INCLUDES
+# ---------------------------------------------
 # Tests whether TYPE exists after having included INCLUDES, setting cache
 # variable VAR accordingly.
-ac_fn_c_check_type ()
+ac_fn_cxx_check_type ()
 {
   as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $2" >&5
@@ -2233,7 +2233,7 @@ if (sizeof ($2))
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
+if ac_fn_cxx_try_compile "$LINENO"; then :
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 $4
@@ -2254,7 +2254,7 @@ if (sizeof (($2)))
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
+if ac_fn_cxx_try_compile "$LINENO"; then :
 
 else
   eval "$3=yes"
@@ -2268,7 +2268,7 @@ eval ac_res=\$$3
 $as_echo "$ac_res" >&6; }
   eval $as_lineno_stack; ${as_lineno_stack:+:} unset as_lineno
 
-} # ac_fn_c_check_type
+} # ac_fn_cxx_check_type
 cat >config.log <<_ACEOF
 This file contains any messages produced by compilers while
 running configure, to aid debugging if configure makes a mistake.
@@ -3237,12 +3237,18 @@ ac_cpp='$CXXCPP $CPPFLAGS'
 ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 if test -z "$CXX"; then
   if test -n "$CCC"; then
     CXX=$CCC
   else
     if test -n "$ac_tool_prefix"; then
-  for ac_prog in g++ c++ gpp aCC CC cxx cc++ cl.exe FCC KCC RCC xlC_r xlC
+  for ac_prog in c++ g++ clang++ false
   do
     # Extract the first word of "$ac_tool_prefix$ac_prog", so it can be a program name with args.
 set dummy $ac_tool_prefix$ac_prog; ac_word=$2
@@ -3286,7 +3292,7 @@ fi
 fi
 if test -z "$CXX"; then
   ac_ct_CXX=$CXX
-  for ac_prog in g++ c++ gpp aCC CC cxx cc++ cl.exe FCC KCC RCC xlC_r xlC
+  for ac_prog in c++ g++ clang++ false
 do
   # Extract the first word of "$ac_prog", so it can be a program name with args.
 set dummy $ac_prog; ac_word=$2
@@ -3733,11 +3739,11 @@ else
     CXXFLAGS=
   fi
 fi
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
+ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 DEPDIR="${am__leading_dot}deps"
 
 ac_config_commands="$ac_config_commands depfiles"
@@ -3929,6 +3935,12 @@ else
   am__fastdepCXX_FALSE=
 fi
 
+
+ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
@@ -4463,11 +4475,11 @@ if test "x$ac_cv_prog_cc_c89" != xno; then :
 
 fi
 
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
+ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
@@ -4521,11 +4533,11 @@ if test "$am_cv_prog_cc_c_o" != yes; then
    # and then we could set am__CC="\$(top_srcdir)/compile \$(CC)"
    CC="$am_aux_dir/compile $CC"
 fi
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
+ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
 depcc="$CC"   am_compiler_list=
@@ -6377,7 +6389,7 @@ main ()
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
+if ac_fn_cxx_try_compile "$LINENO"; then :
   echo conftest.$ac_objext > conftest.lst
       lt_ar_try='$AR $AR_FLAGS libconftest.a @conftest.lst >&5'
       { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$lt_ar_try\""; } >&5
@@ -6995,6 +7007,7 @@ esac
 
  { $as_echo "$as_me:${as_lineno-$LINENO}: result: ${lt_sysroot:-no}" >&5
 $as_echo "${lt_sysroot:-no}" >&6; }
+
 
 
 
@@ -8229,7 +8242,6 @@ _ACEOF
 fi
 
 done
-
 
 
 
@@ -12219,11 +12231,11 @@ $as_echo "$enable_static" >&6; }
 
 
 fi
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
+ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 CC="$lt_save_CC"
 
@@ -12357,11 +12369,11 @@ as_fn_error $? "C++ preprocessor \"$CXXCPP\" fails sanity check
 See \`config.log' for more details" "$LINENO" 5; }
 fi
 
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
+ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 else
   _lt_caught_CXX_error=yes
@@ -15409,11 +15421,11 @@ fi
   lt_cv_prog_gnu_ld=$lt_save_with_gnu_ld
 fi # test "$_lt_caught_CXX_error" != yes
 
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
+ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
 
@@ -15437,9 +15449,78 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 # Only expand once:
 
 
-CXXFLAGS='-Wall -O3'
+#AX_CXX_COMPILE_STDCXX_11
+CXXFLAGS='-Wall -O3 -std=c++11'
 
 # Checks for libraries.
+
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for OpenMP flag of C++ compiler" >&5
+$as_echo_n "checking for OpenMP flag of C++ compiler... " >&6; }
+if ${ax_cv_cxx_openmp+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  saveCXXFLAGS=$CXXFLAGS
+ax_cv_cxx_openmp=unknown
+# Flags to try:  -fopenmp (gcc), -openmp (icc), -mp (SGI & PGI),
+#                -xopenmp (Sun), -omp (Tru64), -qsmp=omp (AIX), none
+ax_openmp_flags="-fopenmp -openmp -mp -xopenmp -omp -qsmp=omp none"
+if test "x$OPENMP_CXXFLAGS" != x; then
+  ax_openmp_flags="$OPENMP_CXXFLAGS $ax_openmp_flags"
+fi
+for ax_openmp_flag in $ax_openmp_flags; do
+  case $ax_openmp_flag in
+    none) CXXFLAGS=$saveCXX ;;
+    *) CXXFLAGS="$saveCXXFLAGS $ax_openmp_flag" ;;
+  esac
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+void omp_set_num_threads(int);
+int
+main ()
+{
+const int N = 100000;
+  int i, arr[N];
+
+  omp_set_num_threads(2);
+
+  #pragma omp parallel for
+  for (i = 0; i < N; i++) {
+    arr[i] = i;
+  }
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ax_cv_cxx_openmp=$ax_openmp_flag; break
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+done
+CXXFLAGS=$saveCXXFLAGS
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ax_cv_cxx_openmp" >&5
+$as_echo "$ax_cv_cxx_openmp" >&6; }
+if test "x$ax_cv_cxx_openmp" = "xunknown"; then
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Unable to find openMP" >&5
+$as_echo "$as_me: WARNING: Unable to find openMP" >&2;}
+else
+  if test "x$ax_cv_cxx_openmp" != "xnone"; then
+    OPENMP_CXXFLAGS=$ax_cv_cxx_openmp
+  fi
+  CXXFLAGS+=" $OPENMP_CXXFLAGS"
+    LDFLAGS+=" $OPENMP_CXXFLAGS"
+    ]
+fi
+
+
+
 echo "$as_me: this is boost.m4 serial 18" >&5
 boost_save_IFS=$IFS
 boost_version_req=
@@ -15559,11 +15640,11 @@ rm -f core conftest.err conftest.$ac_objext
       fi
     done
     done
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
+ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $boost_cv_inc_path" >&5
@@ -15574,9 +15655,9 @@ $as_echo "$boost_cv_inc_path" >&6; }
         { $as_echo "$as_me:${as_lineno-$LINENO}: $boost_errmsg" >&5
 $as_echo "$as_me: $boost_errmsg" >&6;}
 
-    as_fn_error $? "Boost libararies not counts
+    as_fn_error $? "Boost libararies not found" "$LINENO" 5
         ;;#(
-      yes" "$LINENO" 5
+      yes)
         BOOST_CPPFLAGS=
         ;;#(
       *)
@@ -15697,11 +15778,11 @@ if ac_fn_cxx_try_compile "$LINENO"; then :
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
   done
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
+ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
   case $boost_cv_lib_tag in #(
     # Some newer (>= 1.35?) versions of Boost seem to only use "gcc" as opposed
     # to "gcc41" for instance.
@@ -15754,13 +15835,12 @@ main ()
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
+if ac_fn_cxx_try_compile "$LINENO"; then :
   boost_guess_use_mt=:
 else
   boost_guess_use_mt=false
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-
 
 if test x"$boost_cv_inc_path" = xno; then
   { $as_echo "$as_me:${as_lineno-$LINENO}: Boost not available, not searching for the Boost program_options library" >&5
@@ -16033,11 +16113,11 @@ BOOST_PROGRAM_OPTIONS_LDPATH=$boost_cv_lib_program_options_LDPATH
 BOOST_LDPATH=$boost_cv_lib_program_options_LDPATH
 BOOST_PROGRAM_OPTIONS_LIBS=$boost_cv_lib_program_options_LIBS
 CPPFLAGS=$boost_save_CPPFLAGS
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
+ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 fi
 
 
@@ -16234,11 +16314,11 @@ else
   found_library=no
 fi
 
-    ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
+    ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
 
@@ -16712,11 +16792,11 @@ if test $ac_compiler_gnu = yes; then
 else
   G77=
 fi
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
+ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
       ac_ext=f
 ac_compile='$F77 -c $FFLAGS conftest.$ac_ext >&5'
 ac_link='$F77 -o conftest$ac_exeext $FFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
@@ -19428,11 +19508,11 @@ fi
   CFLAGS="$lt_save_CFLAGS"
 fi # test "$_lt_disable_F77" != yes
 
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
+ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
 ac_ext=f
@@ -19776,11 +19856,11 @@ $as_echo "$ac_cv_f77_libs" >&6; }
 FLIBS="$ac_cv_f77_libs"
 
 
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
+ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 ac_ext=f
 ac_compile='$F77 -c $FFLAGS conftest.$ac_ext >&5'
@@ -19889,11 +19969,11 @@ as_fn_error $? "linking to Fortran libraries from C fails
 See \`config.log' for more details" "$LINENO" 5; }
 fi
 
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
+ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 ac_ext=f
 ac_compile='$F77 -c $FFLAGS conftest.$ac_ext >&5'
@@ -20056,11 +20136,11 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_f77_mangling" >&5
 $as_echo "$ac_cv_f77_mangling" >&6; }
 
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
+ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
 
@@ -20095,11 +20175,11 @@ case $ac_cv_f77_mangling in *," underscore"*) ac_val="$ac_val"_ ;; esac
 
 sgemm="$ac_val"
 
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
+ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 ac_ext=f
 ac_compile='$F77 -c $FFLAGS conftest.$ac_ext >&5'
@@ -20114,11 +20194,11 @@ case $ac_cv_f77_mangling in *," underscore"*) ac_val="$ac_val"_ ;; esac
 
 dgemm="$ac_val"
 
-ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
+ac_ext=cpp
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
 ax_blas_save_LIBS="$LIBS"
@@ -20156,7 +20236,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   ax_blas_ok=yes
 else
   BLAS_LIBS=""
@@ -20200,7 +20280,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   ax_blas_ok=yes
 fi
 rm -f core conftest.err conftest.$ac_objext \
@@ -20246,7 +20326,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   eval "$as_ac_Lib=yes"
 else
   eval "$as_ac_Lib=no"
@@ -20300,7 +20380,7 @@ return ATL_xerbla ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   ac_cv_lib_atlas_ATL_xerbla=yes
 else
   ac_cv_lib_atlas_ATL_xerbla=no
@@ -20346,7 +20426,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   eval "$as_ac_Lib=yes"
 else
   eval "$as_ac_Lib=no"
@@ -20392,7 +20472,7 @@ return cblas_dgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   ac_cv_lib_cblas_cblas_dgemm=yes
 else
   ac_cv_lib_cblas_cblas_dgemm=no
@@ -20450,7 +20530,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   eval "$as_ac_Lib=yes"
 else
   eval "$as_ac_Lib=no"
@@ -20497,7 +20577,7 @@ return $dgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   eval "$as_ac_Lib=yes"
 else
   eval "$as_ac_Lib=no"
@@ -20544,7 +20624,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   eval "$as_ac_Lib=yes"
 else
   eval "$as_ac_Lib=no"
@@ -20606,7 +20686,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   eval "$as_ac_Lib=yes"
 else
   eval "$as_ac_Lib=no"
@@ -20658,7 +20738,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   eval "$as_ac_Lib=yes"
 else
   eval "$as_ac_Lib=no"
@@ -20713,7 +20793,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   eval "$as_ac_Lib=yes"
 else
   eval "$as_ac_Lib=no"
@@ -20765,7 +20845,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   eval "$as_ac_Lib=yes"
 else
   eval "$as_ac_Lib=no"
@@ -20820,7 +20900,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   eval "$as_ac_Lib=yes"
 else
   eval "$as_ac_Lib=no"
@@ -20869,7 +20949,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   ax_blas_ok=yes;BLAS_LIBS="-framework vecLib"
 fi
 rm -f core conftest.err conftest.$ac_objext \
@@ -20915,7 +20995,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   eval "$as_ac_Lib=yes"
 else
   eval "$as_ac_Lib=no"
@@ -20969,7 +21049,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   eval "$as_ac_Lib=yes"
 else
   eval "$as_ac_Lib=no"
@@ -21023,7 +21103,7 @@ return acosp ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   ac_cv_lib_sunmath_acosp=yes
 else
   ac_cv_lib_sunmath_acosp=no
@@ -21069,7 +21149,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   eval "$as_ac_Lib=yes"
 else
   eval "$as_ac_Lib=no"
@@ -21127,7 +21207,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   eval "$as_ac_Lib=yes"
 else
   eval "$as_ac_Lib=no"
@@ -21181,7 +21261,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   eval "$as_ac_Lib=yes"
 else
   eval "$as_ac_Lib=no"
@@ -21235,7 +21315,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   eval "$as_ac_Lib=yes"
 else
   eval "$as_ac_Lib=no"
@@ -21282,7 +21362,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   eval "$as_ac_Lib=yes"
 else
   eval "$as_ac_Lib=no"
@@ -21338,7 +21418,7 @@ return $sgemm ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   eval "$as_ac_Lib=yes"
 else
   eval "$as_ac_Lib=no"
@@ -21400,7 +21480,7 @@ return main ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   ac_cv_lib_m_main=yes
 else
   ac_cv_lib_m_main=no
@@ -21450,7 +21530,7 @@ return main ();
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
+if ac_fn_cxx_try_link "$LINENO"; then :
   ac_cv_lib_z_main=yes
 else
   ac_cv_lib_z_main=no
@@ -21552,7 +21632,7 @@ main ()
   return 0;
 }
 _ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
+if ac_fn_cxx_try_compile "$LINENO"; then :
   ac_cv_header_stdbool_h=yes
 else
   ac_cv_header_stdbool_h=no
@@ -21561,7 +21641,7 @@ rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
 fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_header_stdbool_h" >&5
 $as_echo "$ac_cv_header_stdbool_h" >&6; }
-   ac_fn_c_check_type "$LINENO" "_Bool" "ac_cv_type__Bool" "$ac_includes_default"
+   ac_fn_cxx_check_type "$LINENO" "_Bool" "ac_cv_type__Bool" "$ac_includes_default"
 if test "x$ac_cv_type__Bool" = xyes; then :
 
 cat >>confdefs.h <<_ACEOF
@@ -21572,7 +21652,7 @@ _ACEOF
 fi
 
 
-ac_fn_c_check_type "$LINENO" "size_t" "ac_cv_type_size_t" "$ac_includes_default"
+ac_fn_cxx_check_type "$LINENO" "size_t" "ac_cv_type_size_t" "$ac_includes_default"
 if test "x$ac_cv_type_size_t" = xyes; then :
 
 else
@@ -21587,6 +21667,8 @@ fi
 # Checks for library functions.
 
 ac_config_files="$ac_config_files src/Makefile tools/Makefile"
+
+
 
 ac_config_files="$ac_config_files Makefile"
 

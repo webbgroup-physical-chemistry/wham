@@ -201,7 +201,9 @@ int Interact_H5::h5_get_dataset(std::string path, h5_dat &data)
             if (bin_out[i] > 0)
             {
                 // There are pdims[1] degrees of freedom, so we want the index of ndof - 1
-                data.bin_prob.push_back(prob_out[i][pdims[1]-1]/(float)bin_out[i]);
+                //data.bin_prob.push_back(prob_out[i][pdims[1]-1]/(float)bin_out[i]);
+                /* Don't divide by the number of times the bin is visited yet */
+                data.bin_prob.push_back(prob_out[i][pdims[1]-1]);
             }
             else
             {
@@ -238,6 +240,7 @@ int Interact_H5::h5_get_dataset(std::string path, h5_dat &data)
 
 void Interact_H5::h5_bin_assignments(std::vector<bw_datfile> &list)
 {
+    /* Obtain the bin number for each frame */
     char name[1024];
     DataSet *dataset;
     DataSpace *dataspace;
@@ -247,7 +250,7 @@ void Interact_H5::h5_bin_assignments(std::vector<bw_datfile> &list)
         for (int i=0; i<(int)list.size(); i++)
         {
             sprintf(name,"/Trajectories/Traj-%i/Bin",list[i].experiment);
-            std::cout << name << std::endl;
+            //std::cout << name << std::endl;
             dataset = new DataSet(file->openDataSet(name));
             dataspace = new DataSpace(dataset->getSpace());
             int rank = dataspace->getSimpleExtentNdims();

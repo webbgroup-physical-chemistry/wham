@@ -79,13 +79,13 @@ class Read_H5 :
         ax.set_xscale("log",nonposx='clip')
 
 
-def plot_2d(xs,ys,zs,ax,zmax=None,logscale=False,cb=True) :
+def plot_2d(xs,ys,zs,ax,zmax=None,logscale=False,cb=True,zmin_avg=True) :
     if zmax == None :
         zmax = max(zs)
     minx,maxx = min(xs),max(xs)
     miny,maxy = min(ys),max(ys)
     xi = np.linspace(minx,maxx,360)
-    yi = np.linspace(minx,maxx,360)
+    yi = np.linspace(miny,maxy,360)
     if zmax == 100 or not logscale :
         zi = griddata(xs,ys,zs,xi,yi)
     else :
@@ -105,6 +105,8 @@ def plot_2d(xs,ys,zs,ax,zmax=None,logscale=False,cb=True) :
     myplot = ax.pcolorfast(xi,yi,zi,cmap='RdBu')
     x0,x1 = ax.get_xlim()
     y0,y1 = ax.get_ylim()
+    aspect_Ratio = (x1-x0)/(y1-y0)
+    ax.set_aspect(aspect_Ratio)
     ax.set_xlim(-180,175)
     ax.set_ylim(-180,175)
     ax.set_xticks(range(-120,121,60))
@@ -117,7 +119,8 @@ def plot_2d(xs,ys,zs,ax,zmax=None,logscale=False,cb=True) :
             cbar.ax.set_yticklabels(['0%','20%','40%','60%','80%','>100%'])
     elif logscale :
         # Set the minimum value to the average magnitude
-        zmin=int(np.floor(log10(np.average(zs))))
+        if zmin_avg :
+            zmin=int(np.floor(log10(np.average(zs))))
         myplot.set_clim(zmin,-1)
         if cb :
             cbar = plt.colorbar(myplot,format='%i',ticks=range(zmin,0,1))

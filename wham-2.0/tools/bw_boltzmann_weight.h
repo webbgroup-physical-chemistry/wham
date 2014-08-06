@@ -13,6 +13,7 @@ private :
     std::vector<std::vector<float> > average;
     std::vector<std::vector<float> > stdev;
     Interact_H5 h5file;
+    bool xvg_numbered;
 public :
     void bw_init(bw_options option);
     void bw_read_filelist();
