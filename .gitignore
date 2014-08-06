@@ -1,3 +1,7 @@
 dat_*/
 *.h5
+*.xvg
+*.pdf
+*.o
+*.file
 tmp/
