@@ -120,7 +120,7 @@ def plot_2d(xs,ys,zs,ax,zmax=None,logscale=False,cb=True,zmin_avg=True) :
     elif logscale :
         # Set the minimum value to the average magnitude
         if zmin_avg :
-            zmin=int(np.floor(log10(np.average(zs))))
+            zmin=int(np.floor(log10(np.average(zs))))-1
         myplot.set_clim(zmin,-1)
         if cb :
             cbar = plt.colorbar(myplot,format='%i',ticks=range(zmin,0,1))

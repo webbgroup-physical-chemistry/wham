@@ -45,29 +45,25 @@ void Boltzmann_Weight::calc_average(h5_dat &prob, bw_datfile *list, int nexp)
     prob.avg = ph;
     prob.stdev = ph;
     /* Normalize probabilities to 1.0 */
-    std::vector<float> sum(nitems,0),invsum(nitems,0);
+    double sum = 0, invsum = 1;
     for (int i=0; i<nexp;i++)
     {
         for (int j=0; j<(int)list[i].frameN.size(); j+=frame_step)
         {
             frame = list[i].frameN[j];
-            if (frame >= prob.span[0] && frame <= prob.span[1])
+            if (frame >= prob.span[0] && frame <= prob.span[1] )
             {
-                for (int k=0; k<nitems; k++)
-                {
-                    sum[k] += prob.bin_prob[list[i].bin[frame]] / bincounts[list[i].bin[frame]];
-                    //std::cout << "dat: " << i << ", frame: " << frame << ", bin: " << list[i].bin[frame] << ", bin prob: " << prob.bin_prob[list[i].bin[frame]] << ", bincounts: " << bincounts[list[i].bin[frame]] << ", frame prob: " << prob.bin_prob[list[i].bin[frame]] / bincounts[list[i].bin[frame]] << ", current sum: " << sum[k] << std::endl;;
-                }
+                sum += (double)prob.bin_prob[list[i].bin[frame]] / (double)bincounts[list[i].bin[frame]];
+                //std::cout << "dat: " << prob.bin_prob[list[i].bin[frame]] << " " << frame << " " << bincounts[list[i].bin[frame]] << " " << prob.bin_prob[list[i].bin[frame]] / bincounts[list[i].bin[frame]] << std::endl;
+                //std::cout << "dat: " << i << ", frame: " << frame << ", bin: " << list[i].bin[frame] << ", bin prob: " << prob.bin_prob[list[i].bin[frame]] << ", bincounts: " << bincounts[list[i].bin[frame]] << ", frame prob: " << prob.bin_prob[list[i].bin[frame]] / bincounts[list[i].bin[frame]] << " " << list[i].dat[j][k] << std::endl;
             }
         }
     }
-    for (int i=0; i<nitems; i++)
-    {
-        invsum[i] = 1.0/sum[i];
-    }
+    invsum = 1/sum;
+    
     if (options.isangle)
     {
-        std::vector<float> x(nitems,0), y(nitems,0);
+        std::vector<double> x(nitems,0), y(nitems,0);
         for (int i=0; i<nexp;i++)
         {
             for (int j=0; j<(int)list[i].frameN.size(); j+=frame_step)
@@ -77,8 +73,8 @@ void Boltzmann_Weight::calc_average(h5_dat &prob, bw_datfile *list, int nexp)
                 {
                     for (int k=0; k<nitems; k++)
                     {
-                        x[k] += prob.bin_prob[list[i].bin[frame]] / bincounts[list[i].bin[frame]] * invsum[k] * cos(list[i].dat[j][k] * DEG2RAD);
-                        y[k] += prob.bin_prob[list[i].bin[frame]] / bincounts[list[i].bin[frame]] * invsum[k] * sin(list[i].dat[j][k] * DEG2RAD);
+                        x[k] += prob.bin_prob[list[i].bin[frame]] / bincounts[list[i].bin[frame]] * invsum * cos(list[i].dat[j][k] * DEG2RAD);
+                        y[k] += prob.bin_prob[list[i].bin[frame]] / bincounts[list[i].bin[frame]] * invsum * sin(list[i].dat[j][k] * DEG2RAD);
                     }
                 }
             }
@@ -91,7 +87,7 @@ void Boltzmann_Weight::calc_average(h5_dat &prob, bw_datfile *list, int nexp)
     }
     else
     {
-        std::vector<float> total(nitems,0),vartotal(nitems,0);
+        std::vector<double> total(nitems,0),vartotal(nitems,0);
         for (int i=0; i<nexp;i++)
         {
             for (int j=0; j<(int)list[i].frameN.size(); j+=frame_step)
@@ -101,7 +97,8 @@ void Boltzmann_Weight::calc_average(h5_dat &prob, bw_datfile *list, int nexp)
                 {
                     for (int k=0; k<nitems; k++)
                     {
-                        total[k] += prob.bin_prob[list[i].bin[frame]] / bincounts[list[i].bin[frame]] * invsum[k] * list[i].dat[j][k];
+                        total[k] += prob.bin_prob[list[i].bin[frame]] / bincounts[list[i].bin[frame]] * invsum * list[i].dat[j][k];
+                        //std::cout << "dat: " << i << " " << frame << " " << list[i].bin[frame] << " " << prob.bin_prob[list[i].bin[frame]] << " " << bincounts[list[i].bin[frame]] << " " << sum << " " << invsum << " " << list[i].dat[j][k] << std::endl;
                     }
                 }
             }
@@ -115,7 +112,7 @@ void Boltzmann_Weight::calc_average(h5_dat &prob, bw_datfile *list, int nexp)
                 {
                     for (int k=0; k<nitems; k++)
                     {
-                        vartotal[k] += prob.bin_prob[list[i].bin[frame]] / bincounts[list[i].bin[frame]] * invsum[k] * list[i].dat[j][k] * ( list[i].dat[j][k] - total[k] ) ;
+                        vartotal[k] += prob.bin_prob[list[i].bin[frame]] / bincounts[list[i].bin[frame]] * invsum * list[i].dat[j][k] * ( list[i].dat[j][k] - total[k] ) ;
                     }
                 }
             }
@@ -126,7 +123,6 @@ void Boltzmann_Weight::calc_average(h5_dat &prob, bw_datfile *list, int nexp)
             prob.stdev[i] = sqrt(vartotal[i]);
         }
     }
-    xvg_numbered = false;
     return;
 }
 
@@ -147,7 +143,6 @@ void Boltzmann_Weight::bw_calc_prob()
         }
         probs.push_back(placeholder);
         calc_average(probs[n],&list[0],(int)list.size());
-        std::cout << "AVERAGE: " << probs[n].avg[0] << std::endl;
         /* set up next set of convergence data */
         n++;
         sprintf(name,"/Ensemble/Conv-%i",n);
@@ -163,9 +158,21 @@ void Boltzmann_Weight::bw_calc_prob()
     {
         h5file.h5_write_prob(probs);
     }
+    // Extra stuff for some scripts
     std::cout << "Final Averages:\n";
     for (int i=0; i<(int)probs[n].avg.size(); i++)
         std::cout << "Average: " << probs[n].avg[i] << ", STDEV: " << probs[n].stdev[i] << ", DATASET: " << options.datnames[i] << ", UNITS: " << options.datunits[i] << std::endl;
+    for (int i=0; i<(int)probs[n].avg.size(); i++)
+    {
+        if (i != (int)probs[n].avg.size() -1)
+        {
+            std::cout << probs[n].avg[i] << " ";
+        }
+        else
+        {
+            std::cout << probs[n].avg[i] << std::endl;
+        }
+    }
 }
 
 void Boltzmann_Weight::bw_parse_dat()
@@ -262,11 +269,17 @@ void Boltzmann_Weight::bw_read_dat(bw_datfile &file)
                 values.shrink_to_fit();
                 i++;
             }
+
         }
     }
     else
     {
         std::cerr << "\nError: Cannot open " << file.filename << ". Exiting..." << std::endl;
+        std::exit(1);
+    }
+    if ( i < 1 )
+    {
+        std::cerr << "\nError: " << file.filename << " is empty.  Reconsider the contents of " << options.xvglist << ".\n";
         std::exit(1);
     }
 }

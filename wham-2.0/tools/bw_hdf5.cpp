@@ -318,6 +318,7 @@ void Interact_H5::h5_write_prob(std::vector<h5_dat> probs)
 
             /* Write data */
             sprintf(name,"/Ensemble/%s",options.datnames[i].c_str());
+            std::cout << "Writing " << name << std::endl;
             /*
              See if it exists already.  If it does, unlink it so we can replace it.
              This is set up as a while loop so that it can trivially be replaced with
@@ -362,7 +363,6 @@ void Interact_H5::h5_write_prob(std::vector<h5_dat> probs)
             dataset->close();
             delete dataset;
             delete dataspace;
-            std::cout << name << std::endl;
         }
     }
     // catch failure caused by the H5File operations
