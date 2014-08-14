@@ -30,8 +30,8 @@ Kernel configured for up to 8 processors.
 Processor type: i486 (Intel 80486)
 Processors active: 0 1 2 3 4 5 6 7
 Primary memory available: 16.00 gigabytes
-Default processor set: 206 tasks, 910 threads, 8 processors
-Load average: 1.64, Mach factor: 6.34
+Default processor set: 189 tasks, 789 threads, 8 processors
+Load average: 1.67, Mach factor: 6.32
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
@@ -1470,20 +1470,20 @@ Using built-in specs.
 Target: x86_64-apple-darwin13
 Thread model: posix
 gcc version 4.8.2 (MacPorts gcc48 4.8.2_2) 
- /opt/local/libexec/gcc/x86_64-apple-darwin13/4.8.2/f951 conftest.f -ffixed-form -fPIC -feliminate-unused-debug-symbols -quiet -dumpbase conftest.f -mmacosx-version-min=10.9.3 -mtune=core2 -auxbase conftest -g -O2 -version -fopenmp -fintrinsic-modules-path /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/finclude -o /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//ccTvzLys.s
+ /opt/local/libexec/gcc/x86_64-apple-darwin13/4.8.2/f951 conftest.f -ffixed-form -fPIC -feliminate-unused-debug-symbols -quiet -dumpbase conftest.f -mmacosx-version-min=10.9.3 -mtune=core2 -auxbase conftest -g -O2 -version -fopenmp -fintrinsic-modules-path /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/finclude -o /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//cc2SyOpU.s
 GNU Fortran (MacPorts gcc48 4.8.2_2) version 4.8.2 (x86_64-apple-darwin13)
 	compiled by GNU C version 4.8.2, GMP version 6.0.0, MPFR version 3.1.1-p2, MPC version 1.0.2
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
 GNU Fortran (MacPorts gcc48 4.8.2_2) version 4.8.2 (x86_64-apple-darwin13)
 	compiled by GNU C version 4.8.2, GMP version 6.0.0, MPFR version 3.1.1-p2, MPC version 1.0.2
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
- /opt/local/bin/as -v -arch x86_64 -force_cpusubtype_ALL -o /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//ccWHxat9.o /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//ccTvzLys.s
+ /opt/local/bin/as -v -arch x86_64 -force_cpusubtype_ALL -o /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//ccuL9ZC8.o /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//cc2SyOpU.s
 Apple Inc version cctools-855, GNU assembler version 1.38
 Reading specs from /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/../../../libgfortran.spec
 rename spec lib to liborig
- /opt/local/libexec/gcc/x86_64-apple-darwin13/4.8.2/collect2 -dynamic -arch x86_64 -macosx_version_min 10.9.3 -weak_reference_mismatches non-weak -o conftest -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2 -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/../../.. /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//ccWHxat9.o -lgfortran -lgomp -no_compact_unwind -lSystem -lgcc_ext.10.5 -lgcc -lquadmath -lm -lgcc_ext.10.5 -lgcc -lSystem -v -idsym -dsym
+ /opt/local/libexec/gcc/x86_64-apple-darwin13/4.8.2/collect2 -dynamic -arch x86_64 -macosx_version_min 10.9.3 -weak_reference_mismatches non-weak -o conftest -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2 -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/../../.. /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//ccuL9ZC8.o -lgfortran -lgomp -no_compact_unwind -lSystem -lgcc_ext.10.5 -lgcc -lquadmath -lm -lgcc_ext.10.5 -lgcc -lSystem -v -idsym -dsym
 collect2 version 4.8.2
-/opt/local/bin/ld -dynamic -arch x86_64 -macosx_version_min 10.9.3 -weak_reference_mismatches non-weak -o conftest -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2 -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/../../.. /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//ccWHxat9.o -lgfortran -lgomp -no_compact_unwind -lSystem -lgcc_ext.10.5 -lgcc -lquadmath -lm -lgcc_ext.10.5 -lgcc -lSystem -v
+/opt/local/bin/ld -dynamic -arch x86_64 -macosx_version_min 10.9.3 -weak_reference_mismatches non-weak -o conftest -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2 -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/../../.. /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//ccuL9ZC8.o -lgfortran -lgomp -no_compact_unwind -lSystem -lgcc_ext.10.5 -lgcc -lquadmath -lm -lgcc_ext.10.5 -lgcc -lSystem -v
 @(#)PROGRAM:ld  PROJECT:ld64-236.3
 configured to support archs: i386 x86_64 x86_64h armv6 armv7 armv7s armv7m arm64
 Library search paths:
@@ -1502,20 +1502,20 @@ Using built-in specs.
 Target: x86_64-apple-darwin13
 Thread model: posix
 gcc version 4.8.2 (MacPorts gcc48 4.8.2_2) 
- /opt/local/libexec/gcc/x86_64-apple-darwin13/4.8.2/f951 conftest.f -ffixed-form -fPIC -feliminate-unused-debug-symbols -quiet -dumpbase conftest.f -mmacosx-version-min=10.9.3 -mtune=core2 -auxbase conftest -g -O2 -version -fopenmp -fintrinsic-modules-path /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/finclude -o /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//cckyaSAh.s
+ /opt/local/libexec/gcc/x86_64-apple-darwin13/4.8.2/f951 conftest.f -ffixed-form -fPIC -feliminate-unused-debug-symbols -quiet -dumpbase conftest.f -mmacosx-version-min=10.9.3 -mtune=core2 -auxbase conftest -g -O2 -version -fopenmp -fintrinsic-modules-path /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/finclude -o /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//cc0Am0mA.s
 GNU Fortran (MacPorts gcc48 4.8.2_2) version 4.8.2 (x86_64-apple-darwin13)
 	compiled by GNU C version 4.8.2, GMP version 6.0.0, MPFR version 3.1.1-p2, MPC version 1.0.2
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
 GNU Fortran (MacPorts gcc48 4.8.2_2) version 4.8.2 (x86_64-apple-darwin13)
 	compiled by GNU C version 4.8.2, GMP version 6.0.0, MPFR version 3.1.1-p2, MPC version 1.0.2
 GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
- /opt/local/bin/as -v -arch x86_64 -force_cpusubtype_ALL -o /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//ccY5eC2F.o /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//cckyaSAh.s
+ /opt/local/bin/as -v -arch x86_64 -force_cpusubtype_ALL -o /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//ccGQAv0J.o /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//cc0Am0mA.s
 Apple Inc version cctools-855, GNU assembler version 1.38
 Reading specs from /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/../../../libgfortran.spec
 rename spec lib to liborig
- /opt/local/libexec/gcc/x86_64-apple-darwin13/4.8.2/collect2 -dynamic -arch x86_64 -macosx_version_min 10.9.3 -weak_reference_mismatches non-weak -o conftest -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2 -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/../../.. /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//ccY5eC2F.o -lgfortran -lgomp -no_compact_unwind -lSystem -lgcc_ext.10.5 -lgcc -lquadmath -lm -lgcc_ext.10.5 -lgcc -lSystem -v -idsym -dsym
+ /opt/local/libexec/gcc/x86_64-apple-darwin13/4.8.2/collect2 -dynamic -arch x86_64 -macosx_version_min 10.9.3 -weak_reference_mismatches non-weak -o conftest -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2 -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/../../.. /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//ccGQAv0J.o -lgfortran -lgomp -no_compact_unwind -lSystem -lgcc_ext.10.5 -lgcc -lquadmath -lm -lgcc_ext.10.5 -lgcc -lSystem -v -idsym -dsym
 collect2 version 4.8.2
-/opt/local/bin/ld -dynamic -arch x86_64 -macosx_version_min 10.9.3 -weak_reference_mismatches non-weak -o conftest -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2 -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/../../.. /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//ccY5eC2F.o -lgfortran -lgomp -no_compact_unwind -lSystem -lgcc_ext.10.5 -lgcc -lquadmath -lm -lgcc_ext.10.5 -lgcc -lSystem -v
+/opt/local/bin/ld -dynamic -arch x86_64 -macosx_version_min 10.9.3 -weak_reference_mismatches non-weak -o conftest -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2 -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/../../.. /var/folders/8f/f2rvfrwn3sx9dqdsl08zhsk00000gn/T//ccGQAv0J.o -lgfortran -lgomp -no_compact_unwind -lSystem -lgcc_ext.10.5 -lgcc -lquadmath -lm -lgcc_ext.10.5 -lgcc -lSystem -v
 @(#)PROGRAM:ld  PROJECT:ld64-236.3
 configured to support archs: i386 x86_64 x86_64h armv6 armv7 armv7s armv7m arm64
 Library search paths:
@@ -1538,7 +1538,7 @@ configure:19995: $? = 0
 configure:20036: gcc -o conftest -g -O2   -fopenmp conftest.c cfortran_test.o   -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2 -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/../../.. -lgfortran -lgomp -lquadmath -lm >&5
 Undefined symbols for architecture x86_64:
   "_foobar", referenced from:
-      _main in ccWBHjFM.o
+      _main in ccJX4lQI.o
      (maybe you meant: _foobar_)
 ld: symbol(s) not found for architecture x86_64
 collect2: error: ld returned 1 exit status
@@ -1601,7 +1601,7 @@ configure:20255: checking if sgemm_ is being linked in already
 configure:20283: c++ -o conftest -Wall -O3 -std=c++11 -fopenmp   -fopenmp conftest.cpp   -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2 -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/../../.. -lgfortran -lgomp -lquadmath -lm >&5
 Undefined symbols for architecture x86_64:
   "_sgemm_", referenced from:
-      _main in ccyYZVry.o
+      _main in ccfNXVVa.o
 ld: symbol(s) not found for architecture x86_64
 collect2: error: ld returned 1 exit status
 configure:20283: $? = 1
@@ -2513,6 +2513,23 @@ target_alias=''
 #define HAVE_LIBZ 1
 
 configure: exit 0
+
+## ---------------------- ##
+## Running config.status. ##
+## ---------------------- ##
+
+This file was extended by wham config.status 2.0, which was
+generated by GNU Autoconf 2.69.  Invocation command line was
+
+  CONFIG_FILES    = 
+  CONFIG_HEADERS  = 
+  CONFIG_LINKS    = 
+  CONFIG_COMMANDS = 
+  $ ./config.status Makefile
+
+on 4312-ce644.cm.utexas.edu
+
+config.status:1137: creating Makefile
 
 ## ---------------------- ##
 ## Running config.status. ##

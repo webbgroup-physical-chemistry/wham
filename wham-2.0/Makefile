@@ -808,8 +808,8 @@ distclean: clean
 
 install:
 	mkdir -p bin
-	-mv src/wham bin/wham
-	-mv tools/bw_wham bin/bw_wham
+	-cp src/wham bin/wham
+	-cp tools/bw_wham bin/bw_wham
 
 print-%:
 	@echo '$*$($*)'
