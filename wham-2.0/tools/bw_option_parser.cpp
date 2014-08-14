@@ -107,7 +107,7 @@ void bw_option_parser(int argc, char *argv[], bw_options &options)
     return;
 }
 
-void bw_print_options(bw_options &options)
+void bw_print_options(const bw_options &options)
 {
     std::cout << std::string(70, '-') << "\n";
     std::cout << "Reading data from " << options.xvglist << std::endl;

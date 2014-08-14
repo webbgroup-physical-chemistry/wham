@@ -6,7 +6,7 @@
  * will run everything requiring knowledge of the dof.
  */
 
-void TorsionExperiment::read_filelist( std::string line, t_options &parser_options, int previous_experiment, int previous_dof )
+void TorsionExperiment::read_filelist( const std::string &line, const t_options &parser_options, const int &previous_experiment, const int &previous_dof )
 {
     /* Assign the parser options */
     options = parser_options;
@@ -198,7 +198,7 @@ void TorsionExperiment::weight_dihedral_restraint_potentials()
     return;
 }
 
-float TorsionExperiment::weight_dihedral_restraint_potential(float phi)
+float TorsionExperiment::weight_dihedral_restraint_potential(const float &phi)
 {
     float diffphi = delta_angle(phi0,phi);
     float ddp;
@@ -213,7 +213,7 @@ float TorsionExperiment::weight_dihedral_restraint_potential(float phi)
     return exp(-beta * 0.5 * fc * ddp * ddp);
 }
 
-double TorsionExperiment::simpson_integration(float a, float b, int steps)
+double TorsionExperiment::simpson_integration(const float &a, const float &b, const int &steps)
 {
     double integrand = 0;
     double width = ((double)b - (double)a)/(double)steps;
@@ -228,7 +228,7 @@ double TorsionExperiment::simpson_integration(float a, float b, int steps)
     return integrand;
 }
 
-double TorsionExperiment::trapezoidal_integration( float a, float b, int steps)
+double TorsionExperiment::trapezoidal_integration( const float &a, const float &b, const int &steps)
 {
     double integrand = 0;
     double width = ((double)b - (double)a)/(double)steps;
@@ -258,7 +258,7 @@ void TorsionExperiment::assign_omega()
     return;
 }
 
-void TorsionExperiment::assign_NDbin(int frame, int bin)
+void TorsionExperiment::assign_NDbin(const int &frame, const int &bin)
 {
     frame_bins[frame].binND = bin;
     return;

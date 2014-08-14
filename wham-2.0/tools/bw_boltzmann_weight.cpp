@@ -4,7 +4,7 @@
 // Read in xvg files
 // Calculate average
 
-void Boltzmann_Weight::bw_init(bw_options option)
+void Boltzmann_Weight::bw_init(const bw_options &option)
 {
     options = option;
     h5file.h5_init(options);
@@ -15,7 +15,7 @@ void Boltzmann_Weight::bw_init(bw_options option)
     return;
 }
 
-void Boltzmann_Weight::calc_average(h5_dat &prob, bw_datfile *list, int nexp)
+void Boltzmann_Weight::calc_average(h5_dat &prob, bw_datfile *list, const int &nexp)
 {
     /* 
      * To easily play around with and determine if skipping frames uniformly returns
@@ -41,9 +41,8 @@ void Boltzmann_Weight::calc_average(h5_dat &prob, bw_datfile *list, int nexp)
         }
     }
     int nitems = list[0].dat[0].size();
-    std::vector<float> ph(nitems,0);
-    prob.avg = ph;
-    prob.stdev = ph;
+    prob.avg = std::vector<float> (nitems,0);
+    prob.stdev = std::vector<float> (nitems,0);
     /* Normalize probabilities to 1.0 */
     double sum = 0, invsum = 1;
     for (int i=0; i<nexp;i++)

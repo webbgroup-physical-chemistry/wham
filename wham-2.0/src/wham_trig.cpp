@@ -1,6 +1,6 @@
 #include "wham_trig.h"
 
-std::vector<float> angle2vector( float angle )
+std::vector<float> angle2vector( const float &angle )
 {
     std::vector<float> v(2);
     v[0] = cos( angle * DEG2RAD );
@@ -8,13 +8,13 @@ std::vector<float> angle2vector( float angle )
     return v;
 }
 
-float periodic( float angle )
+float periodic( const float &angle )
 {
     std::vector<float> v = angle2vector(angle);
     return atan2(v[1],v[0]) * RAD2DEG;
 }
 
-float delta_angle( float a, float b)
+float delta_angle( const float &a, const float &b)
 {
     std::vector<float> a1(2), b1(2);
     a1 = angle2vector(a);

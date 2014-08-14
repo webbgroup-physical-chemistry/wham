@@ -15,13 +15,13 @@ private :
     Interact_H5 h5file;
     bool xvg_numbered;
 public :
-    void bw_init(bw_options option);
+    void bw_init(const bw_options &option);
     void bw_read_filelist();
     void bw_parse_dat();
     void bw_read_dat(bw_datfile &file);
-    void bw_write_dat(bw_datfile file);
+    void bw_write_dat(const bw_datfile file);
     void bw_calc_prob();
-    void calc_average(h5_dat &prob, bw_datfile *list, int nexp);
+    void calc_average(h5_dat &prob, bw_datfile *list, const int &nexp);
 };
 
 #endif

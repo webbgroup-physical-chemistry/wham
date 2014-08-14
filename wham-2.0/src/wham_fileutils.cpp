@@ -1,6 +1,6 @@
 #include "wham_fileutils.h"
 
-int get_n_lines(std::string filename)
+int get_n_lines(const std::string &filename)
 {
     std::string line;
     int lines = 0;
@@ -24,7 +24,7 @@ int get_n_lines(std::string filename)
     return lines;
 }
 
-bool fexists( std::string filename )
+bool fexists( const std::string &filename )
 {
 	std::ifstream file (filename.c_str());
     if (file.good()) {
@@ -37,7 +37,7 @@ bool fexists( std::string filename )
     }
 }
 
-std::string backup( std::string filename )
+std::string backup( std::string &filename )
 {
     int n = 0, nchars = 0;
     std::string newname = filename;

@@ -91,7 +91,7 @@ void WHAM::cpp_wham_conv()
     }
 }
 
-void WHAM::cpp_wham_init(t_options option)
+void WHAM::cpp_wham_init(const t_options &option)
 {
     options = option;
     cpp_wham_read_experiments();
@@ -111,10 +111,7 @@ void WHAM::cpp_wham_init(t_options option)
 void WHAM::cpp_wham_read_experiments()
 {
     /* Initialize vector of experiments */
-    std::vector<TorsionExperiment> experiments(options.ntraj);
-    experiment = experiments;
-    experiments.clear();
-    experiments.shrink_to_fit();
+    experiment = std::vector<TorsionExperiment> (options.ntraj);
     std::string line;
     std::ifstream file(options.filelist.c_str());
     int i = 0;
@@ -197,22 +194,11 @@ void WHAM::cpp_wham_initialize_vectors()
     wham_args.counts.clear();
     wham_args.t.clear();
     
-    std::vector<int> s(nexp,0);
-    wham_args.sample = s;
-    
-    std::vector<int> c(nstates,0);
-    wham_args.counts = c;
-    
-    std::vector<float> t(nexp,300);
-    wham_args.t = t;
-    
-    std::vector<std::vector<double> > o(nexp);
-    wham_args.omegas = o;
-    std::vector<double> d_omega(nstates,1);
-    for (int i=0; i<nexp; i++)
-    {
-        wham_args.omegas[i] = d_omega;
-    }
+    wham_args.sample = std::vector<int> (nexp,0);
+    wham_args.counts = std::vector<int> (nstates,0);
+    wham_args.t = std::vector<float> (nexp,300);
+    wham_args.omegas = std::vector<std::vector<double> > (nexp,std::vector<double> (nexp,1));
+
     return;
 }
 
@@ -227,10 +213,6 @@ void WHAM::cpp_wham_group_ndim()
     bool first_traj = false;
     std::vector<t_experiment> group_traj2(nexp);
     // pieces, [dofM]
-    std::vector<int> vec_int_dof(options.ndof);
-    std::vector<float> vec_fl_dof(options.ndof);
-    std::vector<double> vec_db_dof(options.ndof);
-    std::vector<t_bin> vec_tbin_dof(options.ndof);
     
     int nn = 0;
     for (int i=first_experiment; i<(first_experiment+nexp); i++)
@@ -262,10 +244,10 @@ void WHAM::cpp_wham_group_ndim()
                 // Initialize the vectors for the first trajectory in a DoF only
                 if (first_traj)
                 {
-                    group_traj2[nn].nbins = vec_int_dof;
-                    group_traj2[nn].phi0 = vec_fl_dof;
-                    group_traj2[nn].deltaphi = vec_fl_dof;
-                    group_traj2[nn].fc = vec_fl_dof;
+                    group_traj2[nn].nbins = std::vector<int> (options.ndof);
+                    group_traj2[nn].phi0 = std::vector<float> (options.ndof);
+                    group_traj2[nn].deltaphi = std::vector<float> (options.ndof);
+                    group_traj2[nn].fc = std::vector<float> (options.ndof);
 
                     group_traj2[nn].experiment = i;
                 }
@@ -277,42 +259,23 @@ void WHAM::cpp_wham_group_ndim()
                     std::cerr << "\nERROR! Temperature don't match for experiment " << i << "." << std::endl;
                 }
                 group_traj2[nn].t = experiment[j].T();
-                // another piece now that we know how many frames there are, [frameN][dofM]
-                std::vector<std::vector<double> > vec_db_frames(ncoords);
-                std::vector<std::vector<float> > vec_fl_frames(ncoords);
-                std::vector<std::vector<int> > vec_int_frames(ncoords);
-                std::vector<std::vector<t_bin> > vec_tbin_frames(ncoords);
-                // last piece now that we know how many bins there are, [binL][dofM]
-                std::vector<std::vector<double> > vec_db_nbins(expnbins);
-                std::vector<std::vector<int> > vec_int_nbins(expnbins);
                 if (first_traj)
                 {
-                    group_traj2[nn].potential = vec_fl_frames;
-                    group_traj2[nn].coordinate = vec_fl_frames;
-                    group_traj2[nn].frame_bin = vec_tbin_frames;
+                    group_traj2[nn].potential = std::vector<std::vector<float> >(ncoords, std::vector<float> (options.ndof,0));
+                    group_traj2[nn].coordinate = std::vector<std::vector<float> >(ncoords, std::vector<float> (options.ndof,0));
+                    group_traj2[nn].frame_bin = std::vector<std::vector<t_bin> > (ncoords, std::vector<t_bin> (options.ndof));
                     
-                    group_traj2[nn].omega = vec_db_nbins;
-                    group_traj2[nn].bincounts = vec_int_nbins;
+                    group_traj2[nn].omega = std::vector<std::vector<double> >(expnbins, std::vector<double> (options.ndof,1));
+                    group_traj2[nn].bincounts = std::vector<std::vector<int> >(expnbins, std::vector<int> (options.ndof,0));
                 }
                 for (int k=0; k<ncoords; k++)
                 {
-                    if (first_traj)
-                    {
-                        group_traj2[nn].potential[k] = vec_fl_dof;
-                        group_traj2[nn].coordinate[k] = vec_fl_dof;
-                        group_traj2[nn].frame_bin[k] = vec_tbin_dof;
-                    }
                     group_traj2[nn].potential[k][expdof] = exppot[k];
                     group_traj2[nn].coordinate[k][expdof] = expcoord[k];
                     group_traj2[nn].frame_bin[k][expdof] = expbin[k];
                 }
                 for (int k=0; k<nomegas; k++)
                 {
-                    if (first_traj)
-                    {
-                        group_traj2[nn].omega[k] = vec_db_dof;
-                        group_traj2[nn].bincounts[k] = vec_int_dof;
-                    }
                     group_traj2[nn].omega[k][expdof] = expomega[k];
                     group_traj2[nn].bincounts[k][expdof] = expbincount[k];
                 }
@@ -519,7 +482,7 @@ void WHAM::cpp_wham_doWHAM()
     opt_pmf = opttrajectory.PMF();
 }
 
-int WHAM::map1d(std::vector<int> bins)
+int WHAM::map1d(const std::vector<int> &bins)
 {
     for (int i=0; i<nstates; i++)
     {

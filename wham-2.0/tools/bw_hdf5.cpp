@@ -4,7 +4,7 @@
 using namespace H5;
 #endif
 
-void Interact_H5::h5_init(bw_options option)
+void Interact_H5::h5_init(const bw_options &option)
 {
     options = option;
 
@@ -46,7 +46,7 @@ void Interact_H5::h5_init(bw_options option)
     return;
 }
 
-void Interact_H5::h5_write_dat(bw_datfile filedat)
+void Interact_H5::h5_write_dat(const bw_datfile &filedat)
 {
     try
     {
@@ -140,7 +140,7 @@ void Interact_H5::h5_write_dat(bw_datfile filedat)
     return;
 }
 
-int Interact_H5::h5_get_dataset(std::string path, h5_dat &data)
+int Interact_H5::h5_get_dataset(const std::string &path, h5_dat &data)
 {
     try
     {
@@ -293,7 +293,7 @@ void Interact_H5::h5_bin_assignments(std::vector<bw_datfile> &list)
     return;
 }
 
-void Interact_H5::h5_write_prob(std::vector<h5_dat> probs)
+void Interact_H5::h5_write_prob(const std::vector<h5_dat> &probs)
 {
     int nnn=0;
     try

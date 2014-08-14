@@ -4,12 +4,12 @@
 using namespace H5;
 #endif
 
-void Write_HDF5::init(t_options option,
-                      t_wham args,
-                      int n_exp,
-                      int n_states,
-                      std::vector<float> prob,
-                      std::vector<float> pmf )
+void Write_HDF5::init(const t_options &option,
+                      const t_wham &args,
+                      const int &n_exp,
+                      const int &n_states,
+                      const std::vector<float> &prob,
+                      const std::vector<float> &pmf )
 {
     options = option;
     wham_args = args;
@@ -40,7 +40,7 @@ void Write_HDF5::init(t_options option,
     return;
 }
 
-void Write_HDF5::write_trj(std::vector<t_experiment> group_traj)
+void Write_HDF5::write_trj(const std::vector<t_experiment> &group_traj)
 {
     try
     {
@@ -149,12 +149,12 @@ void Write_HDF5::write_trj(std::vector<t_experiment> group_traj)
     return;
 }
 
-void Write_HDF5::write_wham(std::vector<float> prob,
-                std::vector<float> pmf,
-                std::vector<int> counts,
-                std::vector<t_map> map,
-                std::string group,
-                int f0, int fN)
+void Write_HDF5::write_wham(const std::vector<float> &prob,
+                const std::vector<float> &pmf,
+                const std::vector<int> &counts,
+                const std::vector<t_map> &map,
+                const std::string &group,
+                const int &f0, const int &fN)
 {
     char grpname[1024];
     try

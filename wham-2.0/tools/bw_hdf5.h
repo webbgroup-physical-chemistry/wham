@@ -12,11 +12,11 @@ private :
     std::string filename;
     H5::H5File *file;
 public :
-    void h5_init(bw_options option);
-    void h5_write_dat(bw_datfile filedat);
-    int h5_get_dataset(std::string path, h5_dat &data);
+    void h5_init(const bw_options &option);
+    void h5_write_dat(const bw_datfile &filedat);
+    int h5_get_dataset(const std::string &path, h5_dat &data);
     void h5_bin_assignments(std::vector<bw_datfile> &list);
-    void h5_write_prob(std::vector<h5_dat> probs);
+    void h5_write_prob(const std::vector<h5_dat> &probs);
 };
 
 #endif

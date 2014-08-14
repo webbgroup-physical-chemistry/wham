@@ -811,8 +811,6 @@ install:
 	-mv src/wham bin/wham
 	-mv tools/bw_wham bin/bw_wham
 
-all: install
-
 print-%:
 	@echo '$*$($*)'
 

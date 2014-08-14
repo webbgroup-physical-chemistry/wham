@@ -21,20 +21,20 @@ private:
     t_options options;
     bool precision_error;
 public:
-    void read_filelist( std::string line,
-                        t_options &parser_options,
-                        int previous_experiment,
-                        int previous_dof );
+    void read_filelist( const std::string &line,
+                        const t_options &parser_options,
+                        const int &previous_experiment,
+                        const int &previous_dof );
     void setup(t_options &parser_options);
     void read_trajectory();
     void build_histogram();
     void set_nbins();
-    double trapezoidal_integration( float a, float b, int steps = 1000);
-    double simpson_integration( float a, float b, int steps = 1000);
-    float weight_dihedral_restraint_potential(float phi);
+    double trapezoidal_integration( const float &a, const float &b, const int &steps = 1000);
+    double simpson_integration( const float &a, const float &b, const int &steps = 1000);
+    float weight_dihedral_restraint_potential(const float &phi);
     void weight_dihedral_restraint_potentials();
     void assign_omega();
-    void assign_NDbin(int frame, int bin);
+    void assign_NDbin(const int &frame, const int &bin);
     /* Return Functions for access class data */
     int Experiment();
     int DoF();

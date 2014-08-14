@@ -6,11 +6,11 @@
 #include <sstream>
 #include "wham_types.h"
 
-int get_n_lines(std::string filename);
+int get_n_lines( const std::string &filename );
 
-bool fexists( std::string filename );
+bool fexists( const std::string &filename );
 
-std::string backup( std::string filename );
+std::string backup( std::string &filename );
 
 
 #endif

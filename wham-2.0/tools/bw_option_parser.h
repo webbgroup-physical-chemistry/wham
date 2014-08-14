@@ -8,6 +8,6 @@
 
 void bw_option_parser(int argc, char *argv[], bw_options &options);
 
-void bw_print_options(bw_options &options);
+void bw_print_options(const bw_options &options);
 
 #endif

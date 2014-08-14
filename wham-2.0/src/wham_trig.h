@@ -20,12 +20,12 @@
 #endif
 
 
-std::vector<float> angle2vector( float angle );
+std::vector<float> angle2vector( const float &angle );
 
-float periodic( float angle );
+float periodic( const float &angle );
 
-float delta_angle( float a,
-                   float b);
+float delta_angle( const float &a,
+                   const float &b);
 
 
 template<class T> T vec_sum(std::vector<T> a)

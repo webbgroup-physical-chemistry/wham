@@ -35,8 +35,7 @@ class Read_H5 :
             return -1
 
     def get_attribute(self,dataset,attribute) :
-        dat = self.file[dataset]
-        return dat.attrs.get(attribute)
+        return self.file[dataset].attrs.get(attribute)
     
     def get_nconv(self) :
         ensemble_dats = self.file['/Ensemble'].keys()
@@ -66,11 +65,11 @@ class Read_H5 :
 
     def conv_plot(self,ax,reference = None) :
         if reference == None :
-            reference = self.get_dataset('/Ensemble/Probability')[-1]
+            reference = self.file['/Ensemble/Probability'][:,-1]
         rsqr = []
         xs = self.conv_step_array()
         for i in range(self.nconv) :
-            conv_i = np.array(self.get_dataset('/Ensemble/Conv-%i/Probability'%i)[-1])
+            conv_i = np.array(self.file['/Ensemble/Conv-%s/Probability'%i][:,-1])
             rsqr.append(np.sum((conv_i-reference)**2))
         rsqr.append(np.sum((reference-reference)**2))
         ax.plot(xs,rsqr)
