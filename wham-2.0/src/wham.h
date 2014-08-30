@@ -28,7 +28,7 @@ private:
     DOWHAM opttrajectory;
     Write_HDF5 outhdf5;
 public:
-    void cpp_wham_init(t_options option);
+    void cpp_wham_init(const t_options &option);
     void cpp_wham_read_experiments();
     void cpp_wham_find_nstates();
     void cpp_wham_initialize_vectors();
@@ -39,13 +39,13 @@ public:
     void cpp_wham_mapOmega();
     void cpp_wham_doWHAM();
     void cpp_wham_conv();
-    int map1d(std::vector<int> bins);
+    int map1d(const std::vector<int> &bins);
     int get_final_frame() { return last_frame; } 
     int get_num_frames() { return nframes; }
     int get_options_f0() { return options.f0; }
     int get_options_fN() { return options.fN; }
-    void set_options_f0( int n ) { options.f0 = n; }
-    void set_options_fN( int n ) { options.fN = n; }
+    void set_options_f0( const int &n ) { options.f0 = n; }
+    void set_options_fN( const int &n ) { options.fN = n; }
     std::vector<float> get_opt_prob() { return opt_prob; }
     std::vector<float> get_opt_pmf() { return opt_pmf; }
     t_wham get_wham_args() { return wham_args; }

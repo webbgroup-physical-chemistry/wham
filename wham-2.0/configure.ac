@@ -14,7 +14,7 @@ AC_LANG_CPLUSPLUS
 AC_PROG_CC
 AC_PROG_LIBTOOL
 #AX_CXX_COMPILE_STDCXX_11
-CXXFLAGS='-Wall -g -O0 -std=c++11'
+CXXFLAGS='-Wall -g -O3 -std=c++11'
 
 # Checks for libraries.
 AX_OPENMP(

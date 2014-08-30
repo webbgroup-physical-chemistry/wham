@@ -17,19 +17,19 @@ private:
     std::string filename;
     H5::H5File *file;
 public:
-    void init(t_options option,
-              t_wham args,
-              int n_exp,
-              int n_states,
-              std::vector<float> prob,
-              std::vector<float> pmf );
-    void write_trj(std::vector<t_experiment> group_traj);
-    void write_wham(std::vector<float> prob,
-                    std::vector<float> pmf,
-                    std::vector<int> counts,
-                    std::vector<t_map> map,
-                    std::string group,
-                    int f0, int fN);
+    void init(const t_options &option,
+              const t_wham &args,
+              const int &n_exp,
+              const int &n_states,
+              const std::vector<float> &prob,
+              const std::vector<float> &pmf );
+    void write_trj(const std::vector<t_experiment> &group_traj);
+    void write_wham(const std::vector<float> &prob,
+                    const std::vector<float> &pmf,
+                    const std::vector<int> &counts,
+                    const std::vector<t_map> &map,
+                    const std::string &group,
+                    const int &f0, const int &fN);
 };
 
 #endif

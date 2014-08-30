@@ -91,7 +91,7 @@ void WHAM::cpp_wham_conv()
     }
 }
 
-void WHAM::cpp_wham_init(t_options option)
+void WHAM::cpp_wham_init(const t_options &option)
 {
     options = option;
     cpp_wham_read_experiments();
@@ -197,7 +197,7 @@ void WHAM::cpp_wham_initialize_vectors()
     wham_args.sample = std::vector<int> (nexp,0);
     wham_args.counts = std::vector<int> (nstates,0);
     wham_args.t = std::vector<float> (nexp,300);
-    wham_args.omegas = std::vector<std::vector<double> > (nexp,std::vector<double> (nexp,1));
+    wham_args.omegas = std::vector<std::vector<double> > (nexp,std::vector<double> (nstates,1));
 
     return;
 }
@@ -479,7 +479,7 @@ void WHAM::cpp_wham_doWHAM()
     opt_pmf = opttrajectory.PMF();
 }
 
-int WHAM::map1d(std::vector<int> bins)
+int WHAM::map1d(const std::vector<int> &bins)
 {
     for (int i=0; i<nstates; i++)
     {

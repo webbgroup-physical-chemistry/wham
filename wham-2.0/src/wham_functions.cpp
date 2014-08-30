@@ -29,27 +29,18 @@ void sgemv(char trans,
 }
 
 
-void DOWHAM::wham_init(t_wham args, t_options options)
+void DOWHAM::wham_init(const t_wham &args, const t_options &options)
 {
-    std::cout <<"\nassining args\n";
-    std::cout << &args << " " << &wham_args << std::endl;
     wham_args = args;
-    std::cout <<"\nassining options\n";
     wham_options = options;
-    std::cout <<"\nassining nexperiments\n";
     nexperiments = options.ntraj / options.ndof;
-    std::cout << "\ntransposing omega\n";
     TransposeOmega();
     /* First WHAM step */
     /* WHAM iterations */
-    std::cout <<"\nmaking previous_step vector\n";
     std::vector<float> previous_step(wham_args.nstates,1.0/wham_args.nstates);
-    std::cout << "\nmaking current_step vector\n";
     std::vector<float> current_step(wham_args.nstates,1.0/wham_args.nstates);
     int points = 0;
-    std::cout << "\nsetting start time\n";
     std::clock_t start = std::clock();
-    std::cout << "\nstarting while loop\n";
     while (points < wham_options.iter)
     {
         // slow step
@@ -154,7 +145,7 @@ void DOWHAM::TransposeOmega()
     return;
 }
 
-float DOWHAM::square_diff(const float *a, const float *b, int sizea, int sizeb)
+float DOWHAM::square_diff(const float *a, const float *b, const int &sizea, const int &sizeb)
 {
     if (sizeb != sizeb)
     {

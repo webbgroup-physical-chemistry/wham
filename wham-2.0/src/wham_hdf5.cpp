@@ -4,12 +4,12 @@
 using namespace H5;
 #endif
 
-void Write_HDF5::init(t_options option,
-                      t_wham args,
-                      int n_exp,
-                      int n_states,
-                      std::vector<float> prob,
-                      std::vector<float> pmf )
+void Write_HDF5::init(const t_options &option,
+                      const t_wham &args,
+                      const int &n_exp,
+                      const int &n_states,
+                      const std::vector<float> &prob,
+                      const std::vector<float> &pmf )
 {
     options = option;
     wham_args = args;
@@ -40,7 +40,7 @@ void Write_HDF5::init(t_options option,
     return;
 }
 
-void Write_HDF5::write_trj(std::vector<t_experiment> group_traj)
+void Write_HDF5::write_trj(const std::vector<t_experiment> &group_traj)
 {
     try
     {
@@ -88,8 +88,8 @@ void Write_HDF5::write_trj(std::vector<t_experiment> group_traj)
                 
                 /* close */
                 dataset->close();
-                delete[] dataset;
-                delete[] dataspace;
+                delete dataset;
+                delete dataspace;
             }
             // Trajectory frame bin 1D
             hsize_t dimst[1];
@@ -115,8 +115,8 @@ void Write_HDF5::write_trj(std::vector<t_experiment> group_traj)
             dataset = new DataSet(file->createDataSet(name,PredType::NATIVE_INT, *dataspace));
             dataset->write(b,PredType::NATIVE_INT);
             dataset->close();
-            delete[] dataset;
-            delete[] dataspace;
+            delete dataset;
+            delete dataspace;
             // Trajectory frame probability
             /*  Might as well remove since the BW script won't use this information anyway
             sprintf(name,"/Trajectories/Traj-%i/FrameProb",group_traj[i].experiment);
@@ -130,10 +130,10 @@ void Write_HDF5::write_trj(std::vector<t_experiment> group_traj)
             dataset = new DataSet(file->createDataSet(name,PredType::NATIVE_FLOAT, *dataspace));
             dataset->write(p,PredType::NATIVE_FLOAT);
             dataset->close();
-            delete[] dataset;
-            delete[] dataspace;
+            delete dataset;
+            delete dataspace;
             */
-            delete[] tgrp;
+            delete tgrp;
         }
 
     }
@@ -150,12 +150,12 @@ void Write_HDF5::write_trj(std::vector<t_experiment> group_traj)
     return;
 }
 
-void Write_HDF5::write_wham(std::vector<float> prob,
-                std::vector<float> pmf,
-                std::vector<int> counts,
-                std::vector<t_map> map,
-                std::string group,
-                int f0, int fN)
+void Write_HDF5::write_wham(const std::vector<float> &prob,
+                const std::vector<float> &pmf,
+                const std::vector<int> &counts,
+                const std::vector<t_map> &map,
+                const std::string &group,
+                const int &f0, const int &fN)
 {
     char grpname[1024];
     try
@@ -206,8 +206,8 @@ void Write_HDF5::write_wham(std::vector<float> prob,
         prob_attribute.write(str_type, prob_attr);
         
         dataset->close();
-        delete[] dataset;
-        delete[] dataspace;
+        delete dataset;
+        delete dataspace;
         
         /* PMF */
         sprintf(grpname,"%s/PMF",group.c_str());
@@ -225,8 +225,8 @@ void Write_HDF5::write_wham(std::vector<float> prob,
         pmf_attribute.write(str_type, pmfwritebuf);
 
         dataset->close();
-        delete[] dataset;
-        delete[] dataspace;
+        delete dataset;
+        delete dataspace;
         
         /* bin counts */
         sprintf(grpname,"%s/BinCounts",group.c_str());
@@ -235,9 +235,9 @@ void Write_HDF5::write_wham(std::vector<float> prob,
         dataset = new DataSet(file->createDataSet(grpname,PredType::NATIVE_INT, *dataspace));
         dataset->write(&counts[0],PredType::NATIVE_INT);
         dataset->close();
-        delete[] dataset;
-        delete[] dataspace;
-        delete[] grp;
+        delete dataset;
+        delete dataspace;
+        delete grp;
     }
     catch (FileIException error)
     {
