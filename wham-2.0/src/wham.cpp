@@ -91,7 +91,7 @@ void WHAM::cpp_wham_conv()
     }
 }
 
-void WHAM::cpp_wham_init(const t_options &option)
+void WHAM::cpp_wham_init(t_options option)
 {
     options = option;
     cpp_wham_read_experiments();
@@ -403,7 +403,6 @@ void WHAM::cpp_wham_make_ND_map()
             {
                 vND[j]++;
             }
-            //if (vND[j] >= group_traj[0][j].nBins() && j > 0)
             if (vND[j] >= group_traj[0].nbins[j] && j > 0)
             {
                 vND[j-1]++;
@@ -437,13 +436,11 @@ void WHAM::cpp_wham_mapOmega()
         {
             for (int j=0; j<options.ndof; j++)
             {
-                //wham_args.omegas[h][i] *= group_traj[h][j].Omega()[vND[j]];
                 wham_args.omegas[h][i] *= group_traj[h].omega[vND[j]][j];
                 if (j == options.ndof - 1)
                 {
                     vND[j]++;
                 }
-                //if (vND[j] >= group_traj[h][j].nBins() && j > 0)
                 if (vND[j] >= group_traj[h].nbins[j] && j > 0)
                 {
                     vND[j-1]++;
@@ -482,7 +479,7 @@ void WHAM::cpp_wham_doWHAM()
     opt_pmf = opttrajectory.PMF();
 }
 
-int WHAM::map1d(const std::vector<int> &bins)
+int WHAM::map1d(std::vector<int> bins)
 {
     for (int i=0; i<nstates; i++)
     {

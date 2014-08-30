@@ -208,7 +208,7 @@ void Boltzmann_Weight::bw_read_dat(bw_datfile &file)
         while (readfile.good())
         {
             getline(readfile,line);
-            if (not line.empty() && line.substr(0,1) != ";" && line.substr(0,1) != "#")
+            if (not line.empty() && line.substr(0,1) != ";" && line.substr(0,1) != "#" && line.substr(0,1) != "@")
             {
                 std::stringstream linestream(line);
                 while (linestream >> each)
@@ -242,7 +242,8 @@ void Boltzmann_Weight::bw_read_dat(bw_datfile &file)
                 else
                 {
                     // Who knows...
-                    std::cerr << "\nERROR: The number of columns (" << values.size() << ") in " << file.filename << " are not the same number of items give with --datatype (" << options.datnames.size() << ")." << std::endl;
+                    std::cerr << "\nERROR: The number of columns (" << values.size() << ") in " << file.filename << " are not the same number of items give with --datatype (" << options.datnames.size() << ").  The offending line is:\n" << std::endl;
+                    std::cerr << line << std::endl << std::endl;;
                     if ((int)values.size() > 1)
                     {
                         std::cerr << "To include multiple entries to --datatype, invoke the option multiple times in the same order as the columns from left-to-right." << std::endl;

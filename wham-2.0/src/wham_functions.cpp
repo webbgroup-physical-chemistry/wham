@@ -29,23 +29,32 @@ void sgemv(char trans,
 }
 
 
-void DOWHAM::wham_init(const t_wham &args, const t_options &options)
+void DOWHAM::wham_init(t_wham args, t_options options)
 {
+    std::cout <<"\nassining args\n";
+    std::cout << &args << " " << &wham_args << std::endl;
     wham_args = args;
+    std::cout <<"\nassining options\n";
     wham_options = options;
+    std::cout <<"\nassining nexperiments\n";
     nexperiments = options.ntraj / options.ndof;
+    std::cout << "\ntransposing omega\n";
     TransposeOmega();
     /* First WHAM step */
     /* WHAM iterations */
+    std::cout <<"\nmaking previous_step vector\n";
     std::vector<float> previous_step(wham_args.nstates,1.0/wham_args.nstates);
+    std::cout << "\nmaking current_step vector\n";
     std::vector<float> current_step(wham_args.nstates,1.0/wham_args.nstates);
     int points = 0;
+    std::cout << "\nsetting start time\n";
     std::clock_t start = std::clock();
+    std::cout << "\nstarting while loop\n";
     while (points < wham_options.iter)
     {
         // slow step
         WhamStep(current_step);
-        if ( square_diff(current_step,previous_step) < wham_options.tol)
+        if ( square_diff(&current_step[0],&previous_step[0],current_step.size(), previous_step.size()) < wham_options.tol)
         {
             std::cout << "Converged to " << wham_options.tol << " at step " << points << " after " << (std::clock() - start)/(float)(CLOCKS_PER_SEC/1000) << " ms." << std::endl;
             break;
@@ -145,15 +154,15 @@ void DOWHAM::TransposeOmega()
     return;
 }
 
-float DOWHAM::square_diff(const std::vector<float> &a, const std::vector<float> &b)
+float DOWHAM::square_diff(const float *a, const float *b, int sizea, int sizeb)
 {
-    if (a.size() != b.size())
+    if (sizeb != sizeb)
     {
         std::cerr << "\nERROR!  Size of vectors do not match, cannot find the square difference\n" << std::endl;
         std::exit(1);
     }
-    std::vector<float> difference(a.size());
-    for (int i=0; i<(int)a.size(); i++)
+    std::vector<float> difference(sizea);
+    for (int i=0; i<sizea; i++)
     {
         difference[i] = (a[i]-b[i])*(a[i]-b[i]);
     }

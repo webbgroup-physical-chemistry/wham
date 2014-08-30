@@ -24,10 +24,10 @@ private:
     std::vector<float> c_major_omega, c_major_omega_transpose;
     std::vector<float> opt_trajectory, potential, probability;
 public:
-    void wham_init(const t_wham &args, const t_options &options);
+    void wham_init(t_wham args, t_options options);
     void TransposeOmega();
     void WhamStep(std::vector<float> &step);
-    float square_diff(const std::vector<float> &a, const std::vector<float> &b);
+    float square_diff(const float *a, const float *b, int sizea, int sizeb);
     void wham_pmf();
     void wham_prob();
     std::vector<float> PMF();
