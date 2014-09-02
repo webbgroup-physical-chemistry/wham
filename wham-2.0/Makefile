@@ -213,8 +213,8 @@ CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
 CPP = gcc -E
 CPPFLAGS = 
-CXX = c++
-CXXCPP = c++ -E
+CXX = g++
+CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
 CXXFLAGS = -Wall -g -O3 -std=c++11 -fopenmp
 CYGPATH_W = echo
@@ -235,12 +235,12 @@ FGREP = /usr/bin/grep -F
 FLIBS =  -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2 -L/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/../../.. -lgfortran -lgomp -lquadmath -lm
 GREP = /usr/bin/grep
 HAVE_HDF5 = 1
-HDF5_CFLAGS = -I/opt/local/include
-HDF5_CXXLIBS = -L/opt/local/lib -lhdf5_cpp -Wl,-rpath,/opt/local/lib
+HDF5_CFLAGS = -I/opt/local//include
+HDF5_CXXLIBS = -L/opt/local//lib -lhdf5_cpp -Wl,-rpath,/opt/local//lib
 HDF5_DIR = 
-HDF5_FLIBS = -L/opt/local/lib -lhdf5_fortran -Wl,-rpath,/opt/local/lib
-HDF5_LIBS = -L/opt/local/lib -lhdf5 -Wl,-rpath,/opt/local/lib
-HDF5_PREFIX = /opt/local
+HDF5_FLIBS = -L/opt/local//lib -lhdf5_fortran -Wl,-rpath,/opt/local//lib
+HDF5_LIBS = -L/opt/local//lib -lhdf5 -Wl,-rpath,/opt/local//lib
+HDF5_PREFIX = /opt/local/
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
@@ -283,7 +283,7 @@ abs_top_builddir = /Users/ritchie/software/wham/wham-2.0
 abs_top_srcdir = /Users/ritchie/software/wham/wham-2.0
 ac_ct_AR = ar
 ac_ct_CC = gcc
-ac_ct_CXX = c++
+ac_ct_CXX = 
 ac_ct_DUMPBIN = 
 ac_ct_F77 = gfortran
 am__include = include

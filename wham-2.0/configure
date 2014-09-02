@@ -15514,9 +15514,10 @@ else
   if test "x$ax_cv_cxx_openmp" != "xnone"; then
     OPENMP_CXXFLAGS=$ax_cv_cxx_openmp
   fi
-  CXXFLAGS+=" $OPENMP_CXXFLAGS"
+
+    CXXFLAGS+=" $OPENMP_CXXFLAGS"
     LDFLAGS+=" $OPENMP_CXXFLAGS"
-    ]
+
 fi
 
 
@@ -21553,8 +21554,6 @@ else
     as_fn_error $? "You need the -z libgz libraries." "$LINENO" 5
 fi
 
-#AC_CHECK_LIB([blas], [sgemv], [], [
-#    AC_MSG_ERROR(You need the blas libraries.)])
 
 # Checks for typedefs, structures, and compiler characteristics.
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for stdbool.h that conforms to C99" >&5

@@ -17,7 +17,7 @@ AC_PROG_LIBTOOL
 CXXFLAGS='-Wall -g -O3 -std=c++11'
 
 # Checks for libraries.
-AX_OPENMP(
+AX_OPENMP([
     CXXFLAGS+=" $OPENMP_CXXFLAGS"
     LDFLAGS+=" $OPENMP_CXXFLAGS"
     ],[
@@ -36,8 +36,6 @@ AC_CHECK_LIB([m], [main], [], [
     AC_MSG_ERROR(You need the -m math libraries.)])
 AC_CHECK_LIB([z], [main], [], [
     AC_MSG_ERROR(You need the -z libgz libraries.)])
-#AC_CHECK_LIB([blas], [sgemv], [], [
-#    AC_MSG_ERROR(You need the blas libraries.)])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL
