@@ -1,0 +1,22 @@
+NAME := wham
+EXTRA_SRC := $(wildcard *.cpp)
+OBJS := $(patsubst %.cpp,%.o,$(EXTRA_SRC))
+
+BOOST_INC := /opt/local/include
+BOOST_LIB := /opt/local/lib
+
+CC := g++
+INCLUDE := -I. -I$(BOOST_INC) 
+LDFLAGS := -L$(BOOST_LIB) 
+LDLIBS := -lboost_program_options -lhdf5 -lhdf5_cpp -lblas 
+CPPFLAGS := -Wall -O3 $(INCLUDE) -fopenmp
+
+$(NAME): $(OBJS)
+	$(CC) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) -o $@ $^
+%.o: %.cpp
+	$(CC) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) -c $<
+clean:
+	rm -f $(NAME) $(OBJS)
+
+.PHONY: clean
+

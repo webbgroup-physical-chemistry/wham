@@ -1,0 +1,6 @@
+#!/bin/bash
+make clean
+autoconf  
+#./configure --with-boost=/usr/local/Cellar/boost/1.55.0_1/ --with-hdf5=/usr/local/Cellar/hdf5/1.8.8/ CXX=llvm-g++ CC=llvm-gcc
+./configure --with-boost=/opt/local/ --with-hdf5=/opt/local 
+
