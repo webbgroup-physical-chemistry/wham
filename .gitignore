@@ -1,4 +1,7 @@
 dat_*/
+.deps
+*.swp
+*.Po
 *.h5
 *.xvg
 *.pdf
