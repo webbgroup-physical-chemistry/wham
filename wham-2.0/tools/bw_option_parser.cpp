@@ -16,6 +16,7 @@ void bw_option_parser(int argc, char *argv[], bw_options &options)
     options.isangle = false;
     options.doWrite = true;
     options.frameStep = 1;
+    options.histbins = 50;
     try
     {
         po::options_description desc(description);
@@ -37,6 +38,8 @@ void bw_option_parser(int argc, char *argv[], bw_options &options)
                 "Random seed to use for bootstrapping.  Default: 47")*/
             ("angle,a",
                 "Use if the property is an angle and subject to periodic boundary conditions.  ALL PROPERTIES IN THE GIVEN FILE MUST BE ANGLES OR MUST NOT BE ANGLES.  DO NOT MIX ANGLES WITH NON-ANGLES")
+            ("bins,b",po::value<int>(&options.histbins),
+                "Number of bins in the data distribution histogram.  Default: 50")
             ("bVerbose,v",
                 "Print extra information")
             /*("bootstrap,b",po::value<double>(&options.nbootstrap)->default_value(0,"Off"),
@@ -122,7 +125,7 @@ void bw_print_options(const bw_options &options)
         std::cout << "Will write data entries as: ";
         for (int i=0; i < (int)options.datnames.size(); i++)
         {
-            std::cout << options.datnames[i] << "(" << options.datunits[i] << ") ";
+            std::cout << options.datnames[i] << "(" << options.datunits[i] << ")\n";
         }
     }
     else

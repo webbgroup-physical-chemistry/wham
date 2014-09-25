@@ -78,7 +78,7 @@ class Read_H5 :
         ax.set_xscale("log",nonposx='clip')
 
 
-def plot_2d(xs,ys,zs,ax,zmax=None,logscale=False,cb=True,zmin_avg=True) :
+def plot_2d(xs,ys,zs,ax,zmax=None,logscale=False,cb=True,zmin_avg=True,shrink=0.7) :
     if zmax == None :
         zmax = max(zs)
     minx,maxx = min(xs),max(xs)
@@ -114,15 +114,16 @@ def plot_2d(xs,ys,zs,ax,zmax=None,logscale=False,cb=True,zmin_avg=True) :
     if zmax == 100 and not logscale :
         myplot.set_clim([0,100])
         if cb :
-            cbar = plt.colorbar(myplot,shrink=0.70,format='%i',ticks=range(0,101,20))
+            cbar = plt.colorbar(myplot,shrink=shrink,format='%i',ticks=range(0,101,20))
             cbar.ax.set_yticklabels(['0%','20%','40%','60%','80%','>100%'])
+        return ax, cbar
     elif logscale :
         # Set the minimum value to the average magnitude
         if zmin_avg :
             zmin=int(np.floor(log10(np.average(zs))))-1
         myplot.set_clim(zmin,-1)
         if cb :
-            cbar = plt.colorbar(myplot,format='%i',ticks=range(zmin,0,1))
+            cbar = plt.colorbar(myplot,shrink=shrink,format='%i',ticks=range(zmin,0,1))
             cblabels = []
             for i in range(zmin,0,1) :
                 if i == zmin :
@@ -130,9 +131,11 @@ def plot_2d(xs,ys,zs,ax,zmax=None,logscale=False,cb=True,zmin_avg=True) :
                 else :
                     cblabels.append('1E%i'%i)
             cbar.ax.set_yticklabels(cblabels)
+            return ax,cbar
     else :
         if cb :
-            cbar = plt.colorbar(myplot,format='%1.E')
+            cbar = plt.colorbar(myplot,shrink=shrink,format='%1.E')
+            return ax,cbar
     return ax
 
 
