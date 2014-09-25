@@ -17,7 +17,7 @@ wham-wham_functions.o: wham_functions.cpp wham_functions.h \
  /usr/include/sys/_types/_size_t.h /usr/include/sys/_types/_mbstate_t.h \
  /usr/include/sys/_types/_ct_rune_t.h /usr/include/sys/_types/_rune_t.h \
  /usr/include/sys/_types/_wchar_t.h \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/stdarg.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/stdarg.h \
  /usr/include/stdio.h /usr/include/sys/_types/_va_list.h \
  /usr/include/sys/_types/_off_t.h /usr/include/sys/_types/_ssize_t.h \
  /usr/include/time.h /usr/include/_structs.h /usr/include/sys/_structs.h \
@@ -45,8 +45,8 @@ wham-wham_functions.o: wham_functions.cpp wham_functions.h \
  /opt/local/include/gcc48/c++/debug/debug.h \
  /opt/local/include/gcc48/c++/bits/stl_iterator.h \
  /opt/local/include/gcc48/c++/cstdint \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/stdint.h \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include-fixed/stdint.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/stdint.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include-fixed/stdint.h \
  /usr/include/sys/_types/_int8_t.h /usr/include/sys/_types/_int16_t.h \
  /usr/include/sys/_types/_int32_t.h /usr/include/sys/_types/_int64_t.h \
  /usr/include/_types/_uint8_t.h /usr/include/_types/_uint16_t.h \
@@ -132,7 +132,7 @@ wham-wham_functions.o: wham_functions.cpp wham_functions.h \
  /opt/local/include/gcc48/c++/sstream \
  /opt/local/include/gcc48/c++/bits/sstream.tcc \
  /opt/local/include/gcc48/c++/cmath \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include-fixed/math.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include-fixed/math.h \
  /opt/local/include/gcc48/c++/iterator \
  /opt/local/include/gcc48/c++/bits/stream_iterator.h wham_types.h \
  /opt/local/include/gcc48/c++/vector \
@@ -151,7 +151,7 @@ wham-wham_functions.o: wham_functions.cpp wham_functions.h \
  /opt/local/include/boost/config/compiler/gcc.hpp \
  /opt/local/include/boost/config/select_stdlib_config.hpp \
  /opt/local/include/gcc48/c++/cstddef \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/stddef.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/stddef.h \
  /opt/local/include/boost/config/no_tr1/utility.hpp \
  /opt/local/include/gcc48/c++/utility \
  /opt/local/include/gcc48/c++/bits/stl_relops.h \
@@ -170,14 +170,13 @@ wham-wham_functions.o: wham_functions.cpp wham_functions.h \
  /opt/local/include/boost/config/platform/macos.hpp \
  /opt/local/include/boost/config/posix_features.hpp \
  /opt/local/include/boost/config/suffix.hpp \
- /opt/local/include/gcc48/c++/climits \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include-fixed/limits.h \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include-fixed/syslimits.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include-fixed/limits.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/machine/limits.h \
  /usr/include/i386/limits.h /usr/include/i386/_limits.h \
- /usr/include/sys/syslimits.h /opt/local/include/gcc48/c++/cstring \
- /usr/include/string.h /usr/include/strings.h \
- /opt/local/include/gcc48/c++/typeinfo \
+ /usr/include/sys/syslimits.h /opt/local/include/gcc48/c++/climits \
+ /opt/local/include/gcc48/c++/cstring /usr/include/string.h \
+ /usr/include/strings.h /opt/local/include/gcc48/c++/typeinfo \
  /opt/local/include/boost/limits.hpp /opt/local/include/gcc48/c++/limits \
  /opt/local/include/boost/mpl/if.hpp \
  /opt/local/include/boost/mpl/aux_/value_wknd.hpp \
@@ -261,7 +260,6 @@ wham-wham_functions.o: wham_functions.cpp wham_functions.h \
  /opt/local/include/boost/mpl/aux_/config/overload_resolution.hpp \
  /opt/local/include/boost/mpl/aux_/lambda_support.hpp \
  /opt/local/include/boost/throw_exception.hpp \
- /opt/local/include/boost/exception/detail/attribute_noreturn.hpp \
  /opt/local/include/boost/exception/exception.hpp \
  /opt/local/include/boost/current_function.hpp \
  /opt/local/include/boost/type_traits/ice.hpp \
@@ -276,7 +274,6 @@ wham-wham_functions.o: wham_functions.cpp wham_functions.h \
  /opt/local/include/boost/type_traits/is_member_function_pointer.hpp \
  /opt/local/include/boost/type_traits/detail/is_mem_fun_pointer_impl.hpp \
  /opt/local/include/boost/type_traits/remove_cv.hpp \
- /opt/local/include/boost/type_traits/broken_compiler_spec.hpp \
  /opt/local/include/boost/type_traits/detail/cv_traits_impl.hpp \
  /opt/local/include/boost/type_traits/detail/type_trait_def.hpp \
  /opt/local/include/boost/type_traits/detail/template_arity_spec.hpp \
@@ -306,7 +303,7 @@ wham-wham_functions.o: wham_functions.cpp wham_functions.h \
  /opt/local/include/gcc48/c++/stdexcept \
  /opt/local/include/boost/array.hpp /opt/local/include/boost/assert.hpp \
  /usr/include/assert.h /opt/local/include/boost/swap.hpp \
- /opt/local/include/boost/utility/swap.hpp \
+ /opt/local/include/boost/core/swap.hpp \
  /opt/local/include/gcc48/c++/algorithm \
  /opt/local/include/gcc48/c++/bits/stl_algo.h \
  /opt/local/include/gcc48/c++/bits/algorithmfwd.h \
@@ -315,16 +312,16 @@ wham-wham_functions.o: wham_functions.cpp wham_functions.h \
  /opt/local/include/gcc48/c++/random \
  /opt/local/include/gcc48/c++/bits/random.h \
  /opt/local/include/gcc48/c++/x86_64-apple-darwin13/bits/opt_random.h \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/x86intrin.h \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/ia32intrin.h \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/mmintrin.h \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/xmmintrin.h \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/mm_malloc.h \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/emmintrin.h \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/pmmintrin.h \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/immintrin.h \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/fxsrintrin.h \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/adxintrin.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/x86intrin.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/ia32intrin.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/mmintrin.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/xmmintrin.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/mm_malloc.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/emmintrin.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/pmmintrin.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/immintrin.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/fxsrintrin.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/adxintrin.h \
  /opt/local/include/gcc48/c++/bits/random.tcc \
  /opt/local/include/gcc48/c++/numeric \
  /opt/local/include/gcc48/c++/bits/stl_numeric.h \
@@ -428,13 +425,14 @@ wham-wham_functions.o: wham_functions.cpp wham_functions.h \
  /opt/local/include/boost/type_traits/is_function.hpp \
  /opt/local/include/boost/type_traits/detail/false_result.hpp \
  /opt/local/include/boost/type_traits/detail/is_function_ptr_helper.hpp \
+ /opt/local/include/boost/utility/declval.hpp \
  /opt/local/include/boost/type_traits/is_fundamental.hpp \
  /opt/local/include/boost/type_traits/remove_reference.hpp \
  /opt/local/include/boost/type_traits/has_right_shift.hpp \
  /opt/local/include/boost/math/special_functions/sign.hpp \
  /opt/local/include/boost/math/tools/config.hpp \
  /opt/local/include/gcc48/c++/cfloat \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/float.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/float.h \
  /opt/local/include/boost/math/tools/user.hpp \
  /opt/local/include/boost/math/special_functions/math_fwd.hpp \
  /opt/local/include/boost/math/special_functions/detail/round_fwd.hpp \
@@ -503,6 +501,7 @@ wham-wham_functions.o: wham_functions.cpp wham_functions.h \
  /opt/local/include/boost/mpl/arg_fwd.hpp \
  /opt/local/include/boost/mpl/aux_/na_assert.hpp \
  /opt/local/include/boost/mpl/assert.hpp \
+ /opt/local/include/boost/mpl/aux_/config/gpu.hpp \
  /opt/local/include/boost/mpl/aux_/config/pp_counter.hpp \
  /opt/local/include/boost/mpl/aux_/arity_spec.hpp \
  /opt/local/include/boost/mpl/aux_/arg_typedef.hpp \
@@ -624,6 +623,7 @@ wham-wham_functions.o: wham_functions.cpp wham_functions.h \
  /opt/local/include/boost/predef/library/c/_prefix.h \
  /opt/local/include/boost/predef/detail/_cassert.h \
  /opt/local/include/boost/predef/os/macos.h \
+ /opt/local/include/boost/predef/os/ios.h \
  /opt/local/include/boost/predef/detail/os_detected.h \
  /opt/local/include/boost/predef/os/bsd.h \
  /opt/local/include/boost/predef/os/bsd/bsdi.h \
@@ -645,6 +645,7 @@ wham-wham_functions.o: wham_functions.cpp wham_functions.h \
  /opt/local/include/boost/detail/indirect_traits.hpp \
  /opt/local/include/boost/iterator/detail/enable_if.hpp \
  /opt/local/include/boost/utility/addressof.hpp \
+ /opt/local/include/boost/core/addressof.hpp \
  /opt/local/include/boost/type_traits/add_pointer.hpp \
  /opt/local/include/boost/type_traits/remove_const.hpp \
  /opt/local/include/boost/type_traits/is_pod.hpp \
@@ -653,8 +654,10 @@ wham-wham_functions.o: wham_functions.cpp wham_functions.h \
  /opt/local/include/boost/range/begin.hpp \
  /opt/local/include/boost/range/config.hpp \
  /opt/local/include/boost/range/iterator.hpp \
+ /opt/local/include/boost/range/range_fwd.hpp \
  /opt/local/include/boost/range/mutable_iterator.hpp \
  /opt/local/include/boost/range/detail/extract_optional_type.hpp \
+ /opt/local/include/boost/range/detail/msvc_has_iterator_workaround.hpp \
  /opt/local/include/boost/range/const_iterator.hpp \
  /opt/local/include/boost/range/end.hpp \
  /opt/local/include/boost/range/detail/implementation_help.hpp \
@@ -663,16 +666,6 @@ wham-wham_functions.o: wham_functions.cpp wham_functions.h \
  /opt/local/include/boost/range/size.hpp \
  /opt/local/include/boost/range/size_type.hpp \
  /opt/local/include/boost/range/difference_type.hpp \
- /opt/local/include/boost/utility/enable_if.hpp \
- /opt/local/include/boost/range/distance.hpp \
- /opt/local/include/boost/range/empty.hpp \
- /opt/local/include/boost/range/rbegin.hpp \
- /opt/local/include/boost/range/reverse_iterator.hpp \
- /opt/local/include/boost/iterator/reverse_iterator.hpp \
- /opt/local/include/boost/next_prior.hpp \
- /opt/local/include/boost/iterator/iterator_adaptor.hpp \
- /opt/local/include/boost/range/rend.hpp \
- /opt/local/include/boost/range/algorithm/equal.hpp \
  /opt/local/include/boost/range/concepts.hpp \
  /opt/local/include/boost/concept_check.hpp \
  /opt/local/include/boost/concept/assert.hpp \
@@ -693,6 +686,38 @@ wham-wham_functions.o: wham_functions.cpp wham_functions.h \
  /opt/local/include/boost/iterator/iterator_concepts.hpp \
  /opt/local/include/boost/range/value_type.hpp \
  /opt/local/include/boost/range/detail/misc_concept.hpp \
+ /opt/local/include/boost/utility/enable_if.hpp \
+ /opt/local/include/boost/core/enable_if.hpp \
+ /opt/local/include/boost/range/detail/has_member_size.hpp \
+ /opt/local/include/boost/utility.hpp \
+ /opt/local/include/boost/utility/base_from_member.hpp \
+ /opt/local/include/boost/preprocessor/repetition/enum_binary_params.hpp \
+ /opt/local/include/boost/preprocessor/repetition/repeat_from_to.hpp \
+ /opt/local/include/boost/utility/binary.hpp \
+ /opt/local/include/boost/preprocessor/control/deduce_d.hpp \
+ /opt/local/include/boost/preprocessor/seq/cat.hpp \
+ /opt/local/include/boost/preprocessor/seq/fold_left.hpp \
+ /opt/local/include/boost/preprocessor/seq/transform.hpp \
+ /opt/local/include/boost/preprocessor/arithmetic/mod.hpp \
+ /opt/local/include/boost/preprocessor/arithmetic/detail/div_base.hpp \
+ /opt/local/include/boost/preprocessor/comparison/less_equal.hpp \
+ /opt/local/include/boost/preprocessor/logical/not.hpp \
+ /opt/local/include/boost/utility/identity_type.hpp \
+ /opt/local/include/boost/type_traits/function_traits.hpp \
+ /opt/local/include/boost/checked_delete.hpp \
+ /opt/local/include/boost/core/checked_delete.hpp \
+ /opt/local/include/boost/next_prior.hpp \
+ /opt/local/include/boost/noncopyable.hpp \
+ /opt/local/include/boost/core/noncopyable.hpp \
+ /opt/local/include/boost/range/distance.hpp \
+ /opt/local/include/boost/range/empty.hpp \
+ /opt/local/include/boost/range/rbegin.hpp \
+ /opt/local/include/boost/range/reverse_iterator.hpp \
+ /opt/local/include/boost/iterator/reverse_iterator.hpp \
+ /opt/local/include/boost/iterator/iterator_adaptor.hpp \
+ /opt/local/include/boost/range/rend.hpp \
+ /opt/local/include/boost/range/has_range_iterator.hpp \
+ /opt/local/include/boost/range/algorithm/equal.hpp \
  /opt/local/include/boost/range/detail/safe_bool.hpp \
  /opt/local/include/boost/container/container_fwd.hpp \
  /opt/local/include/gcc48/c++/memory \
@@ -703,8 +728,9 @@ wham-wham_functions.o: wham_functions.cpp wham_functions.h \
  /opt/local/include/gcc48/c++/bits/shared_ptr_base.h \
  /opt/local/include/gcc48/c++/backward/auto_ptr.h \
  /opt/local/include/boost/integer.hpp \
- /opt/local/include/boost/integer_fwd.hpp wham_trig.h \
- /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/omp.h
+ /opt/local/include/boost/integer_fwd.hpp \
+ /opt/local/include/boost/detail/basic_pointerbuf.hpp wham_trig.h \
+ /opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/omp.h
 
 wham_functions.h:
 
@@ -762,7 +788,7 @@ wham_functions.h:
 
 /usr/include/sys/_types/_wchar_t.h:
 
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/stdarg.h:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/stdarg.h:
 
 /usr/include/stdio.h:
 
@@ -834,9 +860,9 @@ wham_functions.h:
 
 /opt/local/include/gcc48/c++/cstdint:
 
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/stdint.h:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/stdint.h:
 
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include-fixed/stdint.h:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include-fixed/stdint.h:
 
 /usr/include/sys/_types/_int8_t.h:
 
@@ -1060,7 +1086,7 @@ wham_functions.h:
 
 /opt/local/include/gcc48/c++/cmath:
 
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include-fixed/math.h:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include-fixed/math.h:
 
 /opt/local/include/gcc48/c++/iterator:
 
@@ -1100,7 +1126,7 @@ wham_types.h:
 
 /opt/local/include/gcc48/c++/cstddef:
 
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/stddef.h:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/stddef.h:
 
 /opt/local/include/boost/config/no_tr1/utility.hpp:
 
@@ -1154,11 +1180,9 @@ wham_types.h:
 
 /opt/local/include/boost/config/suffix.hpp:
 
-/opt/local/include/gcc48/c++/climits:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include-fixed/limits.h:
 
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include-fixed/limits.h:
-
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include-fixed/syslimits.h:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include-fixed/syslimits.h:
 
 /usr/include/limits.h:
 
@@ -1169,6 +1193,8 @@ wham_types.h:
 /usr/include/i386/_limits.h:
 
 /usr/include/sys/syslimits.h:
+
+/opt/local/include/gcc48/c++/climits:
 
 /opt/local/include/gcc48/c++/cstring:
 
@@ -1346,8 +1372,6 @@ wham_types.h:
 
 /opt/local/include/boost/throw_exception.hpp:
 
-/opt/local/include/boost/exception/detail/attribute_noreturn.hpp:
-
 /opt/local/include/boost/exception/exception.hpp:
 
 /opt/local/include/boost/current_function.hpp:
@@ -1375,8 +1399,6 @@ wham_types.h:
 /opt/local/include/boost/type_traits/detail/is_mem_fun_pointer_impl.hpp:
 
 /opt/local/include/boost/type_traits/remove_cv.hpp:
-
-/opt/local/include/boost/type_traits/broken_compiler_spec.hpp:
 
 /opt/local/include/boost/type_traits/detail/cv_traits_impl.hpp:
 
@@ -1440,7 +1462,7 @@ wham_types.h:
 
 /opt/local/include/boost/swap.hpp:
 
-/opt/local/include/boost/utility/swap.hpp:
+/opt/local/include/boost/core/swap.hpp:
 
 /opt/local/include/gcc48/c++/algorithm:
 
@@ -1458,25 +1480,25 @@ wham_types.h:
 
 /opt/local/include/gcc48/c++/x86_64-apple-darwin13/bits/opt_random.h:
 
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/x86intrin.h:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/x86intrin.h:
 
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/ia32intrin.h:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/ia32intrin.h:
 
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/mmintrin.h:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/mmintrin.h:
 
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/xmmintrin.h:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/xmmintrin.h:
 
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/mm_malloc.h:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/mm_malloc.h:
 
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/emmintrin.h:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/emmintrin.h:
 
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/pmmintrin.h:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/pmmintrin.h:
 
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/immintrin.h:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/immintrin.h:
 
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/fxsrintrin.h:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/fxsrintrin.h:
 
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/adxintrin.h:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/adxintrin.h:
 
 /opt/local/include/gcc48/c++/bits/random.tcc:
 
@@ -1684,6 +1706,8 @@ wham_types.h:
 
 /opt/local/include/boost/type_traits/detail/is_function_ptr_helper.hpp:
 
+/opt/local/include/boost/utility/declval.hpp:
+
 /opt/local/include/boost/type_traits/is_fundamental.hpp:
 
 /opt/local/include/boost/type_traits/remove_reference.hpp:
@@ -1696,7 +1720,7 @@ wham_types.h:
 
 /opt/local/include/gcc48/c++/cfloat:
 
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/float.h:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/float.h:
 
 /opt/local/include/boost/math/tools/user.hpp:
 
@@ -1833,6 +1857,8 @@ wham_types.h:
 /opt/local/include/boost/mpl/aux_/na_assert.hpp:
 
 /opt/local/include/boost/mpl/assert.hpp:
+
+/opt/local/include/boost/mpl/aux_/config/gpu.hpp:
 
 /opt/local/include/boost/mpl/aux_/config/pp_counter.hpp:
 
@@ -2076,6 +2102,8 @@ wham_types.h:
 
 /opt/local/include/boost/predef/os/macos.h:
 
+/opt/local/include/boost/predef/os/ios.h:
+
 /opt/local/include/boost/predef/detail/os_detected.h:
 
 /opt/local/include/boost/predef/os/bsd.h:
@@ -2118,6 +2146,8 @@ wham_types.h:
 
 /opt/local/include/boost/utility/addressof.hpp:
 
+/opt/local/include/boost/core/addressof.hpp:
+
 /opt/local/include/boost/type_traits/add_pointer.hpp:
 
 /opt/local/include/boost/type_traits/remove_const.hpp:
@@ -2134,9 +2164,13 @@ wham_types.h:
 
 /opt/local/include/boost/range/iterator.hpp:
 
+/opt/local/include/boost/range/range_fwd.hpp:
+
 /opt/local/include/boost/range/mutable_iterator.hpp:
 
 /opt/local/include/boost/range/detail/extract_optional_type.hpp:
+
+/opt/local/include/boost/range/detail/msvc_has_iterator_workaround.hpp:
 
 /opt/local/include/boost/range/const_iterator.hpp:
 
@@ -2153,26 +2187,6 @@ wham_types.h:
 /opt/local/include/boost/range/size_type.hpp:
 
 /opt/local/include/boost/range/difference_type.hpp:
-
-/opt/local/include/boost/utility/enable_if.hpp:
-
-/opt/local/include/boost/range/distance.hpp:
-
-/opt/local/include/boost/range/empty.hpp:
-
-/opt/local/include/boost/range/rbegin.hpp:
-
-/opt/local/include/boost/range/reverse_iterator.hpp:
-
-/opt/local/include/boost/iterator/reverse_iterator.hpp:
-
-/opt/local/include/boost/next_prior.hpp:
-
-/opt/local/include/boost/iterator/iterator_adaptor.hpp:
-
-/opt/local/include/boost/range/rend.hpp:
-
-/opt/local/include/boost/range/algorithm/equal.hpp:
 
 /opt/local/include/boost/range/concepts.hpp:
 
@@ -2214,6 +2228,70 @@ wham_types.h:
 
 /opt/local/include/boost/range/detail/misc_concept.hpp:
 
+/opt/local/include/boost/utility/enable_if.hpp:
+
+/opt/local/include/boost/core/enable_if.hpp:
+
+/opt/local/include/boost/range/detail/has_member_size.hpp:
+
+/opt/local/include/boost/utility.hpp:
+
+/opt/local/include/boost/utility/base_from_member.hpp:
+
+/opt/local/include/boost/preprocessor/repetition/enum_binary_params.hpp:
+
+/opt/local/include/boost/preprocessor/repetition/repeat_from_to.hpp:
+
+/opt/local/include/boost/utility/binary.hpp:
+
+/opt/local/include/boost/preprocessor/control/deduce_d.hpp:
+
+/opt/local/include/boost/preprocessor/seq/cat.hpp:
+
+/opt/local/include/boost/preprocessor/seq/fold_left.hpp:
+
+/opt/local/include/boost/preprocessor/seq/transform.hpp:
+
+/opt/local/include/boost/preprocessor/arithmetic/mod.hpp:
+
+/opt/local/include/boost/preprocessor/arithmetic/detail/div_base.hpp:
+
+/opt/local/include/boost/preprocessor/comparison/less_equal.hpp:
+
+/opt/local/include/boost/preprocessor/logical/not.hpp:
+
+/opt/local/include/boost/utility/identity_type.hpp:
+
+/opt/local/include/boost/type_traits/function_traits.hpp:
+
+/opt/local/include/boost/checked_delete.hpp:
+
+/opt/local/include/boost/core/checked_delete.hpp:
+
+/opt/local/include/boost/next_prior.hpp:
+
+/opt/local/include/boost/noncopyable.hpp:
+
+/opt/local/include/boost/core/noncopyable.hpp:
+
+/opt/local/include/boost/range/distance.hpp:
+
+/opt/local/include/boost/range/empty.hpp:
+
+/opt/local/include/boost/range/rbegin.hpp:
+
+/opt/local/include/boost/range/reverse_iterator.hpp:
+
+/opt/local/include/boost/iterator/reverse_iterator.hpp:
+
+/opt/local/include/boost/iterator/iterator_adaptor.hpp:
+
+/opt/local/include/boost/range/rend.hpp:
+
+/opt/local/include/boost/range/has_range_iterator.hpp:
+
+/opt/local/include/boost/range/algorithm/equal.hpp:
+
 /opt/local/include/boost/range/detail/safe_bool.hpp:
 
 /opt/local/include/boost/container/container_fwd.hpp:
@@ -2236,6 +2314,8 @@ wham_types.h:
 
 /opt/local/include/boost/integer_fwd.hpp:
 
+/opt/local/include/boost/detail/basic_pointerbuf.hpp:
+
 wham_trig.h:
 
-/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.2/include/omp.h:
+/opt/local/lib/gcc48/gcc/x86_64-apple-darwin13/4.8.3/include/omp.h:

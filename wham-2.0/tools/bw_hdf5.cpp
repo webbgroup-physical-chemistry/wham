@@ -4,7 +4,7 @@
 using namespace H5;
 #endif
 
-void Interact_H5::h5_init(const bw_options &option)
+Interact_H5::Interact_H5(const bw_options &option) : options(option)
 {
     options = option;
 
@@ -53,64 +53,71 @@ void Interact_H5::h5_write_dat(const bw_datfile &filedat)
         Exception::dontPrint();
         DataSpace *dataspace;
         DataSet *dataset;
-        float * values;
         char name[1024];
         int ncol = filedat.dat[0].size();
         // For each column
         for (int i=0; i<ncol; i++)
         {
             int datsize = filedat.dat.size();
-            values = new float [datsize];
+            float values[datsize][2];
             for (int j=0; j<datsize; j++)
             {
-                values[j] = filedat.dat[j][i];
+                values[j][0] = filedat.dat[j][i];
+                values[j][1] = filedat.frameN[j];
             }
             /* Write data */
             sprintf(name,"/Trajectories/Traj-%i/%s",filedat.experiment,options.datnames[i].c_str());
             /* 
-               See if it exists already.  If it does, unlink it so we can replace it.
-               This is set up as a while loop so that it can trivially be replaced with
-               a file->move(src,dst) command to keep the old data.  I chose not to go
-               that route, however, for fear of cluttering up the hdf5 file. Regardless, 
-               the hdf5 file WILL continue to grow in size...
+             See if it exists already.
+             If the dataspace already exists and is the same size as we need,
+             just replace the data currently there.  Otherwise, unlink the 
+             dataset and make a new one (which will grow the file in size).
             */
-            bool data_already_exists = true;
-            int n=0;
-            while (data_already_exists)
+            try
             {
-                if (n>100){
-                    std::cerr << "\nERROR: Found " << name << " " << " times.  Cowardly refusing to keep trying.\n" << std::endl;
-                    std::exit(1);}
-                try
-                {
-                    file->openDataSet(name);
-                    file->unlink(name);
+                dataset = new DataSet(file->openDataSet(name));
+                dataspace = new DataSpace(dataset->getSpace());
+                int rank = dataspace->getSimpleExtentNdims();
+                hsize_t current_dim[rank];
+                dataspace->getSimpleExtentDims(current_dim,NULL);
+                if (rank == 2 && current_dim[0] == datsize) {
+                    std::cout << "Modifying " << name << " in place\n";
+                    dataset->write(values,PredType::NATIVE_FLOAT);
                 }
-                catch(...)
-                {
-                    data_already_exists = false;
+                else {
+                    /* Unlink if the dataset already exists */
+                    try {
+                        file->unlink(name);
+                        std::cout << "Unlinking " << name << std::endl;
+                        throw std::out_of_range("Unlinking");
+                    }
+                    catch( FileIException unlink_error ) {
+                        std::cout << "\nFailed to unlink " << name << std::endl;
+                        std::exit(1);
+                    }
                 }
-                n++;
             }
-            hsize_t dim[1] = { datsize };
-            dataspace = new DataSpace(1,dim);
-            dataset = new DataSet(file->createDataSet(name,PredType::NATIVE_FLOAT,*dataspace));
-            dataset->write(values,PredType::NATIVE_FLOAT);
-
-            /* Attribute */
-            StrType str_type(PredType::C_S1,1024);
-            hsize_t attrsize = 1;
-            char unit_attr[attrsize][1024];
-            hsize_t attr_dim[1] = { attrsize };
-            sprintf(unit_attr[0],"%s",options.datunits[i].c_str());
-            DataSpace attr_dataspace(1,attr_dim);
-            Attribute unit_attribute = dataset->createAttribute("Units",str_type,attr_dataspace);
-            unit_attribute.write(str_type,unit_attr);
-            std::cout << name << std::endl;
-            
-            dataset->close();
-            delete dataset;
-            delete dataspace;
+            catch(...)
+            {
+                std::cout << "Writing " << name << std::endl;
+                hsize_t dim[2] = { datsize,2 };
+                dataspace = new DataSpace(2,dim);
+                dataset = new DataSet(file->createDataSet(name,PredType::NATIVE_FLOAT,*dataspace));
+                dataset->write(values,PredType::NATIVE_FLOAT);
+                /* Attribute */
+                StrType str_type(PredType::C_S1,1024);
+                hsize_t attrsize = 1;
+                char unit_attr[attrsize][1024];
+                hsize_t attr_dim[1] = { attrsize };
+                sprintf(unit_attr[0],"%s",options.datunits[i].c_str());
+                DataSpace attr_dataspace(1,attr_dim);
+                Attribute unit_attribute = dataset->createAttribute("Units",str_type,attr_dataspace);
+                unit_attribute.write(str_type,unit_attr);
+        
+                dataset->close();
+                delete dataset;
+                delete dataspace;
+            }
         }
     }
     // catch failure caused by the H5File operations
@@ -146,7 +153,7 @@ int Interact_H5::h5_get_dataset(const std::string &path, h5_dat &data)
     {
         Group grp = file->openGroup(path.c_str());
         // find out which frames this covered
-        hsize_t att_dim[1] = { 2 };
+//        hsize_t att_dim[1] = { 2 };
         int attr_data[2];
         Attribute span = grp.openAttribute("First frame read, last frame read");
         span.read(PredType::NATIVE_INT,attr_data);
@@ -170,7 +177,7 @@ int Interact_H5::h5_get_dataset(const std::string &path, h5_dat &data)
         dataspace = new DataSpace(dataset->getSpace());
         int rank = dataspace->getSimpleExtentNdims();
         hsize_t dims[rank];
-        int ndims = dataspace->getSimpleExtentDims(dims,NULL); 
+        int ndims = dataspace->getSimpleExtentDims(dims,NULL);
         int bin_out[dims[0]];
         dataset->read(bin_out, PredType::NATIVE_INT);
         delete dataspace;
@@ -295,7 +302,6 @@ void Interact_H5::h5_bin_assignments(std::vector<bw_datfile> &list)
 
 void Interact_H5::h5_write_prob(const std::vector<h5_dat> &probs)
 {
-    int nnn=0;
     try
     {
         Exception::dontPrint();
@@ -312,54 +318,167 @@ void Interact_H5::h5_write_prob(const std::vector<h5_dat> &probs)
             {
                 averages[j][0] = probs[j].avg[i];
                 averages[j][1] = probs[j].stdev[i];
-                //stdevs[j] = probs[j].stdev[i];
-                //std::cout << i << " " << j << " " <<  options.datnames[i] << " " << averages[j][0] << "(" << averages[j][1] << ")" << "\n";
             }
 
             /* Write data */
             sprintf(name,"/Ensemble/%s",options.datnames[i].c_str());
-            std::cout << "Writing " << name << std::endl;
             /*
-             See if it exists already.  If it does, unlink it so we can replace it.
-             This is set up as a while loop so that it can trivially be replaced with
-             a file->move(src,dst) command to keep the old data.  I chose not to go
-             that route, however, for fear of cluttering up the hdf5 file. Regardless,
-             the hdf5 file WILL continue to grow in size...
+             See if it exists already.
+             If the dataspace already exists and is the same size as we need,
+             just replace the data currently there.  Otherwise, unlink the
+             dataset and make a new one (which will grow the file in size).             
              */
-            bool data_already_exists = true;
-            int n=0;
-            while (data_already_exists)
+            
+            try
             {
-                if (n>100){
-                    std::cerr << "\nERROR: Found " << name << " " << " times.  Cowardly refusing to keep trying.\n" << std::endl;
-                    std::exit(1);}
-                try
-                {
-                    file->openDataSet(name);
-                    file->unlink(name);
+                dataset = new DataSet(file->openDataSet(name));
+                dataspace = new DataSpace(dataset->getSpace());
+                int rank = dataspace->getSimpleExtentNdims();
+                hsize_t current_dim[rank];
+                dataspace->getSimpleExtentDims(current_dim,NULL);
+                if (rank == 2 && current_dim[0] == nconv) {
+                    std::cout << "Modifying " << name << " in place\n";
+                    dataset->write(averages,PredType::NATIVE_FLOAT);
                 }
-                catch(...)
-                {
-                    data_already_exists = false;
+                else {
+                    /* Unlink if the dataset already exists */
+                    try {
+                        file->unlink(name);
+                        std::cout << "Unlinking " << name << std::endl;
+                        throw std::out_of_range("Unlinking");
+                    }
+                    catch( FileIException unlink_error ) {
+                        std::cout << "\nFailed to unlink " << name << std::endl;
+                        std::exit(1);
+                    }
                 }
-                n++;
             }
-            hsize_t dim[2] = { nconv, 2 };
+            catch(...)
+            {
+                std::cout << "Writing " << name << std::endl;
+                hsize_t dim[2] = { nconv, 2 };
+                dataspace = new DataSpace(2,dim);
+                dataset = new DataSet(file->createDataSet(name,PredType::NATIVE_FLOAT,*dataspace));
+                dataset->write(averages,PredType::NATIVE_FLOAT);
+
+                /* Attribute */
+                StrType str_type(PredType::C_S1,1024);
+                hsize_t attrsize = 2;
+                char unit_attr[attrsize][1024];
+                hsize_t attr_dim[1] = { attrsize };
+                sprintf(unit_attr[0],"average(%s)",options.datunits[i].c_str());
+                sprintf(unit_attr[1],"stdev(%s)",options.datunits[i].c_str());
+                DataSpace attr_dataspace(1,attr_dim);
+                Attribute unit_attribute = dataset->createAttribute("Units",str_type,attr_dataspace);
+                unit_attribute.write(str_type,unit_attr);
+
+                dataset->close();
+                delete dataset;
+                delete dataspace;
+            }
+        }
+    }
+    // catch failure caused by the H5File operations
+    catch( FileIException error )
+    {
+        error.printError();
+        std::exit(1);
+    }
+    // catch failure caused by the DataSet operations
+    catch( DataSetIException error )
+    {
+        error.printError();
+        std::exit(1);
+    }
+    // catch failure caused by the DataSpace operations
+    catch( DataSpaceIException error )
+    {
+        error.printError();
+        std::exit(1);
+    }
+    // catch failure caused by the DataSpace operations
+    catch( DataTypeIException error )
+    {
+        error.printError();
+        std::exit(1);
+    }
+    return;
+}
+
+void Interact_H5::h5_write_hist(const std::vector<std::vector<double> > &dat, int &index)
+{
+    try
+    {
+        Exception::dontPrint();
+        DataSpace *dataspace;
+        DataSet *dataset;
+        Group *group;
+        char name[1024];
+        
+        float adat[(int)dat.size()][2];
+        for (int i=0;i<(int)dat.size();i++){
+            for (int j=0;j<2;j++){
+                adat[i][j] = dat[i][j];
+            }
+        }
+        
+        /* If the /Histogram group does not exist, we need to create it */
+        try {
+            group = new Group(file->openGroup("/Histogram"));
+        }
+        catch(...) {
+            group = new Group(file->createGroup("/Histogram"));
+        }
+            
+        /* Write data */
+        sprintf(name,"/Histogram/%s",options.datnames[index].c_str());
+        /*
+          See if it exists already.
+         If the dataspace already exists and is the same size as we need,
+         just replace the data currently there.  Otherwise, unlink the
+         dataset and make a new one (which will grow the file in size).        */
+        try
+        {
+            dataset = new DataSet(file->openDataSet(name));
+            dataspace = new DataSpace(dataset->getSpace());
+            int rank = dataspace->getSimpleExtentNdims();
+            hsize_t current_dim[rank];
+            dataspace->getSimpleExtentDims(current_dim,NULL);
+            if (rank == 2 && current_dim[0] == (int)dat.size()) {
+                std::cout << "Modifying " << name << " in place\n";
+                dataset->write(adat,PredType::NATIVE_FLOAT);
+            }
+            else {
+                /* Unlink if the dataset already exists */
+                try {
+                    file->unlink(name);
+                    std::cout << "Unlinking " << name << std::endl;
+                    throw std::out_of_range("Unlinking");
+                }
+                catch( FileIException unlink_error ) {
+                    std::cout << "\nFailed to unlink " << name << std::endl;
+                    std::exit(1);
+                }
+            }
+        }
+        catch(...)
+        {
+            std::cout << "Writing " << name << std::endl;
+            hsize_t dim[2] = { (int)dat.size(), 2 };
             dataspace = new DataSpace(2,dim);
             dataset = new DataSet(file->createDataSet(name,PredType::NATIVE_FLOAT,*dataspace));
-            dataset->write(averages,PredType::NATIVE_FLOAT);
-
+            dataset->write(adat,PredType::NATIVE_FLOAT);
+            
             /* Attribute */
             StrType str_type(PredType::C_S1,1024);
             hsize_t attrsize = 2;
             char unit_attr[attrsize][1024];
             hsize_t attr_dim[1] = { attrsize };
-            sprintf(unit_attr[0],"average(%s)",options.datunits[i].c_str());
-            sprintf(unit_attr[1],"stdev(%s)",options.datunits[i].c_str());
+            sprintf(unit_attr[0],"Left Edge(%s)",options.datunits[index].c_str());
+            sprintf(unit_attr[1],"Probability");
             DataSpace attr_dataspace(1,attr_dim);
             Attribute unit_attribute = dataset->createAttribute("Units",str_type,attr_dataspace);
             unit_attribute.write(str_type,unit_attr);
-
             dataset->close();
             delete dataset;
             delete dataspace;
@@ -390,5 +509,4 @@ void Interact_H5::h5_write_prob(const std::vector<h5_dat> &probs)
         std::exit(1);
     }
     return;
-
 }

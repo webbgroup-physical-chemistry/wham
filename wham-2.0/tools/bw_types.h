@@ -21,6 +21,10 @@
 #define DEG2RAD M_PI/180.
 #endif
 
+inline double MAX(double a, double b) {
+    return (a>b)? a : b;
+}
+
 struct bw_options
 {
     std::string xvglist;
@@ -29,6 +33,7 @@ struct bw_options
     std::vector<std::string> datunits;
     int nitems;
     int frameStep;
+    int histbins;
     int seed;
     bool doseed;
     bool isangle;
@@ -42,7 +47,7 @@ struct bw_datfile
 {
     int experiment;
     std::string filename;
-    std::vector<std::vector<float> > dat;
+    std::vector<std::vector<double> > dat;
     std::vector<int> frameN;
     std::vector<int> bin;
 };
@@ -50,9 +55,9 @@ struct bw_datfile
 struct h5_dat
 {
     std::vector<int> span;
-    std::vector<float> bin_prob;
-    std::vector<float> avg;
-    std::vector<float> stdev;
+    std::vector<double> bin_prob;
+    std::vector<double> avg;
+    std::vector<double> stdev;
 };
 
 #endif
