@@ -367,14 +367,12 @@ void Boltzmann_Weight::bw_hist(const std::vector<std::vector<double> > &dat, int
         if (dat[i][1] < min) { min = dat[i][1]; }
     }
     max += MAX(abs(max*0.01),0.1);
-    min -= MAX(abs(min*0.01),0.1);
     double range = max - min;
-    double stepsize = range / options.histbins;
+    double stepsize = range / (double)options.histbins;
     std::vector<std::vector<double> > histogram (options.histbins, std::vector<double> (2,0.));
     for (int i = 0; i<frames; i++) {
         int n = std::floor((dat[i][1] - min) / stepsize);
         if (n < 0) {
-            
             std::cerr << "Binning index too LOW: "<< i << " " << (dat[i][1] - min) / stepsize << " " << n << " " << dat[i][1] << " " << min << " " << max << std::endl;
             std::exit(1);
         }
@@ -382,19 +380,29 @@ void Boltzmann_Weight::bw_hist(const std::vector<std::vector<double> > &dat, int
             std::cerr << "Binning index too HIGH: "<< i << " " << (dat[i][1] - min) / stepsize << " " << n << " " << dat[i][1] << " " << min << " " << max << std::endl;
             std::exit(1);
         }
-        double leftedge = n*stepsize+min;
-        double rightedge = (n+1)*stepsize+min;
-        if (dat[i][1] < leftedge ) {
-            std::cerr << "\nError in binning (smaller than this bin edge)\n";
-            std::cerr << n << " " << leftedge << " " << dat[i][1] << " " << rightedge << std::endl;
-            std::exit(1);
+        double leftedge = n * stepsize + min;
+        double rightedge = (n + 1) * stepsize + min;
+        if ( dat[i][1] < leftedge ) {
+            if (n > 0) {
+                n--;
+            }
+            else {
+                std::cerr << "\nError in binning (smaller than this bin edge)\n";
+                std::cerr << n << " " << leftedge << " " << dat[i][1] << " " << rightedge << ", dif: " << dat[i][1] - leftedge << std::endl;
+                std::exit(1);
+            }
         }
-        else if (dat[i][1] >= rightedge ) {
-            std::cerr << "\nError in binning (larger than next bin edge)\n";
-            std::cerr << n << " " << leftedge << " " << dat[i][1] << " " << rightedge << std::endl;
-            std::exit(1);
+        else if ( dat[i][1] >= rightedge ) {
+            if (n < options.histbins - 1) {
+                n++;
+            }
+            else {
+                std::cerr << "\nError in binning (larger than next bin edge)\n";
+                std::cerr << n << " " << leftedge << " " << dat[i][1] << " " << rightedge << ", dif: " << dat[i][1] - rightedge << std::endl;
+                std::exit(1);
+            }
         }
-        histogram[n][1] += dat[i][0];
+        histogram[n][1] += dat[i][0]/stepsize;
     }
     // Assign all left edges; did not do in previous loop b/c some left edges
     // may not be visited.

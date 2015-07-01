@@ -13,11 +13,11 @@ from read_hdf5 import Read_H5, plot_2d
 kb = .0083144621 # kJ/(mol*K)
 T = 300 # K
 beta = 1/(kb*T)
-fc = 50
+fc = 70
 whamstep = 5
 dphi = 0
 window_size = 30 # degrees, 12 windows
-multiplier = 1 
+multiplier = 10 
 frames = multiplier*10000
 potential = "rb"
 whamscript = "../../../bin/wham"
@@ -43,8 +43,8 @@ ana2D[2] = probability
 ana2d[3] = pmf
 """
 ana1D, ana2D = traj.unbiased_p_distr()
-#fl1D, fl2D = traj.get_samples()
-fl1D,fl2D = "1D_list.file","2D_list.file"
+fl1D, fl2D = traj.get_samples()
+#fl1D,fl2D = "1D_list.file","2D_list.file"
 # Do 1D analysis
 outname = "1d.h5"
 cmd = "rm %s ; time %s -f %s -o %s -w %s -d 1 -c %i"%(outname, whamscript, fl1D, outname, whamstep, nconv)

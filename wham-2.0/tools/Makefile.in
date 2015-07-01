@@ -78,7 +78,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = bw_wham$(EXEEXT)
+bin_PROGRAMS = bw_wham$(EXEEXT) pca_wham$(EXEEXT)
 subdir = tools
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp
@@ -109,6 +109,15 @@ am__v_lt_1 =
 bw_wham_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(bw_wham_LDFLAGS) $(LDFLAGS) -o $@
+am_pca_wham_OBJECTS = pca_wham-pca_main.$(OBJEXT) \
+	pca_wham-pca_option_parser.$(OBJEXT) \
+	pca_wham-pca_wham.$(OBJEXT) pca_wham-bw_hdf5.$(OBJEXT) \
+	pca_wham-cpp_lapack.$(OBJEXT) pca_wham-cpp_blas.$(OBJEXT)
+pca_wham_OBJECTS = $(am_pca_wham_OBJECTS)
+pca_wham_LDADD = $(LDADD)
+pca_wham_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+	$(CXXFLAGS) $(pca_wham_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -161,8 +170,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(bw_wham_SOURCES)
-DIST_SOURCES = $(bw_wham_SOURCES)
+SOURCES = $(bw_wham_SOURCES) $(pca_wham_SOURCES)
+DIST_SOURCES = $(bw_wham_SOURCES) $(pca_wham_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -332,6 +341,11 @@ bw_wham_SOURCES = bw_main.cpp bw_option_parser.cpp bw_option_parser.h bw_boltzma
 bw_wham_CPPFLAGS = $(BOOST_CPPFLAGS) $(HDF5_CFLAGS)
 bw_wham_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS) \
 	$(BOOST_PROGRAM_OPTIONS_LIBS) $(HDF5_LIBS) $(HDF5_CXXLIBS)
+pca_wham_SOURCES = pca_main.cpp pca_option_parser.cpp pca_option_parser.h pca_wham.cpp pca_wham.h bw_types.h bw_hdf5.cpp bw_hdf5.h cpp_lapack.cpp cpp_lapack.h cpp_blas.cpp cpp_blas.h
+pca_wham_CPPFLAGS = $(BOOST_CPPFLAGS) $(HDF5_CFLAGS)
+pca_wham_LDFLAGS = $(BOOST_PROGRAM_OPTIONS_LDFLAGS) \
+	$(BOOST_PROGRAM_OPTIONS_LIBS) $(HDF5_LIBS) $(HDF5_CXXLIBS) \
+	$(BLAS_LIBS)
 all: all-am
 
 .SUFFIXES:
@@ -420,6 +434,10 @@ bw_wham$(EXEEXT): $(bw_wham_OBJECTS) $(bw_wham_DEPENDENCIES) $(EXTRA_bw_wham_DEP
 	@rm -f bw_wham$(EXEEXT)
 	$(AM_V_CXXLD)$(bw_wham_LINK) $(bw_wham_OBJECTS) $(bw_wham_LDADD) $(LIBS)
 
+pca_wham$(EXEEXT): $(pca_wham_OBJECTS) $(pca_wham_DEPENDENCIES) $(EXTRA_pca_wham_DEPENDENCIES) 
+	@rm -f pca_wham$(EXEEXT)
+	$(AM_V_CXXLD)$(pca_wham_LINK) $(pca_wham_OBJECTS) $(pca_wham_LDADD) $(LIBS)
+
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
 
@@ -430,6 +448,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bw_wham-bw_hdf5.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bw_wham-bw_main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bw_wham-bw_option_parser.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pca_wham-bw_hdf5.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pca_wham-cpp_blas.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pca_wham-cpp_lapack.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pca_wham-pca_main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pca_wham-pca_option_parser.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pca_wham-pca_wham.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -507,6 +531,90 @@ bw_wham-bw_hdf5.obj: bw_hdf5.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='bw_hdf5.cpp' object='bw_wham-bw_hdf5.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(bw_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o bw_wham-bw_hdf5.obj `if test -f 'bw_hdf5.cpp'; then $(CYGPATH_W) 'bw_hdf5.cpp'; else $(CYGPATH_W) '$(srcdir)/bw_hdf5.cpp'; fi`
+
+pca_wham-pca_main.o: pca_main.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT pca_wham-pca_main.o -MD -MP -MF $(DEPDIR)/pca_wham-pca_main.Tpo -c -o pca_wham-pca_main.o `test -f 'pca_main.cpp' || echo '$(srcdir)/'`pca_main.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pca_wham-pca_main.Tpo $(DEPDIR)/pca_wham-pca_main.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pca_main.cpp' object='pca_wham-pca_main.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o pca_wham-pca_main.o `test -f 'pca_main.cpp' || echo '$(srcdir)/'`pca_main.cpp
+
+pca_wham-pca_main.obj: pca_main.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT pca_wham-pca_main.obj -MD -MP -MF $(DEPDIR)/pca_wham-pca_main.Tpo -c -o pca_wham-pca_main.obj `if test -f 'pca_main.cpp'; then $(CYGPATH_W) 'pca_main.cpp'; else $(CYGPATH_W) '$(srcdir)/pca_main.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pca_wham-pca_main.Tpo $(DEPDIR)/pca_wham-pca_main.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pca_main.cpp' object='pca_wham-pca_main.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o pca_wham-pca_main.obj `if test -f 'pca_main.cpp'; then $(CYGPATH_W) 'pca_main.cpp'; else $(CYGPATH_W) '$(srcdir)/pca_main.cpp'; fi`
+
+pca_wham-pca_option_parser.o: pca_option_parser.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT pca_wham-pca_option_parser.o -MD -MP -MF $(DEPDIR)/pca_wham-pca_option_parser.Tpo -c -o pca_wham-pca_option_parser.o `test -f 'pca_option_parser.cpp' || echo '$(srcdir)/'`pca_option_parser.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pca_wham-pca_option_parser.Tpo $(DEPDIR)/pca_wham-pca_option_parser.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pca_option_parser.cpp' object='pca_wham-pca_option_parser.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o pca_wham-pca_option_parser.o `test -f 'pca_option_parser.cpp' || echo '$(srcdir)/'`pca_option_parser.cpp
+
+pca_wham-pca_option_parser.obj: pca_option_parser.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT pca_wham-pca_option_parser.obj -MD -MP -MF $(DEPDIR)/pca_wham-pca_option_parser.Tpo -c -o pca_wham-pca_option_parser.obj `if test -f 'pca_option_parser.cpp'; then $(CYGPATH_W) 'pca_option_parser.cpp'; else $(CYGPATH_W) '$(srcdir)/pca_option_parser.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pca_wham-pca_option_parser.Tpo $(DEPDIR)/pca_wham-pca_option_parser.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pca_option_parser.cpp' object='pca_wham-pca_option_parser.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o pca_wham-pca_option_parser.obj `if test -f 'pca_option_parser.cpp'; then $(CYGPATH_W) 'pca_option_parser.cpp'; else $(CYGPATH_W) '$(srcdir)/pca_option_parser.cpp'; fi`
+
+pca_wham-pca_wham.o: pca_wham.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT pca_wham-pca_wham.o -MD -MP -MF $(DEPDIR)/pca_wham-pca_wham.Tpo -c -o pca_wham-pca_wham.o `test -f 'pca_wham.cpp' || echo '$(srcdir)/'`pca_wham.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pca_wham-pca_wham.Tpo $(DEPDIR)/pca_wham-pca_wham.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pca_wham.cpp' object='pca_wham-pca_wham.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o pca_wham-pca_wham.o `test -f 'pca_wham.cpp' || echo '$(srcdir)/'`pca_wham.cpp
+
+pca_wham-pca_wham.obj: pca_wham.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT pca_wham-pca_wham.obj -MD -MP -MF $(DEPDIR)/pca_wham-pca_wham.Tpo -c -o pca_wham-pca_wham.obj `if test -f 'pca_wham.cpp'; then $(CYGPATH_W) 'pca_wham.cpp'; else $(CYGPATH_W) '$(srcdir)/pca_wham.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pca_wham-pca_wham.Tpo $(DEPDIR)/pca_wham-pca_wham.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pca_wham.cpp' object='pca_wham-pca_wham.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o pca_wham-pca_wham.obj `if test -f 'pca_wham.cpp'; then $(CYGPATH_W) 'pca_wham.cpp'; else $(CYGPATH_W) '$(srcdir)/pca_wham.cpp'; fi`
+
+pca_wham-bw_hdf5.o: bw_hdf5.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT pca_wham-bw_hdf5.o -MD -MP -MF $(DEPDIR)/pca_wham-bw_hdf5.Tpo -c -o pca_wham-bw_hdf5.o `test -f 'bw_hdf5.cpp' || echo '$(srcdir)/'`bw_hdf5.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pca_wham-bw_hdf5.Tpo $(DEPDIR)/pca_wham-bw_hdf5.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='bw_hdf5.cpp' object='pca_wham-bw_hdf5.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o pca_wham-bw_hdf5.o `test -f 'bw_hdf5.cpp' || echo '$(srcdir)/'`bw_hdf5.cpp
+
+pca_wham-bw_hdf5.obj: bw_hdf5.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT pca_wham-bw_hdf5.obj -MD -MP -MF $(DEPDIR)/pca_wham-bw_hdf5.Tpo -c -o pca_wham-bw_hdf5.obj `if test -f 'bw_hdf5.cpp'; then $(CYGPATH_W) 'bw_hdf5.cpp'; else $(CYGPATH_W) '$(srcdir)/bw_hdf5.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pca_wham-bw_hdf5.Tpo $(DEPDIR)/pca_wham-bw_hdf5.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='bw_hdf5.cpp' object='pca_wham-bw_hdf5.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o pca_wham-bw_hdf5.obj `if test -f 'bw_hdf5.cpp'; then $(CYGPATH_W) 'bw_hdf5.cpp'; else $(CYGPATH_W) '$(srcdir)/bw_hdf5.cpp'; fi`
+
+pca_wham-cpp_lapack.o: cpp_lapack.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT pca_wham-cpp_lapack.o -MD -MP -MF $(DEPDIR)/pca_wham-cpp_lapack.Tpo -c -o pca_wham-cpp_lapack.o `test -f 'cpp_lapack.cpp' || echo '$(srcdir)/'`cpp_lapack.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pca_wham-cpp_lapack.Tpo $(DEPDIR)/pca_wham-cpp_lapack.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='cpp_lapack.cpp' object='pca_wham-cpp_lapack.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o pca_wham-cpp_lapack.o `test -f 'cpp_lapack.cpp' || echo '$(srcdir)/'`cpp_lapack.cpp
+
+pca_wham-cpp_lapack.obj: cpp_lapack.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT pca_wham-cpp_lapack.obj -MD -MP -MF $(DEPDIR)/pca_wham-cpp_lapack.Tpo -c -o pca_wham-cpp_lapack.obj `if test -f 'cpp_lapack.cpp'; then $(CYGPATH_W) 'cpp_lapack.cpp'; else $(CYGPATH_W) '$(srcdir)/cpp_lapack.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pca_wham-cpp_lapack.Tpo $(DEPDIR)/pca_wham-cpp_lapack.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='cpp_lapack.cpp' object='pca_wham-cpp_lapack.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o pca_wham-cpp_lapack.obj `if test -f 'cpp_lapack.cpp'; then $(CYGPATH_W) 'cpp_lapack.cpp'; else $(CYGPATH_W) '$(srcdir)/cpp_lapack.cpp'; fi`
+
+pca_wham-cpp_blas.o: cpp_blas.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT pca_wham-cpp_blas.o -MD -MP -MF $(DEPDIR)/pca_wham-cpp_blas.Tpo -c -o pca_wham-cpp_blas.o `test -f 'cpp_blas.cpp' || echo '$(srcdir)/'`cpp_blas.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pca_wham-cpp_blas.Tpo $(DEPDIR)/pca_wham-cpp_blas.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='cpp_blas.cpp' object='pca_wham-cpp_blas.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o pca_wham-cpp_blas.o `test -f 'cpp_blas.cpp' || echo '$(srcdir)/'`cpp_blas.cpp
+
+pca_wham-cpp_blas.obj: cpp_blas.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT pca_wham-cpp_blas.obj -MD -MP -MF $(DEPDIR)/pca_wham-cpp_blas.Tpo -c -o pca_wham-cpp_blas.obj `if test -f 'cpp_blas.cpp'; then $(CYGPATH_W) 'cpp_blas.cpp'; else $(CYGPATH_W) '$(srcdir)/cpp_blas.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/pca_wham-cpp_blas.Tpo $(DEPDIR)/pca_wham-cpp_blas.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='cpp_blas.cpp' object='pca_wham-cpp_blas.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(pca_wham_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o pca_wham-cpp_blas.obj `if test -f 'cpp_blas.cpp'; then $(CYGPATH_W) 'cpp_blas.cpp'; else $(CYGPATH_W) '$(srcdir)/cpp_blas.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

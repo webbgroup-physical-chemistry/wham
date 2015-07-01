@@ -245,6 +245,84 @@ int Interact_H5::h5_get_dataset(const std::string &path, h5_dat &data)
     return 0;
 }
 
+int Interact_H5::h5_get_dataset(const std::string name, std::vector<std::vector<float> > &full_dat)
+{
+    DataSet *dataset;
+    DataSpace *dataspace;
+    try
+    {
+        Exception::dontPrint();
+        // read the bin counts
+        dataset = new DataSet(file->openDataSet(name.c_str()));
+        dataspace = new DataSpace(dataset->getSpace());
+        // how many dimensions is the data set
+        int rank = dataspace->getSimpleExtentNdims();
+        // make array of the number of members in each dimension
+        hsize_t dims[rank];
+        int ndims = dataspace->getSimpleExtentDims(dims,NULL);
+  
+        // let's open the data
+        for (int i=0; i<rank; i++) {
+            hsize_t col_dims[1];
+            hsize_t count[2] = { dims[0], 1 };
+            hsize_t offset[2] = { 0, i };
+            col_dims[0] = dims[0];
+            std::vector<float> column_dat (dims[0],0);
+            int rankc = 1;
+            DataSpace mspace(rankc,col_dims);
+            dataspace->selectHyperslab(H5S_SELECT_SET, count, offset);
+            dataset->read(&column_dat[0],PredType::NATIVE_FLOAT,mspace,*dataspace);
+            full_dat.push_back(column_dat);
+        }
+        
+        // pretty print out
+        if (options.bVerbose ) {
+            std::cout << name << " dataset rank = " << rank << ", dimensions ";
+            for (int i=0; i<rank; i++) {
+                if (i==0) { std::cout << dims[i]; }
+                else { std::cout << " x " << dims[i]; }
+            }
+            std::cout << std::endl;
+        }
+        
+        delete dataspace;
+        delete dataset;
+        return 0;
+    }
+    // catch failure caused by the H5File operations
+    catch( FileIException error )
+    {
+        return 1;
+        error.printError();
+    }
+    // catch failure caused by the DataSet operations
+    catch( DataSetIException error )
+    {
+        return 1;
+        error.printError();
+    }
+    // catch failure caused by the DataSpace operations
+    catch( DataSpaceIException error )
+    {
+        return 1;
+        error.printError();
+    }
+    // catch failure caused by the DataSpace operations
+    catch( DataTypeIException error )
+    {
+        return 1;
+        error.printError();
+    }
+    catch(...)
+    {
+        std::cerr << "\nUNKNOWN ERROR" << std::endl;
+        return 1;
+        std::exit(1);
+    }
+    return 1;
+}
+
+
 void Interact_H5::h5_bin_assignments(std::vector<bw_datfile> &list)
 {
     /* Obtain the bin number for each frame */

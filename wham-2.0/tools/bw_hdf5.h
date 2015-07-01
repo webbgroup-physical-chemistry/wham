@@ -14,6 +14,7 @@ protected :
 public :
     Interact_H5(const bw_options &option);
     int h5_get_dataset(const std::string &path, h5_dat &data);
+    int h5_get_dataset(const std::string name, std::vector<std::vector<float> > &full_dat);
     void h5_bin_assignments(std::vector<bw_datfile> &list);
     // The write functions are all essentially the same and could/should
     // be consolidated at some point...

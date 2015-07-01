@@ -24,6 +24,9 @@
 inline double MAX(double a, double b) {
     return (a>b)? a : b;
 }
+inline double MIN(double a, double b) {
+    return (a<b)? a : b;
+}
 
 struct bw_options
 {
@@ -59,5 +62,7 @@ struct h5_dat
     std::vector<double> avg;
     std::vector<double> stdev;
 };
+
+
 
 #endif
