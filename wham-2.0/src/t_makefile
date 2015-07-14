@@ -9,7 +9,7 @@ CC := g++
 INCLUDE := -I. -I$(BOOST_INC) 
 LDFLAGS := -L$(BOOST_LIB) 
 LDLIBS := -lboost_program_options -lhdf5 -lhdf5_cpp -lblas 
-CPPFLAGS := -Wall -O3 $(INCLUDE) -fopenmp
+CPPFLAGS := -Wall -O3 $(INCLUDE) -fopenmp -std=c++11 
 
 $(NAME): $(OBJS)
 	$(CC) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) -o $@ $^

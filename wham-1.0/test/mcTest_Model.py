@@ -1,4 +1,4 @@
-#! /usr/local/bin/python
+#! /usr/bin/env python
 
 from numpy import sin, cos, arccos, dot, pi, random, array, arange, exp, logspace
 from os import system

@@ -4,5 +4,5 @@ autoconf
 # don't compile with llvm; openmp threading does not work
 #./configure --with-boost=/usr/local/Cellar/boost/1.55.0_1/ --with-hdf5=/usr/local/Cellar/hdf5/1.8.8/ CXX=llvm-g++ CC=llvm-gcc
 # or:
-./configure --with-boost=/opt/local/ --with-hdf5=/opt/local/ CC=gcc CXX=g++
+./configure --with-boost=/opt/local/ --with-hdf5=/opt/local/ CC=gcc CXX=g++ 
 
